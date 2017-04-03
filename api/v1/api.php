@@ -133,6 +133,18 @@ class API extends REST {
         }
     }
 
+    /*private function getFirstBlankLicenseID() {
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $sql = mysql_query("SELECT * FROM `SCP_Licenses` WHERE UserID IS NULL ORDER BY LicenseID ASC LIMIT 1", $this->db);
+
+        $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+        
+        $successdata = array('status_code' => "3", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => $arr);
+        $this->response($this->json($successdata), 200);         
+    }*/
     
     // ******************************* CREATE ORGANIZER API *******************************
     private function createOrgsignUp() {
@@ -148,13 +160,13 @@ class API extends REST {
             $email = $post['email'];
             $username = $post['username'];
             $password = md5($post['password']);
-            $Name = $post['name'];
-            $Address = $post['address'];
-            $ContactNo = $post['phone'];
-            $ContactNo2 = $post['mobile'];
-            $FaxNo = $post['FaxNo'];
-            $WebSite = $post['WebSite'];
-            $OtherDetails = $post['OtherDetails'];
+            @$Name = $post['name'];
+            @$Address = $post['address'];
+            @$ContactNo = $post['phone'];
+            @$ContactNo2 = $post['mobile'];
+            @$FaxNo = $post['FaxNo'];
+            @$WebSite = $post['WebSite'];
+            @$OtherDetails = $post['OtherDetails'];
         } else {
             $username = $_POST['username'];
             $password = md5($_POST['password']);
@@ -186,13 +198,19 @@ class API extends REST {
 
             $sql_insert = mysql_query("INSERT INTO `SCP_CareOrg` (`Name`, `PlanID`, `Address`, `ContactNo`, `ContactNo2`, `FaxNo`, `WebSite`, `UserID`, `OtherDetails`, `CreatedDateTime`, `ModifyDateTime`, `StatusID`) VALUES ('$Name', '$PlanID', '$Address', '$ContactNo', '$ContactNo2', '$FaxNo', '$WebSite', '$last_insert_id', '$OtherDetails', '$CreatedDateTime', '$ModifyDateTime', '1')", $this->db);
 
+            $OrgID = mysql_insert_id();
+
             $sql_insert = mysql_query("INSERT INTO `SCP_UserAccess` (`RightsID`, `AccessLevelID`, `UserID`, `UserTypeID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('2', '2', '$last_insert_id', '2', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
             
             $arr[] = $last_insert_id;
+
+            $Licenses = mysql_query("SELECT * FROM `SCP_Licenses` WHERE UserID IS NULL ORDER BY LicenseID ASC LIMIT 1", $this->db);
+            $Licenses = mysql_fetch_array($Licenses, MYSQL_ASSOC);
+            $LicenseID = $Licenses['LicenseID'];
+            mysql_query("UPDATE `SCP_Licenses` SET `OrgID`='$OrgID', `UserID`='$last_insert_id', `ModifyDateTime`='$ModifyDateTime' WHERE `LicenseID` = '$LicenseID'", $this->db);
             //if no user found
             $error = array('status_code' => "1", 'status' => "success", 'message' => "Care Organizer Created Successfully", 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);
-
         } else {
             $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);
