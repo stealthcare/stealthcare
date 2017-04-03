@@ -43,6 +43,16 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
         });
     };
 
+    $scope.loadSelectBoxData = function (PageName) {
+        $scope.loading = true;
+        Data.get('loadSelectBoxData').then(function (results) {            
+            $rootScope.Status = results.status_data;
+            $rootScope.Plans = results.licensesplan_data;
+            $location.path(PageName);
+            $scope.loading = false;
+        });
+    };
+
     // create user request
     //$scope.signup = {email:'',password:'',name:'',phone:'',address:''};
     $scope.signUp = function (reqparams) {
@@ -65,9 +75,11 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
 
     // create organizer request
     $scope.createOrgsignUp = function (reqparams) {
+        var PlanID = angular.element('#PlanID').val();
+        //var StatusID = angular.element('#StatusID').val();
         $http({
             method: 'post',
-            data: $.param({reqparams: reqparams}),
+            data: $.param({reqparams: reqparams, PlanID: PlanID}),
             url: serviceBase+'createOrgsignUp',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
@@ -93,6 +105,47 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
         .success(function(results){
             $location.path('organization');
             $scope.loading = false;
+        });
+    };
+
+    $scope.editCareOrgload = function () {
+        var UserID = $routeParams.id;
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({UserID: UserID}),
+            url: serviceBase+'getUpdateCareOrgByID',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status_code == "1") {
+                $rootScope.resultData = results.response_data;
+                $rootScope.Status = results.status_data;
+                $rootScope.Plans = results.licensesplan_data;
+                $scope.loading = false;
+            }
+        });
+    };
+
+    $scope.updateCareOrg = function (reqparams) {
+        var UserID = $routeParams.id;
+        var PlanID = angular.element('#PlanID').val();
+        var StatusID = angular.element('#StatusID').val();
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams, UserID: UserID, PlanID: PlanID, StatusID: StatusID}),
+            url: serviceBase+'getUpdateCareOrgByID',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status_code == "1") {
+                Data.toast(results);
+                $rootScope.resultData = results.response_data;
+                $rootScope.Status = results.status_data;
+                $rootScope.Plans = results.licensesplan_data;
+                $scope.loading = false;
+            }
         });
     };
 

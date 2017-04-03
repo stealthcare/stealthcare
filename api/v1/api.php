@@ -144,6 +144,7 @@ class API extends REST {
         $arr = array();
         if(@$_POST['reqparams']) {
             $post = $_POST['reqparams'];
+            $PlanID = $_POST['PlanID'];
             $email = $post['email'];
             $username = $post['username'];
             $password = md5($post['password']);
@@ -183,7 +184,7 @@ class API extends REST {
 
             $last_insert_id = mysql_insert_id();
 
-            $sql_insert = mysql_query("INSERT INTO `SCP_CareOrg` (`Name`, `Address`, `ContactNo`, `ContactNo2`, `FaxNo`, `WebSite`, `UserID`, `OtherDetails`, `CreatedDateTime`, `ModifyDateTime`, `StatusID`) VALUES ('$Name', '$Address', '$ContactNo', '$ContactNo2', '$FaxNo', '$WebSite', '$last_insert_id', '$OtherDetails', '$CreatedDateTime', '$ModifyDateTime', '1')", $this->db);
+            $sql_insert = mysql_query("INSERT INTO `SCP_CareOrg` (`Name`, `PlanID`, `Address`, `ContactNo`, `ContactNo2`, `FaxNo`, `WebSite`, `UserID`, `OtherDetails`, `CreatedDateTime`, `ModifyDateTime`, `StatusID`) VALUES ('$Name', '$PlanID', '$Address', '$ContactNo', '$ContactNo2', '$FaxNo', '$WebSite', '$last_insert_id', '$OtherDetails', '$CreatedDateTime', '$ModifyDateTime', '1')", $this->db);
 
             $sql_insert = mysql_query("INSERT INTO `SCP_UserAccess` (`RightsID`, `AccessLevelID`, `UserID`, `UserTypeID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('2', '2', '$last_insert_id', '2', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
             
@@ -224,6 +225,75 @@ class API extends REST {
             }
             //print_r($arr);
             $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Care Organizers Get Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+
+    // ******************************* GET PLAN API *******************************
+    private function getUpdateCareOrgByID() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $UserID = $_POST['UserID'];
+            $PlanID = $_POST['PlanID'];
+            $email = $post['EmailID'];
+            $username = $post['UserName'];
+            $Name = $post['Name'];
+            $Address = $post['Address'];
+            $ContactNo = $post['ContactNo'];
+            $ContactNo2 = $post['ContactNo2'];
+            $FaxNo = $post['FaxNo'];
+            $WebSite = $post['WebSite'];
+            $OtherDetails = $post['OtherDetails'];
+            $StatusID = $_POST['StatusID'];
+            $ModifyDateTime = date('Y-m-d H:i:s');
+
+            mysql_query("UPDATE `SCP_UserLogin` SET `EmailID`='$email', `UserName`='$username', `ModifyDateTime`='$ModifyDateTime', `StatusID`='$StatusID' WHERE `UserID` = '$UserID'", $this->db);
+
+            mysql_query("UPDATE `SCP_CareOrg` SET `Name`='$Name', `PlanID`='$PlanID', `Address`='$Address', `ContactNo`='$ContactNo', `ContactNo2`='$ContactNo2', `FaxNo`='$FaxNo', `WebSite`='$WebSite', `OtherDetails`='$OtherDetails', `ModifyDateTime`='$ModifyDateTime', `StatusID`='$StatusID' WHERE `UserID` = '$UserID'", $this->db);
+
+            $sql = mysql_query("SELECT * FROM SCP_UserLogin LEFT JOIN SCP_CareOrg ON SCP_CareOrg.UserID=SCP_UserLogin.UserID WHERE SCP_UserLogin.UserID='$UserID'", $this->db); 
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+            $success = true;
+            $msg = "Update Care Organizer Successfully";
+        } else {
+            $UserID = $_POST['UserID'];
+            $sql = mysql_query("SELECT * FROM SCP_UserLogin LEFT JOIN SCP_CareOrg ON SCP_CareOrg.UserID=SCP_UserLogin.UserID WHERE SCP_UserLogin.UserID='$UserID'", $this->db); 
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+            $success = true;
+            $msg = "Get Care Organizers Successfully";
+        }
+
+        if ($success) {
+
+            $sql = mysql_query("SELECT * FROM `SCP_Status`", $this->db);
+
+            while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+                $row['StatusID'] = $rlt['StatusID'];
+                $row['StatusName'] = $rlt['StatusName'];
+                $status[] = $row;
+            }
+
+            $sql1 = mysql_query("SELECT * FROM `SCP_LicensesPlan`", $this->db);
+
+            while ($rlt1 = mysql_fetch_array($sql1, MYSQL_ASSOC)) {
+                $row1['PlanID'] = $rlt1['PlanID'];
+                $row1['PlanName'] = $rlt1['PlanName'];
+                $LicensesPlan[] = $row1;
+            }
+            
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status, 'licensesplan_data' => $LicensesPlan);
             $this->response($this->json($successdata), 200);            
         } else {
             $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
@@ -582,6 +652,31 @@ class API extends REST {
             $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);
         }
+    }
+
+    private function loadSelectBoxData() {
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $sql = mysql_query("SELECT * FROM `SCP_Status`", $this->db);
+
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $row['StatusID'] = $rlt['StatusID'];
+            $row['StatusName'] = $rlt['StatusName'];
+            $status[] = $row;
+        }
+
+        $sql1 = mysql_query("SELECT * FROM `SCP_LicensesPlan`", $this->db);
+
+        while ($rlt1 = mysql_fetch_array($sql1, MYSQL_ASSOC)) {
+            $row1['PlanID'] = $rlt1['PlanID'];
+            $row1['PlanName'] = $rlt1['PlanName'];
+            $LicensesPlan[] = $row1;
+        }
+        
+        $successdata = array('status_code' => "3", 'status' => "success", 'message' => '', 'response_code' => "200", 'status_data' => $status, 'licensesplan_data' => $LicensesPlan);
+        $this->response($this->json($successdata), 200);         
     }
 
     // ******************************* SESSION API *******************************

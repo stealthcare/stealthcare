@@ -35,6 +35,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/create_care_orga.html',
                 controller: 'authCtrl'
             })
+            .when('/careOrg/edit/:id', {
+                title: 'Update Care Organizer',
+                templateUrl: 'partials/update_care_orga.html',
+                controller: 'authCtrl'
+            })
             .when('/licenses', {
                 title: 'Licenses',
                 templateUrl: 'partials/licenses.html',
