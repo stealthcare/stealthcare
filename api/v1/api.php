@@ -93,7 +93,7 @@ class API extends REST {
                     $arr = $row;
                 }
                 if($arr['StatusID'] != '1') {
-                    $successdata = array('status_code' => "1", 'message' => "Currentlu your account is disabled", 'response_code' => "200", 'response_data' => $arr);
+                    $successdata = array('status_code' => "1", 'status' => "error", 'message' => "Currently your account is disabled", 'response_code' => "200", 'response_data' => $arr);
                     $this->response($this->json($successdata), 200);
                 } else {
                     $UserID = $arr['UserID'];
@@ -303,7 +303,7 @@ class API extends REST {
                 $status[] = $row;
             }
 
-            $sql1 = mysql_query("SELECT * FROM `SCP_LicensesPlan`", $this->db);
+            $sql1 = mysql_query("SELECT * FROM `SCP_LicensesPlan` WHERE StatusID='1'", $this->db);
 
             while ($rlt1 = mysql_fetch_array($sql1, MYSQL_ASSOC)) {
                 $row1['PlanID'] = $rlt1['PlanID'];
@@ -473,16 +473,22 @@ class API extends REST {
         
         // LOGIN VALIDATION CHECK ENDS
         if ($success) {
-            // LOGIN
-            $sql_insert = mysql_query("INSERT INTO `SCP_LicensesPlan` (`PlanName`, `MinQty`, `MaxQty`, `Price`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$PlanName', '$MinQty', '$MaxQty', '$Price', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+            $sql = mysql_query("SELECT * FROM `SCP_LicensesPlan` WHERE PlanName='$PlanName' AND MinQty='$MinQty' AND MaxQty='$MaxQty'AND Price='$Price'", $this->db);
 
-            $last_insert_id = mysql_insert_id();
-            
-            $arr[] = $last_insert_id;
-            //if no user found
-            $error = array('status_code' => "1", 'status' => "success", 'message' => "Create Plan Successful", 'response_code' => "200", 'response_data' => $arr);
-            $this->response($this->json($error), 200);
+            $rlt = mysql_fetch_array($sql, MYSQL_ASSOC);
+            if(!empty($rlt)) {
+                $successdata = array('status_code' => "0", 'status' => "error", 'message' => "This plan already exists", 'response_code' => "200", 'response_data' => $arr);
+                $this->response($this->json($successdata), 200);
+            } else {
+                $sql_insert = mysql_query("INSERT INTO `SCP_LicensesPlan` (`PlanName`, `MinQty`, `MaxQty`, `Price`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$PlanName', '$MinQty', '$MaxQty', '$Price', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
 
+                $last_insert_id = mysql_insert_id();
+                
+                $arr[] = $last_insert_id;
+                //if no user found
+                $error = array('status_code' => "1", 'status' => "success", 'message' => "Create Plan Successful", 'response_code' => "200", 'response_data' => $arr);
+                $this->response($this->json($error), 200);
+            }
         } else {
             $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);
@@ -685,7 +691,7 @@ class API extends REST {
             $status[] = $row;
         }
 
-        $sql1 = mysql_query("SELECT * FROM `SCP_LicensesPlan`", $this->db);
+        $sql1 = mysql_query("SELECT * FROM `SCP_LicensesPlan` WHERE StatusID='1'", $this->db);
 
         while ($rlt1 = mysql_fetch_array($sql1, MYSQL_ASSOC)) {
             $row1['PlanID'] = $rlt1['PlanID'];

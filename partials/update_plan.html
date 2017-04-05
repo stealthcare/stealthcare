@@ -24,39 +24,51 @@
             <div class="row">
                 <div class="col-lg-6">
                     <section data-ng-init="editPlanload()">
-                    <form name="planForm" class="form-horizontal" role="form" method="post">        
-                        <div class="form-group">
+                    <form name="planForm" novalidate data-custom-submit="updatePlan(resultData)" class="form-horizontal" role="form" method="post">        
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="PlanName">Plan Name</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" name="PlanName" class="form-control" placeholder="Plan Name" ng-model="resultData.PlanName" required />
+                                    <input type="text" readonly name="PlanName" class="form-control" placeholder="Plan Name" ng-model="resultData.PlanName" required />
+                                    <small class="errorMessage" ng-show="submitted && planForm.PlanName.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="MinQty">Minimum Quantity</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="Minimum Quantity" numbers-only name="MinQty" required ng-model="resultData.MinQty"/>
+                                    <input type="text" readonly class="form-control" placeholder="Minimum Quantity" numbers-only name="MinQty" required ng-model="resultData.MinQty" lower-than="{{resultData.MaxQty}}"/>
+                                    <small class="errorMessage" ng-show="planForm.MinQty.$error.lowerThan">
+                                        Min cannot exceed max.
+                                    </small>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="MaxQty">Maximum Quantity</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
                                     <input type="text" class="form-control" placeholder="Maximum Quantity" numbers-only name="MaxQty" required ng-model="resultData.MaxQty"/>
+                                    <small class="errorMessage" ng-show="submitted && planForm.MaxQty.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="Price">Price</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
                                     <input type="text" numbers-only class="form-control" required placeholder="Price" name="Price" ng-model="resultData.Price"/>
+                                    <small class="errorMessage" ng-show="submitted && planForm.Price.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
                             </div>
                         </div>
@@ -75,7 +87,7 @@
                         <div class="form-group">
                             <span class="lbl col-sm-5"> </span>
                             <div class="col-sm-7">
-                                <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="updatePlan(resultData)" data-ng-disabled="planForm.$invalid">
+                                <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="submitted=true">
                                     Update
                                 </button>
                             </div>

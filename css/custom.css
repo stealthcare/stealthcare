@@ -96,3 +96,13 @@ padding-bottom: 10px;*/
 .toast.ng-scope:first-child {
   display: block;
 }
+.form-group.required .control-label:after {
+  content:"*";
+  color:red;
+}
+.form-control.ng-invalid.ng-invalid-required {
+  border: 1px solid hsl(0, 100%, 50%);
+}
+.form-control.ng-pristine.ng-invalid.ng-invalid-required {
+  border: 1px solid hsl(240, 6%, 79%);
+}

@@ -24,8 +24,8 @@
             <div class="row">
                 <div class="col-lg-6">
                     <section data-ng-init="editLicenseload()">
-                    <form name="planForm" class="form-horizontal" role="form" method="post">        
-                        <div class="form-group">
+                    <form name="planForm" novalidate data-custom-submit="updateLicense(resultData)" class="form-horizontal" role="form" method="post">        
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="PlanName">License Name</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
@@ -48,13 +48,10 @@
                         <div class="form-group">
                             <span class="lbl col-sm-5"> </span>
                             <div class="col-sm-7">
-                                <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="updateLicense(resultData)" data-ng-disabled="planForm.$invalid">
+                                <button type="submit" class="width-35 pull-right btn btn-sm btn-primary" ng-click="submitted=true">
                                     Update
                                 </button>
                             </div>
-                        </div>
-                        </fieldset>
-                        <span class="lbl col-sm-5"> </span>
                         </div>
                     </form>
                 </div>

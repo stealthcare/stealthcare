@@ -189,3 +189,21 @@ app.directive('numbersOnly', function () {
         }
     };
 });
+
+app.directive("mwInputRestrict", [
+    function () {
+        return {
+            restrict: "A",
+            link: function (scope, element, attrs) {
+                element.on("keypress", function (event) {
+                    if (attrs.mwInputRestrict === "onlynumbers") {
+                        // allow only digits to be entered, or backspace and delete keys to be pressed
+                        return (event.charCode >= 48 && event.charCode <= 57) ||
+                               (event.keyCode === 8 || event.keyCode === 46);
+                    }
+                    return true;
+                });
+            }
+        }
+    }
+]);

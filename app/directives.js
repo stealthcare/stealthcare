@@ -85,3 +85,86 @@ app.directive('emailAvailable', function($http, $timeout, $q, $rootScope) {
         }
     } 
 });
+
+app.directive('lowerThan', [
+  function() {
+
+    var link = function($scope, $element, $attrs, ctrl) {
+
+      var validate = function(viewValue) {
+        var comparisonModel = $attrs.lowerThan;
+        
+        if(!viewValue || !comparisonModel){
+          // It's valid because we have nothing to compare against
+          ctrl.$setValidity('lowerThan', true);
+        }
+
+        // It's valid if model is lower than the model we're comparing against
+        ctrl.$setValidity('lowerThan', parseInt(viewValue, 10) < parseInt(comparisonModel, 10) );
+        return viewValue;
+      };
+
+      ctrl.$parsers.unshift(validate);
+      ctrl.$formatters.push(validate);
+
+      $attrs.$observe('lowerThan', function(comparisonModel){
+        return validate(ctrl.$viewValue);
+      });
+      
+    };
+
+    return {
+      require: 'ngModel',
+      link: link
+    };
+
+  }
+]);
+
+app.directive( 'customSubmit' , function()
+{
+    return {
+        restrict: 'A',
+        link: function( scope , element , attributes )
+        {
+            var $element = angular.element(element);
+            
+            // Add novalidate to the form element.
+            attributes.$set( 'novalidate' , 'novalidate' );
+            
+            $element.bind( 'submit' , function( e ) {
+                e.preventDefault();
+                
+                // Remove the class pristine from all form elements.
+                $element.find( '.ng-pristine' ).removeClass( 'ng-pristine' );
+                
+                // Get the form object.
+                var form = scope[ attributes.name ];
+                
+                // Set all the fields to dirty and apply the changes on the scope so that
+                // validation errors are shown on submit only.
+                angular.forEach( form , function( formElement , fieldName ) {
+                    // If the fieldname starts with a '$' sign, it means it's an Angular
+                    // property or function. Skip those items.
+                    if ( fieldName[0] === '$' ) return;
+                    
+                    formElement.$pristine = false;
+                    formElement.$dirty = true;
+                });
+                
+                // Do not continue if the form is invalid.
+                if ( form.$invalid ) {
+                    // Focus on the first field that is invalid.
+                    $element.find( '.ng-invalid' ).first().focus();
+                    
+                    return false;
+                }
+                
+                // From this point and below, we can assume that the form is valid.
+                scope.$eval( attributes.customSubmit );
+                
+                scope.$apply();
+            });
+        }
+    };
+});

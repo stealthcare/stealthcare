@@ -1,7 +1,10 @@
 app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $routeParams, $location, $http, Data) {
     //initially set those objects to null to avoid undefined error
     $scope.login = {};
-    $scope.signup = {};
+    $scope.signup = {
+        MinQty: 0,
+        MaxQty: 1
+    };
     var serviceBase = 'api/v1/api.php?request=';
 
     // restrict SuperAdmin OnLoading 

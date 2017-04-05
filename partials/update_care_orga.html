@@ -23,8 +23,8 @@
             <section data-ng-init="editCareOrgload()">
             <div class="row">
                 <div class="col-lg-6">
-                    <form name="signupForm" class="form-horizontal" role="form">
-                        <div class="form-group">
+                    <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="updateCareOrg(resultData)">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
@@ -32,37 +32,50 @@
                                     <small class="errorMessage" ng-show="signupForm.email.$error.email" class="help-inline">Email is not valid</small> 
                                     <small class="infoMessage ng-scope" ng-show="checkExists">checking....</small>
                                     <small class="errorMessage" ng-if="signupForm.$error.emailExists">Email already exists in our database</small>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.email.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="name">Name</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="Name" ng-model="resultData.Name" required/>
+                                    <input type="text" name="name" class="form-control" placeholder="Name" ng-model="resultData.Name" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.name.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="username">User Name</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="User Name" readonly id="username" username-available ng-model="resultData.UserName" required ng-model-options="{ updateOn: 'blur' }"/>
+                                    <input type="text" class="form-control" placeholder="User Name" readonly name="username" id="username" username-available ng-model="resultData.UserName" required ng-model-options="{ updateOn: 'blur' }"/>
+                                    <small class="infoMessage ng-scope" ng-show="checkExists">checking....</small>
+                                    <small class="errorMessage" ng-if="signupForm.$error.usernameExists">Username already exists in our database</small>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.username.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
-                                <small class="infoMessage ng-scope" ng-show="checkExists">checking....</small>
-                                <small class="errorMessage" ng-if="signupForm.$error.usernameExists">Username already exists in our database</small>
+
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="phone">Phone</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" ng-minlength="10" ng-maxlength="10" id="inputPhone" name="phone" placeholder="Phone" ng-model="resultData.ContactNo" numbers-only required>
+                                    <input type="text" class="form-control" ng-minlength="8" ng-maxlength="16" id="inputPhone" name="phone" placeholder="Phone" ng-model="resultData.ContactNo" numbers-only required>
                                     <small class="errorMessage" 
                                           ng-show="((signupForm.phone.$error.minlength ||
                                                    signupForm.phone.$error.maxlength) && 
                                                    signupForm.phone.$dirty) ">
-                                                   phone number should be 10 digits
+                                                   Number should be enter between 8 to 16 digits
+                                    </small>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.phone.$error.required">
+                                        This field is required.
                                     </small>
                                 </span>
                             </div>
@@ -71,12 +84,12 @@
                             <label class="col-sm-5 control-label no-padding-right" for="mobile">Land Line No</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" ng-minlength="10" ng-maxlength="10" id="inputMobile" name="mobile" placeholder="Land Line No" ng-model="resultData.ContactNo2" numbers-only required>
+                                    <input type="text" class="form-control" ng-minlength="8" ng-maxlength="16" id="inputMobile" name="mobile" placeholder="Land Line No" ng-model="resultData.ContactNo2" numbers-only>
                                     <small class="errorMessage" 
                                           ng-show="((signupForm.mobile.$error.minlength ||
                                                    signupForm.mobile.$error.maxlength) && 
                                                    signupForm.mobile.$dirty) ">
-                                                   phone number should be 10 digits
+                                                   Number should be enter between 8 to 16 digits
                                     </small>
                                 </span>
                             </div>
@@ -103,6 +116,9 @@
                                 <span class="block input-icon input-icon-right">
                                     <input type="url" class="form-control" placeholder="WebSite" name="WebSite" ng-model="resultData.WebSite"/>
                                 </span>
+                                <span class="exampleMessage" style="display: inline-block; width: 100%; font-size: 12px;">
+                                    Ex. http://exapmle.com/
+                                </span>
                                 <small class="errorMessage" ng-show="signupForm.WebSite.$error.url" class="help-inline">Invalid url</small> 
                             </div>
                         </div>
@@ -124,7 +140,7 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="Plans">License Plans</label>
                             <div class="col-sm-7">
                                 <select name="PlanID" id="PlanID" class="droupdown1">
@@ -137,7 +153,7 @@
                         <div class="form-group">
                             <span class="lbl col-sm-5"> </span>
                             <div class="col-sm-7">
-                                <button type="submit" class="button2" ng-click="updateCareOrg(resultData)" data-ng-disabled="signupForm.$invalid">
+                                <button type="submit" class="button2" ng-click="submitted=true">
                                     Update
                                 </button>
                             </div>
