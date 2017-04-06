@@ -930,7 +930,6 @@ class API extends REST {
             return json_encode($data);
         }
     }
-
 }
 
 // Initiiate Library

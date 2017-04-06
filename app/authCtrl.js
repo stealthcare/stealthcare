@@ -402,6 +402,7 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
             $scope.loading = false;
         });
     }*/
+	
 
     // logout request
     $scope.logout = function () {

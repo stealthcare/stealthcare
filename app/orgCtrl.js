@@ -67,6 +67,30 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
         $rootScope.activeClass = ActiveClass;
         $scope.loading = false;
     };
+	
+	
+	// create enquiry
+    $scope.createEnquiry = function (reqparams) {
+        //var StatusID = angular.element('#StatusID').val();
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'createEnquiry',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+            if (results.status_code == "1") {
+                $location.path('careOrgs');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	
+	
 
     // logout request
     $scope.logout = function () {

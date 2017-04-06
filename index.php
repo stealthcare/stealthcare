@@ -34,6 +34,8 @@
     <!--link href="<?php echo URL; ?>css/widgets.css" rel="stylesheet"-->
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
     <link href="<?php echo URL; ?>css/new_style.css" rel="stylesheet">
+	<!--For sidebar-->
+	<link href="<?php echo URL; ?>css/new_style2.css" rel="stylesheet">
     <link href="<?php echo URL; ?>css/style-responsive.css" rel="stylesheet" />
     <link href="<?php echo URL; ?>css/xcharts.min.css" rel=" stylesheet"> 
     <link href="<?php echo URL; ?>css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -46,7 +48,7 @@
     <!-- Custom Theme Style -->
     
     <link href="<?php echo URL; ?>css/custom.css" rel="stylesheet">
-    <link href="<?php echo URL; ?>css/custom.min.css" rel="stylesheet">
+    
     <link href="<?php echo URL; ?>css/toaster.css" rel="stylesheet">
 
     <link rel="stylesheet" href="<?php echo URL; ?>assets/datatable/datatables.bootstrap.css">
