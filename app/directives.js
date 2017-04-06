@@ -168,3 +168,95 @@ app.directive( 'customSubmit' , function()
         }
     };
 });
+
+/*app.directive('validatePostcode', function() {
+    return {
+      require: 'ngModel',
+      restrict: 'A',
+      link: function(scope, elem, attr, ngModel) {
+        var validator = function(value) {
+            var postcode1 = angular.element('#postcode1').val(); 
+            var postcode2 = angular.element('#postcode2').val(); 
+            value = postcode1+' '+postcode2;
+            if (/^(([gG][iI][rR] {0,}0[aA]{2})|((([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y]?[0-9][0-9]?)|(([a-pr-uwyzA-PR-UWYZ][0-9][a-hjkstuwA-HJKSTUW])|([a-pr-uwyzA-PR-UWYZ][a-hk-yA-HK-Y][0-9][abehmnprv-yABEHMNPRV-Y]))) {0,}[0-9][abd-hjlnp-uw-zABD-HJLNP-UW-Z]{2}))$/.test(value)) {
+            ngModel.$setValidity('postcode', true);
+            return value;
+            } else {
+            ngModel.$setValidity('postcode', false);
+            return undefined;
+            }
+        };
+        ngModel.$parsers.unshift(validator);
+        ngModel.$formatters.unshift(validator);
+      }
+    };
+});*/
+
+app.directive('validatePostcode', function () {
+    return {
+        require: 'ngModel',
+        link: function (scope, element, attr, ngModelCtrl) {
+            element.bind('keypress', function(e) {
+                if (e.which === 32) {
+                    e.preventDefault();
+                }
+            });
+            function fromUser(text) {
+                if (text) {
+                    var transformedInput = text.replace(/[^a-zA-Z0-9\s ]/g, '');
+
+                    if (transformedInput !== text) {
+                        ngModelCtrl.$setViewValue(transformedInput);
+                        ngModelCtrl.$render();
+                    }
+                    return transformedInput;
+                }
+                return undefined;
+            }            
+            ngModelCtrl.$parsers.push(fromUser);
+        }
+    };
+});
+
+app.directive('moveFocus', function() {
+    function getCaretPosition(elem) {
+      // Internet Explorer Caret Position
+      if (document.selection && document.selection.createRange) {
+        var range = document.selection.createRange();
+        var bookmark = range.getBookmark();
+        return bookmark.charCodeAt(2) - 2;
+      }
+
+      // Firefox Caret Position
+      return elem.setSelectionRange && elem.selectionStart;
+    }
+
+    return {
+      restrict: 'A',
+      link: function(scope, elem, attr) {
+        var tabindex = parseInt(attr.tabindex);
+        var maxlength = parseInt(attr.maxlength);
+
+        elem.on('input, keydown', function(e) {
+          var val = elem.val(),
+              cp, 
+              code = e.which || e.keyCode;
+
+          if (val.length === maxlength && [8, 37, 38, 39, 40, 46].indexOf(code) === -1) {
+            var next = document.querySelectorAll('#postcode' + (tabindex + 1));
+            next.length && next[0].focus();
+            return;
+          }
+
+          cp = getCaretPosition(this);
+          if ((cp === 0 && code === 46) || (cp === 1 && code === 8)) {
+            var prev = document.querySelectorAll('#postcode' + (tabindex - 1));
+            e.preventDefault();
+            elem.val(val.substring(1));
+            prev.length && prev[0].focus();
+            return;
+          }
+        });
+      }
+    };
+});

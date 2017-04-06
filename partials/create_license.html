@@ -29,7 +29,7 @@
                             <label class="col-sm-5 control-label no-padding-right" for="noOfLicense">Number of License</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="number" min="1" max="50" mw-input-restrict="onlynumbers" class="form-control" required placeholder="Number of License(Up to 50)" name="noOfLicense" ng-model="signup.noOfLicense" />
+                                    <input type="number" min="1" max="50" string-number mw-input-restrict="onlynumbers" class="form-control" required placeholder="Number of License(Up to 50)" name="noOfLicense" ng-model="signup.noOfLicense" />
                                     <small class="errorMessage" ng-show="submitted && licenseForm.noOfLicense.$error.required">
                                         This field is required.
                                     </small>

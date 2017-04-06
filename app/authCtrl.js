@@ -130,6 +130,29 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
         });
     };
 
+    // change plan statas request
+    $scope.changeStatusCareOrg = function(UserID,StatusID){
+        if(confirm("Are you sure to want to change organization status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({UserID: UserID,StatusID: StatusID}),
+                url: serviceBase+'changeStatusCareOrg',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status_code == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    }; 
+
     $scope.updateCareOrg = function (reqparams) {
         var UserID = $routeParams.id;
         var PlanID = angular.element('#PlanID').val();
@@ -202,12 +225,12 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
+            Data.toast(results);
             if (results.status_code == "1") {
-                Data.toast(results);
                 $rootScope.resultData = results.response_data;
                 $rootScope.Status = results.status_data;
-                $scope.loading = false;
             }
+            $scope.loading = false;
         });
     };
 
@@ -292,6 +315,29 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
             }
         });
     };
+
+    // change plan statas request
+    $scope.changeStatusLicense = function(LicenseID,StatusID){
+        if(confirm("Are you sure to want to change license status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({LicenseID: LicenseID,StatusID: StatusID}),
+                url: serviceBase+'changeStatusLicense',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status_code == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    }; 
 
     // edit plan statas request
     $scope.updateLicense = function(reqparams){

@@ -36,12 +36,14 @@
                                  <th>Plan Name</th>
                                  <th>Quantity</th>
                                  <th>Price</th>
+                                 <th>Status</th>
                                  <th>Action</th>
                                 </tr>
                                 <tr dir-paginate="L in LicensePlans|orderBy:sortKey:reverse|filter:search|itemsPerPage:10">
                                     <td>{{ L.PlanName }}</td>
                                     <td>{{ L.MaxQty }}</td>
                                     <td>{{ L.Price }}</td>
+                                    <td>{{ L.Status }}</td>
                                     <td>
                                         <div class="btn-group">
                                           <!--a class="btn btn-primary" ng-click="editPlan(L.PlanID)" title="Edit Plan"><i class="fa fa-pencil"></i></a-->

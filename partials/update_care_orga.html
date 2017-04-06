@@ -28,8 +28,8 @@
                             <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="email" id="email" readonly class="form-control" placeholder="Email" email-available name="email" ng-model="resultData.EmailID" required/>
-                                    <small class="errorMessage" ng-show="signupForm.email.$error.email" class="help-inline">Email is not valid</small> 
+                                    <input type="email" id="email" ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" readonly class="form-control" placeholder="Email" email-available name="email" ng-model="resultData.EmailID" required/>
+                                    <small class="errorMessage" ng-show="signupForm.email.$error.pattern" class="help-inline">Email is not valid</small> 
                                     <small class="infoMessage ng-scope" ng-show="checkExists">checking....</small>
                                     <small class="errorMessage" ng-if="signupForm.$error.emailExists">Email already exists in our database</small>
                                     <small class="errorMessage" ng-show="submitted && signupForm.email.$error.required">
@@ -94,12 +94,40 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="address">Address</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <textarea class="form-control" placeholder="Address" ng-model="resultData.Address" /></textarea>
+                                    <textarea class="form-control" name="address" placeholder="Address" ng-model="resultData.Address" /></textarea>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.address.$error.required">
+                                        This field is required.
+                                    </small>
                                 </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="PostCode">Post Code</label>
+                            <div class="col-sm-7">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <span class="block input-icon input-icon-right">
+                                            <input type="text" validate-postcode move-focus tabindex="1" maxlength="4" id="postcode1" class="form-control postcode" name="postcode1" ng-model="resultData.postcode1" required/>
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="block input-icon input-icon-right">
+                                            <input type="text" validate-postcode move-focus tabindex="2" maxlength="4" id="postcode2" class="form-control postcode" name="postcode2" ng-model="resultData.postcode2" required/>
+                                        </span>
+                                    </div> 
+                                    <div class="col-sm-4">
+                                        <span class="exampleMessage" style="display: inline-block; width: 100%; font-size: 12px; line-height: 2.8;">
+                                            ex: AA9A 9AA
+                                        </span>
+                                    </div>
+                                </div>                                
+                                <small class="errorMessage" ng-show="(submitted && signupForm.postcode1.$error.required) || (submitted && signupForm.postcode2.$error.required)">
+                                    This field is required.
+                                </small>
                             </div>
                         </div>
                         <div class="form-group">
@@ -130,7 +158,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="form-group">
+                        <!--div class="form-group">
                             <label class="col-sm-5 control-label no-padding-right" for="Status">Status</label>
                             <div class="col-sm-7">
                                 <select name="StatusID" id="StatusID" class="droupdown1">
@@ -139,7 +167,7 @@
                                     </option>
                                 </select>
                             </div>
-                        </div>
+                        </div-->
                         <div class="form-group required">
                             <label class="col-sm-5 control-label no-padding-right" for="Plans">License Plans</label>
                             <div class="col-sm-7">

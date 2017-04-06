@@ -106,3 +106,8 @@ padding-bottom: 10px;*/
 .form-control.ng-pristine.ng-invalid.ng-invalid-required {
   border: 1px solid hsl(240, 6%, 79%);
 }
+.postcode {
+  letter-spacing: 5px;
+  text-align: center;
+  text-transform: uppercase;
+}
