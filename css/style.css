@@ -241,7 +241,7 @@ table tr th {
 }
 .form .required {
     font-size: 16px;
-    color: #00a0df;
+    /*color: #00a0df;*/
 }
 .login-wrap {
     padding: 20px;

@@ -8,7 +8,11 @@ include '../../config.php';
 if(@$_REQUEST['request']) {
     // request in json string '[{"username":"abanwar","password":"123456","id":"1"}]';
     $post = json_decode($_REQUEST['request']);
-    $post = $post['0'];
+	//print_r($post);
+	if(is_array($post)){
+	  $post = $post['0'];
+	}
+    
     $postArray = array();
     foreach($post as $key => $field){
         $postArray[$key] = $field;
@@ -67,6 +71,88 @@ function loginWithUsername($post)
     mysql_close($con);   //close the connection
 }
 
+/* 
+*   ID=2
+*   A function used as a response to ID=2
+*   It is used to createEnquiry
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function createEnquiry($post)
+{
+
+/*echo '<pre/>';
+print_r($post);die;**/
+
+$CustomerTitle = $post['title'];
+$CustomerName = $post['fname'];
+$CustomerSurname = $post['sname'];
+$CustomerMiddleName = $post['mname'];
+$DateOfBirth = $post['dob'];
+$NHSNumber = $post['nhsno'];
+$Gender = $post['gender'];
+$Ethnicity=$post['ethnicity'];
+$Address1=$post['address1'];
+$Address2=$post['address2'];
+$PostCode=strtoupper($post['postcode1'].' '.$post['postcode2']);
+$City=$post['city'];
+$Landline=$post['landline'];
+$ContactNo=$post['mobile'];
+$OtherDetails=$post['otherinfo'];
+$CareInfo=$post['desc'];
+$OutcomesInfo=$post['outcomes'];
+$SupportInfo=$post['support'];
+$MakeEnq=$post['makeenq'];
+
+$CreatedDateTime = date('Y-m-d H:i:s');
+$ModifyDateTime = date('Y-m-d H:i:s');
+$AccessLevelID='5';
+$RightsID='9';
+$UserTypeID='6';
+$StatusID='1';
+$con=connectToDB(); //connect to the DB
+
+
+
+
+$result = mysql_query("call createEnquiry('".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
+
+
+/*$result = mysql_query("insert into SCP_UserLogin(StatusID,CreatedDateTime,ModifyDateTime)values('1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
+$last_id=mysql_insert_id();
+
+
+$result = mysql_query("insert into SCP_UserAccess(RightsID,AccessLevelID,UserID,UserTypeID,CreatedDateTime,ModifyDateTime,StatusID)values('".$RightsID."','".$AccessLevelID."','".$last_id."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','1')")or die(mysql_error());
+
+$result = mysql_query("insert into SCP_Customer(CustomerTitle,CustomerName,CustomerSurname,CustomerMiddleName,DateOfBirth,NHSNumber,Gender,Ethnicity,Address1,Address2,PostCode,City,Landline,ContactNo,OtherDetails,CareInfo,OutcomesInfo,SupportInfo,MakeEnq,UserID,StatusID,CreatedDateTime,ModifyDateTime)values('".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$last_id."','1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
+$last_id_cm=mysql_insert_id();
+
+$result = mysql_query("insert into SCP_Enquiry(CustomerID,StatusID,CreatedDateTime,ModifyDateTime)values('".$last_id_cm."','1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
+*/
+
+
+
+
+/*SCP_UserLogin
+SCP_Customer
+SCP_Enquiry
+SCP_UserAccess*/
+
+
+    if($result) {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Created successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Error in Creation";
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -75,7 +161,9 @@ function loginWithUsername($post)
 
 switch($ID) {
     case 1: loginWithUsername($post);
-         break;             
+         break; 
+	case 2: createEnquiry($post);
+         break;    	             
     default: myError(); 
 }
 

@@ -79,6 +79,7 @@
            margin: -100px 0 0 -100px;
        }
     </style>
+	<link rel="stylesheet" href="<?php echo URL; ?>css/datepicker.css">
   </head>
 
   <body ng-cloak="">
@@ -94,7 +95,7 @@
   </body>
   <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
   <!-- javascripts -->
-
+  
   <script src="<?php echo URL; ?>js/jquery-1.9.1.min.js"></script>
   <script src="<?php echo URL; ?>js/angular.min.js"></script>
   <script src="<?php echo URL; ?>js/angular-route.min.js"></script>
@@ -146,7 +147,7 @@
   <script src="<?php echo URL; ?>js/sparklines.js"></script>  
   <script src="<?php echo URL; ?>js/charts.js"></script>
   <script src="<?php echo URL; ?>js/jquery.slimscroll.min.js"></script>
-
+  <script src="<?php echo URL; ?>js/bootstrap-datepicker.js"></script>
   <script>
 
       //knob

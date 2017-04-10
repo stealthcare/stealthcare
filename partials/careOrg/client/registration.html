@@ -11,7 +11,7 @@
   <!--sidebar end-->
   <!--main content start-->
   <!-- container section start -->
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+  
   <div class="container">
     <section id="content">
       <section class="wrapper">
@@ -20,15 +20,15 @@
           <div class="panel-body">
             <h3 class="page-header">Complete Registration Form </h3>
             <div class="form">
-              <form class="form-validate form-horizontal" id="feedback_form" novalidate name="enqueryForm" data-custom-submit="createEnquiry(signup)">
+              <form class="form-validate form-horizontal" id="feedback_form" novalidate name="enqueryForm" data-custom-submit="sendRequest(signup, 'organization/client/registration')">
                 <div class="row">
                   <div class="col-md-6">
                     <div class="form-group required">
                       <label for="title" class="control-label col-md-4">Title </label>
                       <div class="col-md-8">
-                        <select name="title" class="droupdown1">
-                          <option value="volvo">Mr.</option>
-                          <option value="saab">Mrs.</option>
+                        <select name="title" class="droupdown1" ng-model="signup.title">
+                          <option value="Mr">Mr.</option>
+                          <option value="Mrs">Mrs.</option>
                         </select>
                       </div>
                     </div>
@@ -41,7 +41,7 @@
                     <div class="form-group required">
                       <label for="sname" class="control-label col-md-4">Surname </label>
                       <div class="col-md-8">
-                        <input type="text" class="form-control " id="sname" name="sname"ng-model="signup.sname" required>
+                        <input type="text" class="form-control " id="sname" name="sname" ng-model="signup.sname" required>
                         <small class="errorMessage" ng-show="submitted && enqueryForm.sname.$error.required"> This field is required. </small> </div>
                     </div>
                     <div class="form-group required">
@@ -56,7 +56,7 @@
                         <div class="input-group"> <span class="input-group-btn">
                           <button class="btn calender-btn" type="button"> <img src="img/Date 1x.png"></button>
                           </span>
-                          <input type="date" ng-model="datePicker" datepicker class="form-control" name="dob" ng-model="signup.dob" required/>
+                          <input type="date" ng-model="signup.dob" datepicker class="form-control" name="dob"  required/>
                            </div>
 						   <small class="errorMessage" ng-show="submitted && enqueryForm.dob.$error.required"> This field is required. </small>
                       </div>
@@ -74,10 +74,10 @@
                         <div class="gender ">
                           <div class="maxl">
                             <label class="radio3 inline3">
-                            <input type="radio" name="gender" value="male" checked>
+                            <input type="radio" name="gender" value="Male"  ng-model="signup.gender">
                             <span>Male </span> </label>
                             <label class="radio3 inline3"> &nbsp; &nbsp;
-                            <input type="radio" name="gender" value="female">
+                            <input type="radio" name="gender" value="Female"  ng-model="signup.gender">
                             <span>Female </span> </label>
                           </div>
                         </div>
@@ -86,7 +86,7 @@
                     <div class="form-group ">
                       <label for="ethnicity" class="control-label col-md-4">Ethnicity </label>
                       <div class="col-md-8">
-                        <input class="form-control" id="ethnicity" name="ethnicity" type="text">
+                        <input class="form-control" id="ethnicity" name="ethnicity" type="text" ng-model="signup.ethnicity">
                       </div>
                     </div>
                     <div class="form-group required">
@@ -98,20 +98,32 @@
                     <div class="form-group ">
                       <label for="address2" class="control-label col-md-4">Address 2 </label>
                       <div class="col-md-8">
-                        <input class="form-control" id="address2" name="address2" type="text">
+                        <input class="form-control" id="address2" name="address2" type="text" ng-model="signup.address2">
                       </div>
                     </div>
                     <div class="form-group required">
                       <label for="postcode" class="control-label col-md-4">Post Code</label>
                       <div class="col-md-8">
                         <div class="row">
-                          <div class="col-md-4 col-xs-6">
-                            <input class="form-control " id="postcode1" name="postcode1" type="text">
-                          </div>
-                          <div class="col-md-4 col-xs-6">
-                            <input class="form-control " id="postcode2" name="postcode2" type="text">
-                          </div>
-                        </div>
+                                    <div class="col-sm-4">
+                                        <span class="block input-icon input-icon-right">
+                                            <input type="text" style="text-transform:uppercase" validate-postcode move-focus tabindex="1" maxlength="4" id="postcode1" class="form-control postcode" name="postcode1" ng-model="signup.postcode1" required/>
+                                        </span>
+                                    </div>
+                                    <div class="col-sm-4">
+                                        <span class="block input-icon input-icon-right">
+                                            <input type="text" style="text-transform:uppercase" validate-postcode move-focus tabindex="2" maxlength="4" id="postcode2" class="form-control postcode" name="postcode2" ng-model="signup.postcode2" required/>
+                                        </span>
+                                    </div> 
+                                    <div class="col-sm-4">
+                                        <span class="exampleMessage" style="display: inline-block; width: 100%; font-size: 12px; line-height: 2.8;">
+                                            ex: AA9A 9AA
+                                        </span>
+                                    </div>
+                                </div>
+								 <small class="errorMessage" ng-show="(submitted && enqueryForm.postcode1.$error.required) || (submitted && enqueryForm.postcode2.$error.required)">
+                                    This field is required.
+                                </small>
                       </div>
                     </div>
                     <div class="form-group required">
@@ -120,10 +132,17 @@
                         <input class="form-control" id="city" name="city" type="text" ng-model="signup.city" required>
                         <small class="errorMessage" ng-show="submitted && enqueryForm.city.$error.required"> This field is required. </small> </div>
                     </div>
-                    <div class="form-group ">
+                    <div class="form-group required">
                       <label for="landline" class="control-label col-md-4">Landline </label>
                       <div class="col-md-8">
-                        <input class="form-control " id="landline" name="landline">
+                        <input class="form-control " id="landline" name="landline" ng-minlength="8" ng-maxlength="16" ng-model="signup.landline">
+						<small class="errorMessage" 
+                                          ng-show="((enqueryForm.landline.$error.minlength ||
+                                                   enqueryForm.landline.$error.maxlength) && 
+                                                   enqueryForm.landline.$dirty) ">
+                                                   Number should be enter between 8 to 16 digits
+                                    </small>
+                        <small class="errorMessage" ng-show="submitted && enqueryForm.landline.$error.required"> This field is required. </small>
                       </div>
                     </div>
                     <div class="form-group required">
@@ -165,35 +184,35 @@
                       <label for="cname" class="control-label col-md-4">Please select the support required </label>
                       <div class="col-md-4">
                         <label class="radio3 inline3">
-                        <input type="radio" name="support" value="Personal Care">
+                        <input type="radio" name="support" value="Personal Care" ng-model="signup.support">
                         <span>Personal Care </span> </label>
                         <div class="clearfix"></div>
                         <label class="radio3 inline3">
-                        <input type="radio" name="support" value="Medication">
+                        <input type="radio" name="support" value="Medication" ng-model="signup.support">
                         <span>Medication </span> </label>
                         <div class="clearfix"></div>
                         <label class="radio3 inline3">
-                        <input type="radio" name="support" value="Self Support">
+                        <input type="radio" name="support" value="Self Support" ng-model="signup.support">
                         <span>Self Support </span> </label>
                       </div>
                       <div class="col-md-4">
                         <label class="radio3 inline3">
-                        <input type="radio" name="support" value="Supported Living" checked>
+                        <input type="radio" name="support" value="Supported Living" ng-model="signup.support">
                         <span>Supported Living </span> </label>
                         <div class="clearfix"></div>
                         <label class="radio3 inline3">
-                        <input type="radio" name="support" value="Outreach" checked>
+                        <input type="radio" name="support" value="Outreach" ng-model="signup.support">
                         <span>Outreach </span> </label>
                         <div class="clearfix"></div>
                         <label class="radio3 inline3">
-                        <input type="radio" name="support" value="Complex Care" checked>
+                        <input type="radio" name="support" value="Complex Care" ng-model="signup.support">
                         <span>Complex Care </span> </label>
                       </div>
                     </div>
                     <div class="form-group ">
                       <label for="ccomment" class="control-label col-md-4">Who is making the enquiry </label>
                       <div class="col-md-8">
-                        <select name="makeenq" class="droupdown1">
+                        <select name="makeenq" class="droupdown1" ng-model="signup.makeenq">
                           <option value="self">Self</option>
                           <option value="Other">Other</option>
                         </select>
@@ -201,12 +220,13 @@
                     </div>
                   </div>
                 </div>
+				<input type="hidden" name="id" ng-model="signup.id"/>
                 <div class="row">
                   <div class="form-group">
                     <div class="col-md-5 col-md-offset-7 align-right margin-top20">
                       <button class="btn button2" type="button">MIGRATE</button>
                       <button class="btn button2" type="submit" ng-click="submitted=true">SAVE</button>
-                      <button class="btn button2" type="button">CANCEL</button>
+                      <button class="btn button2" type="reset">CANCEL</button>
                     </div>
                   </div>
                 </div>

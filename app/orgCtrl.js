@@ -68,20 +68,26 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
         $scope.loading = false;
     };
 	
-	
 	// create enquiry
-    $scope.createEnquiry = function (reqparams) {
-        //var StatusID = angular.element('#StatusID').val();
+	$scope.signup = {id:2};
+	$scope.signup.title = 'Mr';
+	$scope.signup.gender = 'Male';
+	$scope.signup.support = 'Personal Care';
+	$scope.signup.makeenq = 'self';
+	
+    $scope.sendRequest = function (request,pathlink) {
+		request = angular.toJson(request);
         $http({
             method: 'post',
-            data: $.param({reqparams: reqparams}),
-            url: serviceBase+'createEnquiry',
+            data: $.param({request: request}),
+            url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){
-            Data.toast(results);
-            if (results.status_code == "1") {
-                $location.path('careOrgs');
+        .success(function(results){							  
+            Data.toast(results.responseMessage);
+            if (results.status == "1") {  
+				$scope.signup = {};
+				$location.path(pathlink);
             }
         })
         .error(function(results){
@@ -89,7 +95,7 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
         });
     };
 	
-	
+
 	
 
     // logout request
