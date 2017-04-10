@@ -1,0 +1,173 @@
+<section id="container" class="" data-ng-init="loadCurrntActiveClassForauthCtrlSidebarMenu('setting')">
+    <!------------ Start Header ---------------->
+    <div ng-include="'partials/includes/SuperAdminHeader.html'"></div>
+    <!------------ End Header ---------------->
+
+    <!-- start: Main Menu -->
+    <aside>
+        <!------------ Start Sidebar ---------------->
+        <div ng-include="'partials/includes/SuperAdminSidebar.html'"></div>
+        <!------------ End Sidebar ---------------->
+    </aside>
+    <!-- end: Main Menu -->
+    
+    <!--main content start-->
+    <section id="main-content">
+        <section class="wrapper">   
+            <!--contaent are start-->
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Profile Setting</h3>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <section data-ng-init="editAdminload(UserID)">
+                    <form name="profileForm" novalidate data-custom-submit="updateAdminProfile(resultData, UserID)" enctype="multipart/form-data" class="form-horizontal" role="form" method="post">        
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="PlanName">Profile Photo</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <div class="photo_preview"> 
+                                        <img ng-src="{{resultData.ProfilePhoto}}" id='img-upload'>
+                                    </div>
+                                    <div class="user_upload">
+                                        <a href="javascript:;">
+                                            Upload Image
+                                            <img src="img/Upload_Icon.png"> 
+                                            <input type="file" accept=".png, .jpg, .jpeg" onchange="angular.element(this).scope().profilePhotoChanged(this.files)" ng-model="resultData.ProfilePhoto" name="ProfilePhoto" id="imgInp">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="PlanName">Dashboard Logo</label>
+                            <div class="col-sm-7">
+                                <div class="input-group">
+                                    <div class="photo_preview"> 
+                                        <img ng-src="{{resultData.DashboardLogo}}" id='img-upload'>
+                                    </div>
+                                    <div class="user_upload">
+                                        <a href="javascript:;">
+                                            Upload Image
+                                            <img src="img/Upload_Icon.png"> 
+                                            <input type="file" accept=".png, .jpg, .jpeg" onchange="angular.element(this).scope().dashboardPhotoChanged(this.files)" ng-model="resultData.DashboardLogo" name="DashboardLogo" id="imgInp">
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="PlanName">UserName</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" placeholder="User Name" name="username" id="username" username-available ng-model="resultData.UserName" required ng-model-options="{ updateOn: 'blur' }"/>
+                                    <small class="infoMessage ng-scope" ng-show="checkExists">checking....</small>
+                                    <small class="errorMessage" ng-if="profileForm.$error.usernameExists">Username already exists in our database</small>
+                                    <small class="errorMessage" ng-show="submit && profileForm.username.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="email" id="email"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="email" ng-model="resultData.EmailID" required/>
+                                    <small class="errorMessage" ng-show="submit && profileForm.email.$error.required">
+                                        This field is required.
+                                    </small>
+                                    <small class="errorMessage" ng-show="profileForm.email.$error.pattern" class="help-inline">Email is not valid</small> 
+                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+                                    <small class="errorMessage" ng-if="profileForm.$error.emailExists">Email already exists in our database</small>
+                                </span>
+                            </div>
+                        </div>
+                        <input type="hidden" id="UserID" value="{{UserID}}">
+                        
+                        <div class="form-group">
+                            <span class="lbl col-sm-5"> </span>
+                            <div class="col-sm-7">
+                                <button type="submit" class="button2" ng-click="submit=true">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <h3 class="page-header">Change Password</h3>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6 col-md-6">
+                    <form name="profilePasswodForm" novalidate data-custom-submit="updateAdminPassword(signup, UserID)" class="form-horizontal" role="form" method="post">
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="password">Old Password</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" name = "oldpassword" placeholder="Old Password" ng-model="signup.oldpassword" required/>
+                                    <small class="errorMessage" ng-show="submitted && profilePasswodForm.oldpassword.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="password">New Password</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" name = "password" placeholder="New Password" ng-model="signup.password" required/>
+                                    <small class="errorMessage" ng-show="submitted && profilePasswodForm.password.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="password2">Confirm Password</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" name="password2" placeholder="Password Again" ng-model="signup.password2" password-match="signup.password" required/>   
+                                    <small class="errorMessage" data-ng-show="profilePasswodForm.password2.$dirty && profilePasswodForm.password2.$error.passwordNoMatch && !profilePasswodForm.password2.$error.required"> Password do not match.</small>
+                                    <small class="errorMessage" ng-show="submitted && profilePasswodForm.password2.$error.required">
+                                        This field is required.
+                                    </small>
+
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <span class="lbl col-sm-5"> </span>
+                            <div class="col-sm-7">
+                                <button type="submit" class="button2" ng-click="submitted=true">
+                                    Save
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+            </div>
+
+            <!--contaent are end-->
+
+        </section>
+      <!--main content end-->
+    </section>
+  <!-- container section start -->
+</section>
+<!------------ Start Footer ---------------->
+<!--div ng-include="'partials/includes/SuperAdminFooter.html'"></div-->
+<!------------ End Footer ---------------->

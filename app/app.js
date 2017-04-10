@@ -15,6 +15,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/login.html',
                 controller: 'logoutCtrl'
             })
+            .when('/setting', {
+                title: 'Profile Setting',
+                templateUrl: 'partials/profile_setting.html',
+                controller: 'authCtrl'
+            })
             .when('/signup', {
                 title: 'Signup',
                 templateUrl: 'partials/signup.html',
@@ -123,6 +128,10 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 $rootScope.UserName = results.UserName;
                 $rootScope.EmailID = results.EmailID;
                 $rootScope.UserAccess = results.UserAccess;
+                $rootScope.ProfilePhoto = results.ProfilePhoto;
+                $rootScope.DashboardLogo = results.DashboardLogo;
+                $rootScope.CareOrgProfilePhoto = results.CareOrgProfilePhoto;
+                $rootScope.CareOrgDashboardLogo = results.CareOrgDashboardLogo;
                 var nextUrl = next.$$route.originalPath;
                 //alert(nextUrl);
                 if (nextUrl == '/') {

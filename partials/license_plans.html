@@ -49,8 +49,8 @@
                                           <!--a class="btn btn-primary" ng-click="editPlan(L.PlanID)" title="Edit Plan"><i class="fa fa-pencil"></i></a-->
                                           <a class="btn btn-primary" href="#/license_plan/edit/{{L.PlanID}}" title="Edit Plan"><i class="fa fa-pencil"></i></a>
                                           <a ng-if="L.StatusID === '1'" class="btn btn-success" ng-click="changeStatusPlan(L.PlanID,2)" title="Deactive Plan"><i class="icon_check_alt2"></i></a>
-                                          <a ng-if="L.StatusID === '2'" class="btn btn-edit" ng-click="changeStatusPlan(L.PlanID,1)" title="Active Plan"><i class="fa fa-ban"></i></a>
-                                          <a class="btn btn-danger" ng-click="deletePlan(L.PlanID)" title="Delete Plan"><i class="icon_close_alt2"></i></a>
+                                          <a ng-if="L.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusPlan(L.PlanID,1)" title="Active Plan"><i class="fa fa-ban"></i></a>
+                                          <!--a class="btn btn-danger" ng-click="deletePlan(L.PlanID)" title="Delete Plan"><i class="icon_close_alt2"></i></a-->
                                         </div>
                                     </td>
                                 </tr>                         

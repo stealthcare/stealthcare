@@ -1,4 +1,4 @@
-app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $routeParams, $location, $http, Data) {
+app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $route, $routeParams, $location, $http, Data) {
     //initially set those objects to null to avoid undefined error
     $scope.login = {};
     $scope.signup = {
@@ -6,6 +6,41 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
         MaxQty: 1
     };
     var serviceBase = 'api/v1/api.php?request=';
+
+   
+    $scope.fileReaderSupported = window.FileReader != null;
+    $scope.profilePhotoChanged = function(files){
+        if (files != null) {
+            var file = files[0];
+            if ($scope.fileReaderSupported && file.type.indexOf('image') > -1) {
+                $timeout(function() {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function(e) {
+                        $timeout(function(){
+                        $scope.resultData.ProfilePhoto = e.target.result;
+                        });
+                    }
+                });
+            }
+        }
+    };
+    $scope.dashboardPhotoChanged = function(files){
+        if (files != null) {
+            var file = files[0];
+            if ($scope.fileReaderSupported && file.type.indexOf('image') > -1) {
+                $timeout(function() {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function(e) {
+                        $timeout(function(){
+                        $scope.resultData.DashboardLogo = e.target.result;
+                        });
+                    }
+                });
+            }
+        }
+    };
 
     // restrict SuperAdmin OnLoading 
     $scope.restrictSuperAdminOnLoading = function () {
@@ -21,6 +56,64 @@ app.controller('authCtrl', function ($scope, $rootScope, $window, $route, $route
 
     $scope.loadCurrntActiveClassForauthCtrlSidebarMenu = function (ActiveClass) {
         $rootScope.activeClass = ActiveClass;
+    };
+
+    $scope.editAdminload = function (UserID) {
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({UserID: UserID}),
+            url: serviceBase+'editAdminload',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            $rootScope.resultData = results.response_data;
+            $scope.loading = false;
+        });           
+    };
+
+    $scope.updateAdminProfile = function (reqparams, UserID) {
+        var UserID = UserID;
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams, UserID: UserID}),
+            url: serviceBase+'editAdminload',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status == "error") {
+                Data.toast(results);
+                $scope.loading = false;
+            } else {
+                Data.toast(results);
+                $scope.loading = false;
+                $timeout(function() {
+                  $window.location.href = ''; 
+                }, 1500);
+            }
+        });
+    };
+
+    $scope.updateAdminPassword = function (reqparams, UserID) {
+        var UserID = UserID;
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams, UserID: UserID}),
+            url: serviceBase+'updateAdminPassword',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status == "error") {
+                Data.toast(results);
+                $scope.loading = false;
+            } else {
+                $location.path('');
+                Data.toast(results);
+                $scope.loading = false;
+            }
+        });
     };
 
     // login request

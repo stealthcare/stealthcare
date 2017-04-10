@@ -42,9 +42,7 @@
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
                                     <input type="text" readonly class="form-control" placeholder="Minimum Quantity" numbers-only name="MinQty" required ng-model="resultData.MinQty" lower-than="{{resultData.MaxQty}}"/>
-                                    <small class="errorMessage" ng-show="planForm.MinQty.$error.lowerThan">
-                                        Min cannot exceed max.
-                                    </small>
+                                    
                                 </span>
                             </div>
                         </div>
@@ -56,6 +54,9 @@
                                     <input type="text" class="form-control" placeholder="Maximum Quantity" numbers-only name="MaxQty" required ng-model="resultData.MaxQty"/>
                                     <small class="errorMessage" ng-show="submitted && planForm.MaxQty.$error.required">
                                         This field is required.
+                                    </small>
+                                    <small class="errorMessage" ng-show="planForm.MinQty.$error.lowerThan">
+                                        Max cannot less than min.
                                     </small>
                                 </span>
                             </div>

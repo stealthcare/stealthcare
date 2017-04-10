@@ -54,6 +54,134 @@ class API extends REST {
             $this->response('', 404);    // If the method not exist with in this class, response would be "Page not found".
     }
 
+    // ******************************* GET PLAN API *******************************
+    private function editAdminload() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $EmailID = $post['EmailID'];
+            $UserName = $post['UserName'];
+            $ProfilePhoto = $post['ProfilePhoto'];
+            $DashboardLogo = $post['DashboardLogo'];
+            $UserID = $_POST['UserID'];
+            $ProfilePhotoData = explode('//', $ProfilePhoto);
+            if ($ProfilePhotoData[0] != 'http:') {
+                $ProfilePhoto = $this->createImage($ProfilePhoto, 'user'.$UserID);
+            }
+            $DashboardLogoData = explode('//', $DashboardLogo);
+            if ($DashboardLogoData[0] != 'http:') {
+                $DashboardLogo = $this->createImage($DashboardLogo, 'logo'.$UserID);
+            }
+
+            mysql_query("UPDATE `SCP_UserLogin` SET `EmailID`='$EmailID', `UserName`='$UserName', `ProfilePhoto`='$ProfilePhoto', `DashboardLogo`='$DashboardLogo' WHERE `UserID` = '$UserID'", $this->db);
+
+            $sql = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE UserID='$UserID'", $this->db);
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+            session_start();
+            $_SESSION['UserName'] = $arr['UserName'];
+            $_SESSION['EmailID'] = $arr['EmailID'];
+            $_SESSION['ProfilePhoto'] = $arr['ProfilePhoto'];
+            $_SESSION['DashboardLogo'] = $arr['DashboardLogo'];
+
+            $success = true;
+            $msg = "Update Profile Successfully";
+        } else {
+            $UserID = $_POST['UserID'];
+            $sql = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE UserID='$UserID'", $this->db);
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+            $success = true;
+            $msg = "Update Profile Successfully";
+        }
+
+        if ($success) {            
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr,);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+
+    private function createImage($photoData, $fileName) {
+        $imageData = explode(';', $photoData);
+        $imageData = explode(':', $imageData[0]);
+        if($imageData[0] == 'data') {
+            if($imageData[1] == 'image/png') {
+                $data = str_replace('data:image/png;base64,', '', $photoData);
+                $data = str_replace(' ', '+', $data);
+                $data = base64_decode($data);
+                $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.png';
+                $Photo = self::img.$fileName . '.png';
+            } elseif($imageData[1] == 'image/jpg') {
+                $data = str_replace('data:image/jpg;base64,', '', $photoData);
+                $data = str_replace(' ', '+', $data);
+                $data = base64_decode($data);
+                $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpg';
+                $Photo = self::img.$fileName . '.jpg';
+            } elseif($imageData[1] == 'image/jpeg') {
+                $data = str_replace('data:image/jpeg;base64,', '', $photoData);
+                $data = str_replace(' ', '+', $data);
+                $data = base64_decode($data);
+                $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpeg';
+                $Photo = self::img.$fileName . '.jpeg';
+            } else {
+                $successdata = array('status_code' => "1", 'status' => "error", 'message' => 'Image format is wrong', 'response_code' => "200");
+                $this->response($this->json($successdata), 200); 
+                die();
+            }
+            $success = file_put_contents($file, $data);
+            $data = base64_decode($data); 
+            $source_img = @imagecreatefromstring($data);
+            $rotated_img = @imagerotate($source_img, 90, 0);
+            $imageSave = @imagejpeg($rotated_img, $file, 10);
+            @imagedestroy($source_img);
+            return $Photo;
+        }
+    }
+
+    // ******************************* GET PLAN API *******************************
+    private function updateAdminPassword() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $oldpassword = $post['oldpassword'];
+            $password = md5($post['password']);
+            $UserID = $_POST['UserID'];
+
+            $sql = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE UserID='$UserID'", $this->db);
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+            if (md5($oldpassword) != $arr['Password']) {            
+                $successdata = array('status_code' => "1", 'status' => "error", 'message' => 'Old password is wrong.', 'response_code' => "200", 'response_data' => $arr,);
+                $this->response($this->json($successdata), 200);            
+            }
+            mysql_query("UPDATE `SCP_UserLogin` SET `Password`='$password' WHERE `UserID` = '$UserID'", $this->db);            
+            $success = true;
+            $msg = "Update Password Successfully";
+        } 
+
+        if ($success) {            
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr,);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+
     // ******************************* LOGIN API *******************************
     private function Login() {
         if ($this->get_request_method() != "POST") {
@@ -91,6 +219,8 @@ class API extends REST {
                     $row['UserName'] = $rlt['UserName'];
                     $row['EmailID'] = $rlt['EmailID'];
                     $row['StatusID'] = $rlt['StatusID'];
+                    $row['ProfilePhoto'] = $rlt['ProfilePhoto'];
+                    $row['DashboardLogo'] = $rlt['DashboardLogo'];
                     $arr = $row;
                 }
                 $UserID = $arr['UserID'];
@@ -118,15 +248,21 @@ class API extends REST {
                 }
                 $_SESSION['UserID'] = $arr['UserID'];
                 $_SESSION['EmailID'] = $arr['EmailID'];
-                $_SESSION['UserName'] = $arr['UserName'];                    
+                $_SESSION['UserName'] = $arr['UserName'];   
+                $_SESSION['ProfilePhoto'] = $arr['ProfilePhoto'];  
+                $_SESSION['DashboardLogo'] = $arr['DashboardLogo'];                   
                 $rlt1 = mysql_fetch_array($sql1, MYSQL_ASSOC);
                 $UserTypeID = $rlt1['UserTypeID'];
                 if($UserTypeID == 2) {
                     $careOrgSql = mysql_query("SELECT * FROM `SCP_CareOrg` WHERE UserID='$UserID'", $this->db);
                     $careOrgSql = mysql_fetch_array($careOrgSql, MYSQL_ASSOC);
                     $_SESSION['OrgID'] = $careOrgSql['OrgID'];
+                    $_SESSION['CareOrgProfilePhoto'] = $careOrgSql['ProfilePhoto'];  
+                    $_SESSION['CareOrgDashboardLogo'] = $careOrgSql['DashboardLogo'];    
                 } else {
                     $_SESSION['OrgID'] = '';
+                    $_SESSION['CareOrgProfilePhoto'] = '';  
+                    $_SESSION['CareOrgDashboardLogo'] = '';
                 }
 
                 $UserTypeSql = mysql_query("SELECT * FROM `SCP_UserType` WHERE UserTypeID='$UserTypeID'", $this->db);
@@ -387,21 +523,34 @@ class API extends REST {
         if (!isset($_SESSION)) {
             session_start();
         }
+        $status = false;
         if(@$_POST['username']) {
             $UserName = $_POST['username'];
             $CareOrg = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE UserName='$UserName'", $this->db);
             $CareOrg = mysql_fetch_array($CareOrg, MYSQL_ASSOC);
+            if($CareOrg) {
+                $status = true;
+                if($CareOrg['UserID'] == $_POST['UserID']) {
+                    $status = false;
+                }
+            }
         } else {
             $EmailID = $_POST['email'];
             $CareOrg = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE EmailID='$EmailID'", $this->db);
             $CareOrg = mysql_fetch_array($CareOrg, MYSQL_ASSOC);
+            if($CareOrg) {
+                $status = true;
+                if($CareOrg['UserID'] == $_POST['UserID']) {
+                    $status = false;
+                }
+            }
         }
         
-        if($CareOrg) {
+        if($status) {
             $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Care Organizers Get Successfully", 'response_code' => "200");
             $this->response($this->json($successdata), 200);            
         } else {
-            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200");
             $this->response($this->json($error), 200);
         }
     }
@@ -839,7 +988,11 @@ class API extends REST {
         $response["EmailID"] = $session['EmailID'];
         $response["UserName"] = $session['UserName'];
         $response["UserAccess"] = $session['UserAccess'];
+        $response["ProfilePhoto"] = $session['ProfilePhoto'];
+        $response["DashboardLogo"] = $session['DashboardLogo'];
         $response["OrgID"] = $session['OrgID'];
+        $response["CareOrgProfilePhoto"] = $session['CareOrgProfilePhoto'];
+        $response["CareOrgDashboardLogo"] = $session['CareOrgDashboardLogo'];
         $this->response($this->json($response), 200);
     }
 
@@ -864,7 +1017,11 @@ class API extends REST {
             unset($_SESSION['UserName']);
             unset($_SESSION['EmailID']);
             unset($_SESSION['UserAccess']);
+            unset($_SESSION['ProfilePhoto']);
+            unset($_SESSION['DashboardLogo']);
             unset($_SESSION['OrgID']);
+            unset($_SESSION['CareOrgProfilePhoto']);
+            unset($_SESSION['CareOrgDashboardLogo']);
             $info='info';
             if(isSet($_COOKIE[$info]))
             {

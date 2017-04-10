@@ -38,10 +38,11 @@ app.directive('usernameAvailable', function($http, $timeout, $q, $rootScope) {
         link: function(scope, elm, attr, control) { 
             elm.bind("change", function() {  
                 var username = angular.element('#username').val(); 
+                var UserID = angular.element('#UserID').val(); 
                 $rootScope.checkExists = true;
                 $http({
                     method: 'post',
-                    data: $.param({username: username}),
+                    data: $.param({username: username,UserID: UserID}),
                     url: serviceBase+'checkCareOrgEmailOrUsername',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })
@@ -65,11 +66,12 @@ app.directive('emailAvailable', function($http, $timeout, $q, $rootScope) {
         require: 'ngModel',
         link: function(scope, elm, attr, control) { 
             elm.bind("change", function() {  
-                var email = angular.element('#email').val(); 
+                var email = angular.element('#email').val();
+                var UserID = angular.element('#UserID').val();  
                 $rootScope.checkExists = true;
                 $http({
                     method: 'post',
-                    data: $.param({email: email}),
+                    data: $.param({email: email,UserID: UserID}),
                     url: serviceBase+'checkCareOrgEmailOrUsername',
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })

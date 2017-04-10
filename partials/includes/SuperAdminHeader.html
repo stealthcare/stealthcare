@@ -11,7 +11,7 @@
             <!--logo start-->
             <div class="col-md-2">
                 <a href="{{baseUrl}}" class="logo">
-                	<img src="images/innerlogo.png"> 
+                	<img src="{{DashboardLogo}}"> 
                 </a>
             </div>
             <!--logo end-->
@@ -33,6 +33,23 @@
                     <ul class="nav pull-right top-menu">
                         <!-- alert notification end-->
                         <!-- user login dropdown start-->
+                        <li class="dropdown">
+                            <a style="padding: 16px;" data-toggle="dropdown" class="dropdown-toggle" href="javascript:;">
+                                <span class="profile-ava">
+                                    <img alt="" style="height: 34px; width: 34px;" ng-src="{{ProfilePhoto}}">
+                                </span>
+                                <span class="username">{{UserName}}</span>
+                                <b class="caret"></b>
+                            </a>
+                            <ul class="dropdown-menu extended logout">
+                                <li> 
+                                    <a class="" href="setting">
+                                        <i class="icon_profile"></i>Profile Setting</span>
+                                    </a>
+                                </li>
+                                <li> </li>
+                            </ul>
+                        </li>
                         <li id="task_notificatoin_bar" class="listbg">
                             <a ng-click="logout();">
                                 <i class="fa fa-sign-out" aria-hidden="true"></i>

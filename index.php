@@ -34,8 +34,8 @@
     <!--link href="<?php echo URL; ?>css/widgets.css" rel="stylesheet"-->
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
     <link href="<?php echo URL; ?>css/new_style.css" rel="stylesheet">
-	<!--For sidebar-->
-	<link href="<?php echo URL; ?>css/new_style2.css" rel="stylesheet">
+	  <!--For sidebar-->
+	  <link href="<?php echo URL; ?>css/new_style2.css" rel="stylesheet">
     <link href="<?php echo URL; ?>css/style-responsive.css" rel="stylesheet" />
     <link href="<?php echo URL; ?>css/xcharts.min.css" rel=" stylesheet"> 
     <link href="<?php echo URL; ?>css/jquery-ui-1.10.4.min.css" rel="stylesheet">
@@ -56,10 +56,35 @@
       a {
       color: orange;
       }
+      #preloader  {
+           position: absolute;
+           top: 0;
+           left: 0;
+           right: 0;
+           bottom: 0;
+           background-color: #fefefe;
+           z-index: 9999;
+          height: 100%;
+       }
+
+      #status  {
+           width: 200px;
+           height: 200px;
+           position: absolute;
+           left: 50%;
+           top: 50%;
+           background-image: url(images/loder.gif);
+           background-repeat: no-repeat;
+           background-position: center;
+           margin: -100px 0 0 -100px;
+       }
     </style>
   </head>
 
   <body ng-cloak="">
+    <div id="preloader">
+      <div id="status">&nbsp;</div>
+    </div>
     
     <div class="containers">
 
@@ -132,6 +157,15 @@
           }
         })
       });
+
+      // makes sure the whole site is loaded
+      $(window).load(function() {
+              // will first fade out the loading animation
+        $("#status").fadeOut();
+              // will fade out the whole DIV that covers the website.
+        $("#preloader").delay(1000).fadeOut("slow");
+      })
+
 
       $(function(){
           $('.datatable').dataTable();
