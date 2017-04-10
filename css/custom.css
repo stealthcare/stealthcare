@@ -162,6 +162,26 @@ ul.sidebar-menu li.active::before {
   text-align: center;
   width: 170px;
 }
+.top-nav ul.top-menu > li > a.active {
+  background-color: hsl(205, 38%, 16%);
+}
+form.ng-pristine {
+  margin: 30px 0 10px;
+}
+table.table {
+  background: hsl(0, 0%, 100%) none repeat scroll 0 0 !important;
+}
+table .btn-group .btn {
+  border-radius: 50% !important;
+  height: 28px;
+  line-height: 25px;
+  margin-right: 8px;
+  padding: 0;
+  width: 28px;
+}
+#preloader {
+  background-color: #fff !important;
+}
 
 
 
