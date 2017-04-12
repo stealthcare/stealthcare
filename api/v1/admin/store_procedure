@@ -9,7 +9,7 @@ DELIMITER ;
 
 
 DELIMITER //
-CREATE PROCEDURE `createEnquiry`(IN `iCustomerTitle` varchar(150),IN `iCustomerName` varchar(150),IN `iCustomerSurname` varchar(150),IN `iCustomerMiddleName` varchar(150),IN `iDateOfBirth` varchar(40),IN `iNHSNumber` varchar(150),IN `iGender` varchar(40),IN `iEthnicity` varchar(150),IN `iAddress1` varchar(150),IN `iAddress2` varchar(150),IN `iPostCode` varchar(9),IN `iCity` varchar(150),IN `iLandline` varchar(150),IN `iContactNo` varchar(150),IN `iOtherDetails` varchar(150),IN `iCareInfo` varchar(150),IN `iOutcomesInfo` varchar(150),IN `iSupportInfo` varchar(150),IN `iMakeEnq` varchar(150),IN `iRightsID` int(11), IN `iAccessLevelID` int(11),IN `iUserTypeID` int(11),`iCreatedDateTime` datetime(3),`iModifyDateTime` datetime(3),`iStatusID` int(11))
+CREATE PROCEDURE `createEnquiry`(IN `iOrgID` varchar(150),IN `iCustomerTitle` varchar(150),IN `iCustomerName` varchar(150),IN `iCustomerSurname` varchar(150),IN `iCustomerMiddleName` varchar(150),IN `iDateOfBirth` varchar(40),IN `iNHSNumber` varchar(150),IN `iGender` varchar(40),IN `iEthnicity` varchar(150),IN `iAddress1` varchar(150),IN `iAddress2` varchar(150),IN `iPostCode` varchar(9),IN `iCity` varchar(150),IN `iLandline` varchar(150),IN `iContactNo` varchar(150),IN `iOtherDetails` varchar(150),IN `iCareInfo` varchar(150),IN `iOutcomesInfo` varchar(150),IN `iSupportInfo` varchar(150),IN `iMakeEnq` varchar(150),IN `iRightsID` int(11), IN `iAccessLevelID` int(11),IN `iUserTypeID` int(11),`iCreatedDateTime` datetime(3),`iModifyDateTime` datetime(3),`iStatusID` int(11))
 BEGIN
 DECLARE UID int;
 insert into SCP_UserLogin (StatusID,CreatedDateTime,ModifyDateTime) values (iStatusID,iCreatedDateTime,iModifyDateTime);
@@ -18,6 +18,6 @@ insert into SCP_UserAccess (RightsID,AccessLevelID,UserID,UserTypeID,CreatedDate
 
 insert into SCP_Customer (CustomerTitle,CustomerName,CustomerSurname,CustomerMiddleName,DateOfBirth,NHSNumber,Gender,Ethnicity,Address1,Address2,PostCode,City,Landline,ContactNo,OtherDetails,CareInfo,OutcomesInfo,SupportInfo,MakeEnq,UserID,StatusID,CreatedDateTime,ModifyDateTime) values (iCustomerTitle,iCustomerName,iCustomerSurname,iCustomerMiddleName,iDateOfBirth,iNHSNumber,iGender,iEthnicity,iAddress1,iAddress2,iPostCode,iCity,iLandline,iContactNo,iOtherDetails,iCareInfo,iOutcomesInfo,iSupportInfo,iMakeEnq,UID,iStatusID,iCreatedDateTime,iModifyDateTime);
 SET UID = LAST_INSERT_ID();
-insert into SCP_Enquiry (CustomerID,StatusID,CreatedDateTime,ModifyDateTime) values (UID,iStatusID,iCreatedDateTime,iModifyDateTime);
+insert into SCP_Enquiry (OrgID,CustomerID,StatusID,CreatedDateTime,ModifyDateTime) values (iOrgID,UID,iStatusID,iCreatedDateTime,iModifyDateTime);
 END//
 DELIMITER ;

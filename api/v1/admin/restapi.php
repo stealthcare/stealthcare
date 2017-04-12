@@ -110,12 +110,16 @@ $AccessLevelID='5';
 $RightsID='9';
 $UserTypeID='6';
 $StatusID='1';
+session_start();
+
+$OrgID=$_SESSION['OrgID'];
+
 $con=connectToDB(); //connect to the DB
 
 
 
 
-$result = mysql_query("call createEnquiry('".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
+$result = mysql_query("call createEnquiry('".$OrgID."','".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
 
 
 /*$result = mysql_query("insert into SCP_UserLogin(StatusID,CreatedDateTime,ModifyDateTime)values('1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
