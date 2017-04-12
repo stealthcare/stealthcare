@@ -1,0 +1,96 @@
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('formBuilder')">
+    <!------------ Start Header ---------------->
+    <div ng-include="'partials/careOrg/includes/header.html'"></div>
+    <!------------ End Header ---------------->
+
+    <!-- start: Main Menu -->
+    <aside>
+      <!--sidebar start-->
+      <div id="sidebar"  class="nav-collapse nav form-builder">
+        <ul class="form-builder-sidebar-menu">
+          <li class="active"> 
+            <a class="" href="{{baseUrl}}">
+              <span>Enquiry Form</span>
+              <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li class="active"> 
+            <a class="" href="{{baseUrl}}">
+              <span>Enquiry Form</span>
+              <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
+            </a>
+          </li>
+        </ul>
+      </div>
+      <!--sidebar end-->
+    </aside>
+    <!-- end: Main Menu -->
+    
+    <!--main content start-->
+    <section id="main-content" ng-controller="DemoController">
+        <section class="wrapper"> 
+            <!--contaent are start-->
+            <div class="row">
+                <div class="col-md-9 col-lg-9">                    
+                    <!--contaent are start-->
+                    <div class="row">
+                      <div class="col-md-9">
+                          <div class="panel panel-default">
+                              <div fb-builder="default"></div>
+                              <!--div class="panel-footer">
+                                  <div class="checkbox">
+                                      <label><input type="checkbox" ng-model="isShowScope" />
+                                          Show scope
+                                      </label>
+                                  </div>
+                                  <pre ng-if="isShowScope">{{form}}</pre>
+                              </div-->
+                          </div>
+                      </div>
+                      <div class="col-md-3 position-fixed">
+                      </div>
+                  </div>
+
+                  <!--div class="row">
+                      <h2>Form</h2>
+                      <form class="form-horizontal">
+                          <div ng-model="input" fb-form="default" fb-default="defaultValue"></div>
+                          <div class="form-group">
+                              <div class="col-md-8 col-md-offset-4">
+                                  <input type="submit" ng-click="submit()" class="btn btn-default"/>
+                              </div>
+                          </div>
+                      </form>
+                      <div class="checkbox">
+                          <label><input type="checkbox" ng-model="isShowScope" ng-init="isShowScope=true" />
+                              Show scope
+                          </label>
+                      </div>
+                      <pre ng-if="isShowScope">{{input}}</pre>
+                  </div-->
+
+                  <div class="row">
+                      <div class="col-md-12 footer"></div>
+                  </div>
+                  <!--contaent are start-->
+                </div>
+                <div class="col-md-3 col-lg-3 fb-components-sidebar"> 
+                    <div class="fb-components-opration">  
+                        <div class="opration">
+                          <a ng-click="createDocument()">Create Document</a>
+                          <a ng-click="editDocument()">Edit Document</a>
+                          <a ng-click="duplicateDocument()">Duplicate Document</a>
+                          <a ng-click="deleteDocument()">Delete Document</a>
+                        </div>
+                    </div>
+                    <div class="fb-components-section"> 
+                      <h4 class="field-title text-center">ADD FIELD</h4>
+                      <div fb-components></div>
+                    </div>
+                </div>
+            </div>
+        </section>
+      <!--main content end-->
+    </section>
+  <!-- container section start -->

@@ -115,7 +115,7 @@ padding-bottom: 10px;*/
   text-transform: uppercase;
 }
 #sidebar {
-  top: 70px !important;
+  top: 66px !important;
   margin-left: 0 !important;
 }
 ul.sidebar-menu li.active::before {
@@ -182,7 +182,225 @@ table .btn-group .btn {
 #preloader {
   background-color: #fff !important;
 }
-
+a {
+color: orange;
+}
+#preloader  {
+   position: absolute;
+   top: 0;
+   left: 0;
+   right: 0;
+   bottom: 0;
+   background-color: #fefefe;
+   z-index: 9999;
+  height: 100%;
+}
+#status  {
+   width: 200px;
+   height: 200px;
+   position: absolute;
+   left: 50%;
+   top: 50%;
+   background-image: url(../images/loder.gif);
+   background-repeat: no-repeat;
+   background-position: center;
+   margin: -100px 0 0 -100px;
+}
+.form-builder {
+  background-color: hsl(209, 30%, 67%) !important;
+  box-shadow: 0 0 10px 0 hsl(209, 30%, 67%);
+}
+ul.form-builder-sidebar-menu {
+  margin: 0;
+  padding: 0;
+}
+ul.form-builder-sidebar-menu li {
+  line-height: 20px !important;
+}
+ul.form-builder-sidebar-menu li a {
+  border-bottom: 1px solid hsl(207, 16%, 55%);
+  color: hsl(0, 0%, 100%);
+  display: block;
+  font-size: 14px;
+  font-weight: 300;
+  outline: medium none;
+  padding: 10px 0 10px 10px;
+  text-decoration: none;
+  transition: all 0.3s ease 0s;
+}
+i.pull-right {
+  line-height: 1.5;
+  padding-right: 10px;
+}
+ul.form-builder-sidebar-menu li a span {
+  display: inline-block;
+}
+.fb-components-sidebar {
+  background: #2A3F50 none repeat scroll 0 0;
+  float: right;
+  position: fixed;
+  right: 0;
+  top: 68px;
+  width: 245px;
+  padding: 0;
+  height: 100%;
+}
+.position-fixed {
+  background: #fff none repeat scroll 0 0;
+  float: right;
+  position: fixed;
+  right: 0;
+  top: 68px;
+  width: 23%;
+  right: 245px;
+  height:100%;
+}
+h4.field-title {
+  color: hsl(0, 0%, 100%);
+  display: inline-block;
+  width: 100%;
+}
+div.fb-component::after {
+  background: hsla(0, 0%, 0%, 0) url("../images/Pluswhiteicon.png") no-repeat scroll 0 0 / 15px auto;
+  content: "";
+  display: block;
+  float: right;
+  height: 15px;
+  margin: -22px 0 0;
+  position: relative;
+  width: 15px;
+}
+.popover {
+  background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+  border: medium none;
+  box-shadow: none !important;
+  left: auto !important;
+  position: fixed !important;
+  right: 265px !important;
+  top: 150px !important;
+}
+.fb-components-opration {
+  min-height: 200px;
+}
+.fb-component div.col-sm-8, .fb-component div.col-md-8, .popover > .arrow, 
+.fb-component .edit-component-field, .fb-component .delete-component-field {
+  display: none;
+}
+.fb-components-section {
+  padding: 0 40px;
+}
+.fb-components-opration {
+  background: #6498C3 none repeat scroll 0 0;
+  padding: 7px 40px;
+}
+div.fb-builder {
+  min-height: 550px;
+}
+.opration > a {
+  background: hsl(0, 0%, 100%) none repeat scroll 0 0;
+  border-radius: 3px;
+  color: hsl(0, 0%, 0%);
+  display: inline-block;
+  margin-bottom: 5px;
+  margin-top: 5px;
+  padding: 8px 0;
+  text-align: center;
+  width: 100%;
+}
+div.fb-component .form-group {
+  margin: 0 !important;
+}
+div.fb-component {
+  background: hsl(207, 31%, 24%) none repeat scroll 0 0 !important;
+  border: 1px solid;
+  border-radius: 3px;
+  color: hsl(0, 0%, 100%);
+  height: 30px;
+  line-height: 2;
+  margin: 5px 0;
+  padding: 0 8px !important;
+}
+div.fb-component label {
+  padding: 0 !important;
+}
+.edit-component-field {
+  color: hsl(207, 44%, 58%);
+  float: right;
+  font-size: 17px;
+  pointer-events: auto;
+  position: absolute;
+  right: 90px;
+  top: 5px;
+}
+.delete-component-field {
+  color: hsl(207, 44%, 58%);
+  float: right;
+  font-size: 17px;
+  pointer-events: auto;
+  position: absolute;
+  right: 65px;
+  top: 5px;
+}
+.fb-form-object-editable {
+  left: -24px;
+  padding-left: 30px !important;
+  position: relative;
+}
+.fb-form-object-editable.active {
+  background: hsl(0, 0%, 91%) none repeat scroll 0 0;
+}
+input[type="file"] {
+  background: hsl(0, 0%, 100%) none repeat scroll 0 0;
+  cursor: inherit;
+  display: block;
+  font-size: 100px;
+  min-height: 100%;
+  min-width: 100%;
+  opacity: 0;
+  outline: medium none;
+  position: absolute;
+  right: 0;
+  text-align: right;
+  top: 0;
+}
+h3.popover-title {
+  background-color: hsl(207, 44%, 58%);
+  border-bottom: 1px solid hsl(212, 100%, 90%);
+  border-radius: 5px;
+  color: hsl(0, 0%, 100%);
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 18px;
+  margin: 0 15px;
+  padding: 8px;
+}
+div.popover .element {
+  margin: 0 15px;
+}
+.fb-form-object-editable label.document-name {
+  color: hsl(209, 30%, 67%);
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 0;
+}
+div.popover form.ng-pristine {
+  margin: 10px 0 10px;
+}
+.radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
+  float: none;
+  margin: 0;
+}
+.radio, .checkbox {
+  display: block;
+  margin-bottom: 19px;
+  min-height: 20px;
+  padding-left: 0;
+  vertical-align: middle;
+}
+.fb-form-object-editable.fb-draggable {
+  cursor: none;
+  pointer-events: none;
+}
 
 
 
