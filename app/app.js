@@ -269,6 +269,7 @@ app.directive("datepicker", function () {
       };
       var options = {
         dateFormat: "dd/mm/yy",
+		autoclose: true,
         onSelect: function (dateText) {
           updateModel(dateText);
         }
@@ -352,3 +353,4 @@ app.run([
       };
     }
 ]);
+

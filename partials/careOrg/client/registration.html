@@ -53,10 +53,11 @@
                     <div class="form-group required">
                       <label for="cemail" class="control-label col-md-4">D.O.B. </label>
                       <div class="col-md-8 col-lg-8 col-xs-12">
-                        <div class="input-group"> <span class="input-group-btn">
-                          <button class="btn calender-btn" type="button"> <img src="img/Date 1x.png"></button>
-                          </span>
+                        <div class="input-group"> 
                           <input type="date" ng-model="signup.dob" datepicker class="form-control" name="dob"  required/>
+						  <span class="input-group-btn">
+                          <button class="btn calender-btn" type="button"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
+                          </span>
                            </div>
 						   <small class="errorMessage" ng-show="submitted && enqueryForm.dob.$error.required"> This field is required. </small>
                       </div>

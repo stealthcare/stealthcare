@@ -22,30 +22,30 @@
                         <div class="form">
                            <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
                               <div class="form-group ">
-                                 <label for="cname" class="control-label col-md-3">Title </label>
+                                 <label for="title" class="control-label col-md-3">Title </label>
                                  <div class="col-md-9">
-                                    <select name="title" class="droupdown1">
-                                       <option value="volvo">Mr.</option>
-                                       <option value="saab">Mrs.</option>
+                                    <select name="title" class="droupdown1" ng-model="signup.title">
+										  <option value="Mr">Mr.</option>
+										  <option value="Mrs">Mrs.</option>
                                     </select>
                                  </div>
                               </div>
                               <div class="form-group ">
-                                 <label for="cname" class="control-label col-md-3">First Name </label>
+                                 <label for="fname" class="control-label col-md-3">First Name </label>
                                  <div class="col-md-9">
-                                    <input class="form-control" id="cname" name="Firstname" minlength="5" type="text" required />
+                                    <input class="form-control" id="fname" name="fname" minlength="5" type="text" required ng-model="signup.fname"/>
                                  </div>
                               </div>
                               <div class="form-group ">
                                  <label for="cname" class="control-label col-md-3">Surname </label>
                                  <div class="col-md-9">
-                                    <input class="form-control" id="cname" name="surname" minlength="5" type="text" required />
+                                    <input class="form-control" id="sname" name="sname" minlength="5" type="text" required ng-model="signup.sname"/>
                                  </div>
                               </div>
                               <div class="form-group ">
                                  <label for="cemail" class="control-label col-md-3">E-Mail </label>
                                  <div class="col-md-9">
-                                    <input class="form-control " id="cemail" type="email" name="email" required />
+                                    <input class="form-control " id="cemail" type="email" name="email" required ng-model="signup.email"/>
                                  </div>
                               </div>
                               <div class="form-group ">
