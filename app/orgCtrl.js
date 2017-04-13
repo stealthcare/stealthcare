@@ -68,12 +68,12 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
         $scope.loading = false;
     };
 	
-	// create enquiry
-	$scope.signup = {id:2};
-	$scope.signup.title = 'Mr';
-	$scope.signup.gender = 'Male';
-	$scope.signup.support = 'Personal Care';
-	$scope.signup.makeenq = 'self';
+  	// create enquiry
+  	$scope.signup = {id:2};
+  	$scope.signup.title = 'Mr';
+  	$scope.signup.gender = 'Male';
+  	$scope.signup.support = 'Personal Care';
+  	$scope.signup.makeenq = 'self';
 	
     $scope.sendRequest = function (request,pathlink) {
 		request = angular.toJson(request);
@@ -106,6 +106,10 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
             $location.path("");
             $scope.loading = false;
         });
+    };
+
+    $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
+        $rootScope.orgPageTitle = orgPageTitle;
     };
 
 });

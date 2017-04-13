@@ -103,6 +103,14 @@ padding-bottom: 10px;*/
   content:"*";
   color:red;
 }
+.btn-file {
+  background: hsl(208, 50%, 68%) none repeat scroll 0 0;
+  border-radius: 3px;
+  color: hsl(0, 0%, 100%);
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 11px;
+}
 .form-control.ng-invalid.ng-invalid-required {
   border: 1px solid hsl(0, 100%, 50%);
 }

@@ -58,6 +58,10 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
         $rootScope.activeClass = ActiveClass;
     };
 
+    $scope.loadCurrntPageTitle = function (pageTitle) {
+        $rootScope.pageTitle = pageTitle;
+    };
+
     $scope.editAdminload = function (UserID) {
         $scope.loading = true;
         $http({
