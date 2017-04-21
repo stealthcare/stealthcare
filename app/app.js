@@ -31,17 +31,17 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 controller: 'authCtrl'
             })*/
             .when('/careOrgs', {
-                title: 'Care Organizer',
+                title: 'Care Organiser',
                 templateUrl: 'partials/care_orga.html',
                 controller: 'authCtrl'
             })
             .when('/careOrg/create', {
-                title: 'Create Care Organizer',
+                title: 'Create Care Organiser',
                 templateUrl: 'partials/create_care_orga.html',
                 controller: 'authCtrl'
             })
             .when('/careOrg/edit/:id', {
-                title: 'Update Care Organizer',
+                title: 'Update Care Organiser',
                 templateUrl: 'partials/update_care_orga.html',
                 controller: 'authCtrl'
             })
@@ -75,6 +75,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/update_plan.html',
                 controller: 'authCtrl'
             })
+            .when('/form-builder', {
+                title: 'Clients',
+                templateUrl: 'partials/form-builder.html',
+                controller: 'authCtrl'
+            })
             /*.when('/', {
                 title: 'blank',
                 templateUrl: 'partials/blank.html',
@@ -83,22 +88,22 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
             // FOR SUPERADMIN PORTAL END
 
             // FOR ADMIN PORTAL START
-            .when('/organization', {
-                title: 'Organization Dashboard',
+            .when('/organisation', {
+                title: 'Organisation Dashboard',
                 templateUrl: 'partials/careOrg/dashboard.html',
                 controller: 'orgCtrl'
             })
-            .when('/organization/client/registration', {
+            .when('/organisation/client/registration', {
                 title: 'Organization Dashboard',
                 templateUrl: 'partials/careOrg/client/registration.html',
                 controller: 'orgCtrl'
             })
-            .when('/organization/client/create', {
+            .when('/organisation/client/create', {
                 title: 'Create Client',
                 templateUrl: 'partials/careOrg/client/add_client.html',
                 controller: 'orgCtrl'
             })
-            .when('/organization/clients', {
+            .when('/organisation/clients', {
                 title: 'Clients',
                 templateUrl: 'partials/careOrg/client/clients.html',
                 controller: 'orgCtrl'
@@ -106,7 +111,7 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
             // FOR ADMIN PORTAL END
 
             // FOR ADMIN PORTAL FORM BUILDER START
-            .when('/organization/form-builder', {
+            .when('/organisation/form-builder', {
                 title: 'Clients',
                 templateUrl: 'partials/careOrg/form-builder/form-builder.html',
                 controller: 'orgCtrl'
@@ -137,13 +142,15 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 $rootScope.UserAccess = results.UserAccess;
                 $rootScope.ProfilePhoto = results.ProfilePhoto;
                 $rootScope.DashboardLogo = results.DashboardLogo;
+                $rootScope.OrgID = results.OrgID;
+                $rootScope.AdminName = results.AdminName;
                 $rootScope.CareOrgProfilePhoto = results.CareOrgProfilePhoto;
                 $rootScope.CareOrgDashboardLogo = results.CareOrgDashboardLogo;
                 var nextUrl = next.$$route.originalPath;
                 //alert(nextUrl);
                 if (nextUrl == '/') {
                     if (results.UserAccess == 'ADMIN') {
-                        $location.path('organization');
+                        $location.path('organisation');
                         $rootScope.loading = false;
                     } else {
                         $location.path("");
@@ -305,7 +312,7 @@ app.run([
         templateUrl: 'assets/form-builder/template.html',
         popoverTemplateUrl: 'assets/form-builder/popoverTemplate.html'
       });*/
-      return $builder.registerComponent('name', {
+      return $builder.registerComponent('postCode', {
         group: 'Default',
         label: 'Postal Code',
         required: false,
@@ -353,4 +360,42 @@ app.run([
       };
     }
 ]);
+
+
+app.directive('ngNicescroll', ngNicescroll);
+ngNicescroll.$inject = ['$rootScope'];
+
+/* @ngInject */
+function ngNicescroll($rootScope) {
+    // Usage:
+    //
+    // Creates:
+    //
+    var directive = {
+        link: link
+    };
+    return directive;
+
+    function link(scope, element, attrs, controller) {
+
+        var niceOption = scope.$eval(attrs.niceOption)
+
+        var niceScroll = $(element).niceScroll(niceOption);
+        niceScroll.onscrollend = function (data) {
+            if (data.end.y >= this.page.maxh) {
+                if (attrs.niceScrollEnd) scope.$evalAsync(attrs.niceScrollEnd);
+
+            }
+        };
+
+
+        scope.$on('$destroy', function () {
+            if (angular.isDefined(niceScroll)) {
+                niceScroll.remove()
+            }
+        })
+
+
+    }
+}
 

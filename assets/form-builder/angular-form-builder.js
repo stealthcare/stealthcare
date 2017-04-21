@@ -353,8 +353,6 @@
                */
               $event.preventDefault();
               //alert('sadasdasdadas');
-              $('.fb-form-object-editable').removeClass('active');
-              $(element).addClass('active');
             },
             shown: function() {
 
@@ -378,6 +376,8 @@
           };
           $(element).on('show.bs.popover', function() {
             var $popover, elementOrigin, popoverTop;
+            $('.fb-form-object-editable').removeClass('active');
+            $(element).addClass('active');
             if ($drag.isMouseMoved()) {
               return false;
             }
@@ -992,7 +992,7 @@
     $http = null;
     $templateCache = null;
     this.config = {
-      popoverPlacement: 'right'
+      popoverPlacement: 'left'
     };
     this.components = {};
     this.groups = [];
@@ -1044,6 +1044,7 @@
         editable: (_ref = formObject.editable) != null ? _ref : component.editable,
         index: (_ref1 = formObject.index) != null ? _ref1 : 0,
         label: (_ref2 = formObject.label) != null ? _ref2 : component.label,
+        value: "",
         description: (_ref3 = formObject.description) != null ? _ref3 : component.description,
         placeholder: (_ref4 = formObject.placeholder) != null ? _ref4 : component.placeholder,
         options: (_ref5 = formObject.options) != null ? _ref5 : component.options,

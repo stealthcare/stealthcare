@@ -1,6 +1,7 @@
 			<!--sidebar start-->
       	
-          	<div id="sidebar"  class="nav-collapse ">
+          	<div id="sidebar"  class="nav-collapse " ng-nicescroll nice-option="{
+        cursorcolor: '#82ACD3'}">
               	<!-- sidebar menu start-->
 				<!--ul class="sidebar-menu">                
 					<li class="active">
@@ -47,12 +48,12 @@
 		            </li-->
 		            <li ng-class="activeClass == 'care_orga' ? 'active' : ''"> 
 		            	<a class="" href="careOrgs">
-		            		<span>Care Organizers</span>
+		            		<span>Care Organisers</span>
 		            	</a>
 		            </li>
 		            <li ng-class="activeClass == 'create_care_orga' ? 'active' : ''"> 
 		            	<a class="" href="careOrg/create">
-		            		<span>Create Care Organizer</span>
+		            		<span>Create Care Organiser</span>
 		            	</a>
 		            </li>
 		            <li ng-class="activeClass == 'licenses' ? 'active' : ''"> 
@@ -74,6 +75,19 @@
 		            	<a class="" href="license/plan/create">
 		            		<span>Create License Plan</span>
 		            	</a>
+		            </li>
+		            <li ng-class="activeClass == 'form_builder' ? 'active sub-menu' : 'sub-menu'"> 
+		            	<a class="" href="form-builder" data-ng-init="loadAllForms()">
+		            		<span>Form Builder</span>
+					      	<span class="menu-arrow-close"></span>
+		            	</a>
+						<ul class="sub">
+							<li ng-repeat="F in allForms"> 
+							  <a ng-click="callForm(F.FormDataID)" href="javascript:;">
+							    <span>{{ F.FormName }}</span>
+							  </a>
+							</li>
+						</ul>
 		            </li>
 		        </ul>
               	<!-- sidebar menu end-->

@@ -10,7 +10,11 @@
       </div>-->
    <div class="col-md-2">
       <!--logo start-->
-      <a href="organization" class="logo"><img src="img/Logo 2.png"></a>
+      <a href="organisation" class="logo">
+        <img ng-if="CareOrgDashboardLogo != ''" src="{{CareOrgDashboardLogo}}">
+        <img ng-if="CareOrgDashboardLogo === ''" src="{{DashboardLogo}}">
+        <span>{{AdminName}}</span>
+      </a>
       <!--logo end-->
    </div>
    <div class="col-md-10">
@@ -19,17 +23,17 @@
          <!-- notificatoin dropdown start-->
          <ul class="nav pull-right top-menu" >
             <li>
-              <a ng-class="activeClass == 'dashboard' ? 'active' : ''" href="organization">
+              <a ng-class="activeClass == 'dashboard' ? 'active' : ''" href="organisation">
                 Dashboard
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'registration' ? 'active' : ''" href="organization/client/registration">
+              <a ng-class="activeClass == 'registration' ? 'active' : ''" href="organisation/client/registration">
                 Enquiry
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'clients' ? 'active' : ''" href="organization/clients">
+              <a ng-class="activeClass == 'clients' ? 'active' : ''" href="organisation/clients">
                 Clients
               </a>
             </li>
@@ -54,7 +58,7 @@
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'formBuilder' ? 'active' : ''" href="organization/form-builder">
+              <a ng-class="activeClass == 'formBuilder' ? 'active' : ''" href="organisation/form-builder">
                 Form Builder
               </a>
             </li>

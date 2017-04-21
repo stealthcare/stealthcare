@@ -5,14 +5,39 @@
 body {
   background: hsl(0, 0%, 94%) none repeat scroll 0 0 !important;
 }
+.nicescroll-rails > div {
+  border: 1px solid hsl(209, 48%, 67%) !important;
+}
 ul{
 	list-style: none;
 }
 a{
 	color: #333;
 }
+.menu-arrow-close {
+  float: right;
+  margin-right: 20px;
+  font-size: 28px;
+}
+.menu-arrow-close::before {
+  content: "\f105";
+  font-family: FontAwesome;
+}
+.active .menu-arrow-close::before {
+  content: "\f107";
+  font-family: FontAwesome;
+}
+.disabled {
+  cursor: not-allowed !important;
+  opacity: 0.5;
+  pointer-events: none !important;
+}
 a:hover{
 	cursor: pointer;
+}
+#isShowScope {
+  height: 0;
+  opacity: 0;
 }
 ul.simple-post-list .post-image {
 	float: left;
@@ -55,6 +80,22 @@ background-color: #F5F5F5;
 /*background: #438EB9;
 color: #fff;border: 0;*/
 
+}
+body .pagination > .active > a, 
+body .pagination > .active > span, 
+body .pagination > .active > a:hover, 
+body .pagination > .active > span:hover, 
+body .pagination > .active > a:focus, 
+body .pagination > .active > span:focus {
+  background-color: hsl(208, 47%, 67%);
+  border-color: hsl(208, 47%, 67%);
+  color: hsl(0, 0%, 100%);
+  cursor: default;
+  z-index: 2;
+}
+body .pagination li {
+  padding: 0;
+  font-size: 13px;
 }
 /* Removed width:auto from navbar-collapse classs; */
 .navbar-collapse {
@@ -173,19 +214,25 @@ ul.sidebar-menu li.active::before {
 .top-nav ul.top-menu > li > a.active {
   background-color: hsl(205, 38%, 16%);
 }
-form.ng-pristine {
-  margin: 30px 0 10px;
-}
+
 table.table {
   background: hsl(0, 0%, 100%) none repeat scroll 0 0 !important;
 }
-table .btn-group .btn {
+/*table .btn-group .btn {
   border-radius: 50% !important;
   height: 28px;
   line-height: 25px;
   margin-right: 8px;
   padding: 0;
   width: 28px;
+}*/
+table .btn-group .btn {
+  border-radius: 50% !important;
+  font-size: 21px;
+  height: 35px;
+  margin-right: 15px;
+  padding: 2px 0;
+  width: 35px;
 }
 #preloader {
   background-color: #fff !important;
@@ -290,11 +337,31 @@ div.fb-component::after {
 .fb-components-opration {
   min-height: 200px;
 }
+a.logo span {
+  color: hsl(0, 0%, 100%);
+  float: right;
+  font-size: 20px;
+  line-height: 1.4;
+  padding-left: 10px;
+  position: absolute;
+  text-transform: capitalize;
+  width: 100%;
+}
+body .logo img {
+  height: 27px;
+  float: left;
+}
 .fb-component div.col-sm-8, .fb-component div.col-md-8, .popover > .arrow, 
 .fb-component .edit-component-field, .fb-component .delete-component-field {
   display: none;
 }
+.form-group.formBuilderActionBtn {
+  bottom: 0;
+  margin-left: 3%;
+  position: fixed;
+}
 .fb-components-section {
+  min-height: 500px;
   padding: 0 40px;
 }
 .fb-components-opration {
@@ -302,7 +369,7 @@ div.fb-component::after {
   padding: 7px 40px;
 }
 div.fb-builder {
-  min-height: 550px;
+  min-height: 450px;
 }
 .opration > a {
   background: hsl(0, 0%, 100%) none repeat scroll 0 0;

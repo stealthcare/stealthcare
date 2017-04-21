@@ -257,10 +257,12 @@ class API extends REST {
                     $careOrgSql = mysql_query("SELECT * FROM `SCP_CareOrg` WHERE UserID='$UserID'", $this->db);
                     $careOrgSql = mysql_fetch_array($careOrgSql, MYSQL_ASSOC);
                     $_SESSION['OrgID'] = $careOrgSql['OrgID'];
-                    $_SESSION['CareOrgProfilePhoto'] = $careOrgSql['ProfilePhoto'];  
-                    $_SESSION['CareOrgDashboardLogo'] = $careOrgSql['DashboardLogo'];    
+                    $_SESSION['AdminName'] = $careOrgSql['AdminName'];
+                    $_SESSION['CareOrgProfilePhoto'] = $arr['ProfilePhoto'];  
+                    $_SESSION['CareOrgDashboardLogo'] = $arr['DashboardLogo'];    
                 } else {
                     $_SESSION['OrgID'] = '';
+                    $_SESSION['AdminName'] = '';
                     $_SESSION['CareOrgProfilePhoto'] = '';  
                     $_SESSION['CareOrgDashboardLogo'] = '';
                 }
@@ -318,6 +320,11 @@ class API extends REST {
             @$FaxNo = $post['FaxNo'];
             @$WebSite = $post['WebSite'];
             @$OtherDetails = $post['OtherDetails'];
+            @$Address2 = $post['address2'];
+            @$CQCRegNo = $post['CQCRegNo'];
+            @$CQCLocNo = $post['CQCLocNo'];
+            @$AdminName = $post['AdminName'];
+            @$City = $post['City'];
         } else {
             $username = $_POST['username'];
             $password = md5($_POST['password']);
@@ -347,7 +354,7 @@ class API extends REST {
 
             $last_insert_id = mysql_insert_id();
 
-            $sql_insert = mysql_query("INSERT INTO `SCP_CareOrg` (`Name`, `PlanID`, `Address`, `PostCode`, `ContactNo`, `ContactNo2`, `FaxNo`, `WebSite`, `UserID`, `OtherDetails`, `CreatedDateTime`, `ModifyDateTime`, `StatusID`) VALUES ('$Name', '$PlanID', '$Address', '$PostCode', '$ContactNo', '$ContactNo2', '$FaxNo', '$WebSite', '$last_insert_id', '$OtherDetails', '$CreatedDateTime', '$ModifyDateTime', '1')", $this->db);
+            $sql_insert = mysql_query("INSERT INTO `SCP_CareOrg` (`Name`, `PlanID`, `Address`, `PostCode`, `ContactNo`, `ContactNo2`, `FaxNo`, `WebSite`, `UserID`, `OtherDetails`, `Address2`, `CQCRegNo`, `CQCLocNo`, `AdminName`, `City`, `CreatedDateTime`, `ModifyDateTime`, `StatusID`) VALUES ('$Name', '$PlanID', '$Address', '$PostCode', '$ContactNo', '$ContactNo2', '$FaxNo', '$WebSite', '$last_insert_id', '$OtherDetails', '$Address2', '$CQCRegNo', '$CQCLocNo', '$AdminName', '$City', '$CreatedDateTime', '$ModifyDateTime', '1')", $this->db);
 
             $OrgID = mysql_insert_id();
 
@@ -461,12 +468,17 @@ class API extends REST {
             $FaxNo = $post['FaxNo'];
             $WebSite = $post['WebSite'];
             $OtherDetails = $post['OtherDetails'];
+            $CQCRegNo = $post['CQCRegNo'];
+            $CQCLocNo = $post['CQCLocNo'];
+            $Address2 = $post['Address2'];
+            $City = $post['City'];
+            $AdminName = $post['AdminName'];
             $StatusID = $_POST['StatusID'];
             $ModifyDateTime = date('Y-m-d H:i:s');
 
             mysql_query("UPDATE `SCP_UserLogin` SET `EmailID`='$email', `UserName`='$username', `ModifyDateTime`='$ModifyDateTime', WHERE `UserID` = '$UserID'", $this->db);
 
-            mysql_query("UPDATE `SCP_CareOrg` SET `Name`='$Name', `PlanID`='$PlanID', `Address`='$Address', `PostCode`='$PostCode', `ContactNo`='$ContactNo', `ContactNo2`='$ContactNo2', `FaxNo`='$FaxNo', `WebSite`='$WebSite', `OtherDetails`='$OtherDetails', `ModifyDateTime`='$ModifyDateTime', `StatusID`='$StatusID' WHERE `UserID` = '$UserID'", $this->db);
+            mysql_query("UPDATE `SCP_CareOrg` SET `Name`='$Name', `PlanID`='$PlanID', `Address`='$Address', `PostCode`='$PostCode', `ContactNo`='$ContactNo', `ContactNo2`='$ContactNo2', `FaxNo`='$FaxNo', `WebSite`='$WebSite', `OtherDetails`='$OtherDetails', `CQCRegNo`='$CQCRegNo', `CQCLocNo`='$CQCLocNo', `Address2`='$Address2', `City`='$City', `AdminName`='$AdminName', `ModifyDateTime`='$ModifyDateTime', `StatusID`='$StatusID' WHERE `UserID` = '$UserID'", $this->db);
 
             $sql = mysql_query("SELECT * FROM SCP_UserLogin LEFT JOIN SCP_CareOrg ON SCP_CareOrg.UserID=SCP_UserLogin.UserID WHERE SCP_UserLogin.UserID='$UserID'", $this->db); 
 
@@ -960,6 +972,20 @@ class API extends REST {
         $this->response($this->json($successdata), 200);         
     }
 
+    private function loadAllForms() {
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder`", $this->db);
+        $arr = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $arr[] = $rlt;
+        }              
+        $successdata = array('status_code' => "1", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => $arr);
+        $this->response($this->json($successdata), 200);         
+    }
+
     // ******************************* SESSION API *******************************
     private function updateSessionByOrgID() {
         if ($this->get_request_method() != "POST") {
@@ -970,7 +996,13 @@ class API extends REST {
             session_start();
         }
         $OrgID = $_POST['OrgID'];
-        $_SESSION["OrgID"] = $OrgID;
+        $sql = mysql_query("SELECT * FROM SCP_UserLogin LEFT JOIN SCP_CareOrg ON SCP_CareOrg.UserID=SCP_UserLogin.UserID WHERE SCP_CareOrg.OrgID='$OrgID'", $this->db);            
+
+        $row = mysql_fetch_array($sql, MYSQL_ASSOC);
+        $_SESSION["OrgID"] = $row["OrgID"];
+        $_SESSION["AdminName"] = $row["AdminName"];
+        $_SESSION["CareOrgProfilePhoto"] = $row["ProfilePhoto"];
+        $_SESSION["CareOrgDashboardLogo"] = $row["DashboardLogo"];
         $this->response($this->json($_SESSION), 200);
     }
 
@@ -991,6 +1023,7 @@ class API extends REST {
         $response["ProfilePhoto"] = $session['ProfilePhoto'];
         $response["DashboardLogo"] = $session['DashboardLogo'];
         $response["OrgID"] = $session['OrgID'];
+        $response["AdminName"] = $session['AdminName'];
         $response["CareOrgProfilePhoto"] = $session['CareOrgProfilePhoto'];
         $response["CareOrgDashboardLogo"] = $session['CareOrgDashboardLogo'];
         $this->response($this->json($response), 200);
@@ -1020,6 +1053,7 @@ class API extends REST {
             unset($_SESSION['ProfilePhoto']);
             unset($_SESSION['DashboardLogo']);
             unset($_SESSION['OrgID']);
+            unset($_SESSION['AdminName']);
             unset($_SESSION['CareOrgProfilePhoto']);
             unset($_SESSION['CareOrgDashboardLogo']);
             $info='info';

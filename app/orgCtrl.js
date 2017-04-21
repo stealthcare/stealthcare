@@ -86,18 +86,29 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
         .success(function(results){							  
             Data.toast(results.responseMessage);
             if (results.status == "1") {  
-				$scope.signup = {};
-				$location.path(pathlink);
+      				$scope.signup = {};
+      				$location.path(pathlink);
             }
         })
         .error(function(results){
 
         });
     };
-	
 
-	
-
+    // Load All Orgniser Forms 
+    $scope.loadAllOrgniserForms = function (OrgID) {
+        var request = '[{"id":"10","OrgID":"'+OrgID+'"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            $scope.allForms = results.responseData;
+        });
+    };
+    
     // logout request
     $scope.logout = function () {
         $scope.loading = true;

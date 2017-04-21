@@ -1,6 +1,6 @@
 <section id="container" class="" data-ng-init="loadCurrntActiveClassForauthCtrlSidebarMenu('create_care_orga')">
     <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntPageTitle('Create Organization')">
+    <div class="title" data-ng-init="loadCurrntPageTitle('Create Organisation')">
     <div ng-include="'partials/includes/SuperAdminHeader.html'"></div>
     <!------------ End Header ---------------->
 
@@ -18,7 +18,7 @@
             <!--contaent are start-->
             <div class="row">
                 <div class="col-lg-12">
-                    <h3 class="page-header">Create Care Organizer</h3>
+                    <h3 class="page-header">Create Care Organiser</h3>
                 </div>
             </div>
 
@@ -26,45 +26,7 @@
                 <div class="col-md-7 col-lg-7">
                     <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="createOrgsignUp(signup)">
                         <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
-                            <div class="col-sm-7">
-                                <span class="block input-icon input-icon-right">
-                                    <input type="email" id="email"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="email" ng-model="signup.email" required/>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.email.$error.required">
-                                        This field is required.
-                                    </small>
-                                    <small class="errorMessage" ng-show="signupForm.email.$error.pattern" class="help-inline">Email is not valid</small> 
-                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-                                    <small class="errorMessage" ng-if="signupForm.$error.emailExists">Email already exists in our database</small>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="password">Password</label>
-                            <div class="col-sm-7">
-                                <span class="block input-icon input-icon-right">
-                                    <input type="password" class="form-control" name = "password" placeholder="Password" ng-model="signup.password" required/>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.password.$error.required">
-                                        This field is required.
-                                    </small>
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="password2">Confirm Password</label>
-                            <div class="col-sm-7">
-                                <span class="block input-icon input-icon-right">
-                                    <input type="password" class="form-control" name="password2" placeholder="Password Again" ng-model="signup.password2" password-match="signup.password" required/>   
-                                    <small class="errorMessage" data-ng-show="signupForm.password2.$dirty && signupForm.password2.$error.passwordNoMatch && !signupForm.password2.$error.required"> Password do not match.</small>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.password2.$error.required">
-                                        This field is required.
-                                    </small>
-
-                                </span>
-                            </div>
-                        </div>
-                        <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="name">Organization Name</label>
+                            <label class="col-sm-5 control-label no-padding-right" for="name">Organisation Name</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
                                     <input type="text" class="form-control" placeholder="Name" name="name" ng-model="signup.name" required/>
@@ -75,55 +37,52 @@
                             </div>
                         </div>
                         <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="username">User Name</label>
+                            <label class="col-sm-5 control-label no-padding-right" for="CQCRegNo">CQC Registration No.</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="User Name" id="username" name="username" username-available ng-model="signup.username" required ng-model-options="{ updateOn: 'blur' }"/>
-                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-                                    <small class="errorMessage" ng-if="signupForm.$error.usernameExists">Username already exists in our database</small>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.username.$error.required">
+                                    <input type="text" class="form-control" placeholder="CQC Registration No." name="CQCRegNo" ng-model="signup.CQCRegNo" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.CQCRegNo.$error.required">
                                         This field is required.
                                     </small>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="phone">Phone</label>
+                            <label class="col-sm-5 control-label no-padding-right" for="CQCLocNo">CQC Location No.</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" ng-minlength="8" ng-maxlength="16" id="inputPhone" name="phone" placeholder="Phone" ng-model="signup.phone" numbers-only required>
-                                    <small class="errorMessage" 
-                                          ng-show="((signupForm.phone.$error.minlength ||
-                                                   signupForm.phone.$error.maxlength) && 
-                                                   signupForm.phone.$dirty) ">
-                                                   Number should be enter between 8 to 16 digits
+                                    <input type="text" class="form-control" placeholder="CQC Location No." name="CQCLocNo" ng-model="signup.CQCLocNo" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.CQCLocNo.$error.required">
+                                        This field is required.
                                     </small>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.phone.$error.required">
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="address">Address 1</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input class="form-control" type="text" name="address" placeholder="Address 1" ng-model="signup.address" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.address.$error.required">
                                         This field is required.
                                     </small>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-sm-5 control-label no-padding-right" for="mobile">Land Line No</label>
+                            <label class="col-sm-5 control-label no-padding-right" for="address2">Address 2</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" ng-minlength="8" ng-maxlength="16" id="inputMobile" name="mobile" placeholder="Land Line No" ng-model="signup.mobile" numbers-only>
-                                    <small class="errorMessage" 
-                                          ng-show="((signupForm.mobile.$error.minlength ||
-                                                   signupForm.mobile.$error.maxlength) && 
-                                                   signupForm.mobile.$dirty) ">
-                                                   Number should be enter between 8 to 16 digits
-                                    </small>
+                                    <input class="form-control" type="text" name="address2" placeholder="Address 2" ng-model="signup.address2"/>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group required">
-                            <label class="col-sm-5 control-label no-padding-right" for="address">Address</label>
+                            <label class="col-sm-5 control-label no-padding-right" for="City">City</label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <textarea class="form-control" name="address" placeholder="Address" ng-model="signup.address" required/></textarea>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.address.$error.required">
+                                    <input class="form-control" type="text" name="City" placeholder="City" ng-model="signup.City" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.City.$error.required">
                                         This field is required.
                                     </small>
                                 </span>
@@ -156,6 +115,99 @@
                                     <!--small class="errorMessage" ng-show="signupForm.PostCode.$error.postcode"--->
                                     
                                 </small-->
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="AdminName">Admin Name</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input class="form-control" type="text" name="AdminName" placeholder="Admin Name" ng-model="signup.AdminName" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.AdminName.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="phone">Phone No.</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" ng-minlength="8" ng-maxlength="16" id="inputPhone" name="phone" placeholder="Phone No." ng-model="signup.phone" numbers-only required>
+                                    <small class="errorMessage" 
+                                          ng-show="((signupForm.phone.$error.minlength ||
+                                                   signupForm.phone.$error.maxlength) && 
+                                                   signupForm.phone.$dirty) ">
+                                                   Number should be enter between 8 to 16 digits
+                                    </small>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.phone.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-5 control-label no-padding-right" for="mobile">Mobile No.</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" ng-minlength="8" ng-maxlength="16" id="inputMobile" name="mobile" placeholder="Mobile No." ng-model="signup.mobile" numbers-only>
+                                    <small class="errorMessage" 
+                                          ng-show="((signupForm.mobile.$error.minlength ||
+                                                   signupForm.mobile.$error.maxlength) && 
+                                                   signupForm.mobile.$dirty) ">
+                                                   Number should be enter between 8 to 16 digits
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="email">Email</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="email" id="email"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="email" ng-model="signup.email" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.email.$error.required">
+                                        This field is required.
+                                    </small>
+                                    <small class="errorMessage" ng-show="signupForm.email.$error.pattern" class="help-inline">Email is not valid</small> 
+                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+                                    <small class="errorMessage" ng-if="signupForm.$error.emailExists">Email already exists in our database</small>
+                                </span>
+                            </div>
+                        </div>                        
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="username">User Name</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" placeholder="User Name" id="username" name="username" username-available ng-model="signup.username" required ng-model-options="{ updateOn: 'blur' }"/>
+                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+                                    <small class="errorMessage" ng-if="signupForm.$error.usernameExists">Username already exists in our database</small>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.username.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="password">Password</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" name = "password" placeholder="Password" ng-model="signup.password" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.password.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group required">
+                            <label class="col-sm-5 control-label no-padding-right" for="password2">Confirm Password</label>
+                            <div class="col-sm-7">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="password" class="form-control" name="password2" placeholder="Password Again" ng-model="signup.password2" password-match="signup.password" required/>   
+                                    <small class="errorMessage" data-ng-show="signupForm.password2.$dirty && signupForm.password2.$error.passwordNoMatch && !signupForm.password2.$error.required"> Password do not match.</small>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.password2.$error.required">
+                                        This field is required.
+                                    </small>
+
+                                </span>
                             </div>
                         </div>
                         <div class="form-group">

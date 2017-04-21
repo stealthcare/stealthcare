@@ -1,26 +1,36 @@
-<!-- container section start -->
-<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('formBuilder')">
+<section id="container" class="" data-ng-init="loadCurrntActiveClassForauthCtrlSidebarMenu('form_builder')">
     <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Form Builder')">
-    <div ng-include="'partials/careOrg/includes/header.html'"></div>
+    <div class="title" data-ng-init="loadCurrntPageTitle('Form Builder')">
+    <div ng-include="'partials/includes/SuperAdminHeader.html'"></div>
     <!------------ End Header ---------------->
 
     <!-- start: Main Menu -->
     <aside>
-      <!--sidebar start-->
-      <div data-ng-init="loadAllOrgniserForms(OrgID)"></div>
-      <div id="sidebar" class="nav-collapse nav form-builder" ng-nicescroll nice-option="{cursorcolor: '#2B4051'}">
+        <!------------ Start Sidebar ---------------->
+        <div ng-include="'partials/includes/SuperAdminSidebar.html'"></div>
+        <!------------ End Sidebar ---------------->
+    </aside>
+    <!-- end: Main Menu -->
+
+    <!-- start: Main Menu -->
+    <!--aside>
+      <div id="sidebar"  class="nav-collapse nav form-builder">
         <ul class="form-builder-sidebar-menu">
-          <li ng-repeat="F in allForms"> 
-            <a ng-click="callForm(F.FormDataID)" href="javascript:;">
-              <span>{{ F.FormName }}</span>
+          <li class="active"> 
+            <a class="" href="{{baseUrl}}">
+              <span>Enquiry Form</span>
+              <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
+            </a>
+          </li>
+          <li class="active"> 
+            <a class="" href="{{baseUrl}}">
+              <span>Enquiry Form</span>
               <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
             </a>
           </li>
         </ul>
       </div>
-      <!--sidebar end-->
-    </aside>
+    </aside-->
     <!-- end: Main Menu -->
     
     <!--main content start-->
@@ -28,13 +38,13 @@
         <section class="wrapper"> 
             <!--contaent are start-->
             <div class="row">
-                <div class="col-md-9 col-lg-9">                    
+                <div class="col-md-9 col-lg-9">
                     <!--contaent are start-->
                     <div class="row">
                       <div class="col-md-9">
-                          <div class="panel panel-defaults">
+                          <div class="panel panel-default">
                               <div fb-builder="default"></div>
-                              <!--div class="panel-footer">
+                                <!--div class="panel-footer">
                                   <div class="checkbox">
                                       <label><input type="checkbox" ng-model="isShowScope" />
                                           Show scope
@@ -52,7 +62,7 @@
                       </div>
                       <div class="col-md-3 position-fixed">
                       </div>
-                  </div>
+                    </div>
 
                   <div class="row">
                     <div class="viewForm" style="display:none;">
@@ -84,8 +94,9 @@
                         <div class="opration">
                           <a ng-click="createDocument()">Create Document</a>
                           <a ng-click="editDocument()" class="disabled">Edit Document</a>
-                          <a ng-click="duplicateDocument()" class="disabled">Duplicate Document</a>
+                          <a ng-click="duplicateDocument()" class="disabled" class="disabled">Duplicate Document</a>
                           <a ng-click="deleteDocument()" class="disabled">Delete Document</a>
+                          <!--a id="showAllDocument" ng-click="showAllDocument()">Show All Forms</a-->
                         </div>
                     </div>
                     <div class="fb-components-section"> 
@@ -98,3 +109,4 @@
       <!--main content end-->
     </section>
   <!-- container section start -->
+</section>

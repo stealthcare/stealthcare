@@ -5,6 +5,7 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
         MinQty: 0,
         MaxQty: 1
     };
+    $scope.pageSize = 10;
     var serviceBase = 'api/v1/api.php?request=';
 
    
@@ -48,7 +49,7 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
             if (results.UserID) {
                 //alert(results.UserAccess);
                 if (results.UserAccess == 'ADMIN') {
-                    $location.path('organization');
+                    $location.path('organisation');
                 }
             }
         });
@@ -134,7 +135,7 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
             if (results.status_code == "1") {
                 $route.reload(); 
             } else if (results.status_code == "2") {
-                $location.path('organization');
+                $location.path('organisation');
             }
             $scope.loading = false;
         })
@@ -150,6 +151,13 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
             $rootScope.Plans = results.licensesplan_data;
             $location.path(PageName);
             $scope.loading = false;
+        });
+    };
+
+    // Load All Forms 
+    $scope.loadAllForms = function () {
+        Data.get('loadAllForms').then(function (results) {
+            $scope.allForms = results.response_data;
         });
     };
 
@@ -203,7 +211,7 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            $location.path('organization');
+            $location.path('organisation');
             $scope.loading = false;
         });
     };
@@ -229,7 +237,7 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
 
     // change plan statas request
     $scope.changeStatusCareOrg = function(UserID,StatusID){
-        if(confirm("Are you sure to want to change organization status")){
+        if(confirm("Are you sure to want to change organisation status")){
             $scope.loading = true;
             $http({
                 method: 'post',

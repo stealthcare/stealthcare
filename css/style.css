@@ -241,7 +241,7 @@ table tr th {
 }
 .form .required {
     font-size: 16px;
-    /*color: #00a0df;*/
+    color: #00a0df;
 }
 .login-wrap {
     padding: 20px;
@@ -290,7 +290,7 @@ table tr th {
     background: hsl(207, 31%, 24%) none repeat scroll 0 0;
     height: 100%;
     position: fixed;
-   top:60px; width:260px;margin-left: 15px;
+   width:260px;margin-left: 15px;
 }
 .nav-collapse.collapse {
     display: inline;
@@ -533,7 +533,7 @@ ul.sidebar-menu li.active a i {
 .compose-mail {
     width: 95%;
     font-size: 16px;
-    border-radius: 0;
+    border-radius: 0; 
 }
 /*main content*/
 
@@ -583,8 +583,8 @@ a.logo {
     float: left;
     font-size: 22px;
     font-weight: 300;
-    margin-bottom: 13px;
-    margin-top: 13px;
+    margin-bottom: 19px;
+    margin-top: 19px;
     text-transform: uppercase;
 }
 a.logo:hover,
@@ -1229,13 +1229,13 @@ div[data-role="editor-toolbar"] {
     border-left-color: #ccc!important;
     position: relative;
 }
-/*.panel.panel-default {
+.panel.panel-default {
     border-radius: 0px;
     border-top: 1px solid #d4d4d4;
     -webkit-box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.1);
     -moz-box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.1);
     box-shadow: 0 2px 1px -1px rgba(0, 0, 0, 0.1);
-}*/
+}
 }
 .panel.panel-default.panel-heading {
     background: #97d3c5;
@@ -1936,6 +1936,8 @@ pagination a {
 .table-hover > tbody > tr:hover > th {
     background-color: #f7f8fc;
 }
+
+ 
 .personal-task.table-hover > tbody > tr:hover > td i {
     color: #688a7e;
 }
@@ -4714,41 +4716,38 @@ small.errorMessage {color: hsl(0, 100%, 50%);}
 header.header, .header .col-md-10,.navbar-collapse {padding-right: 0 !important;}
 
 
-.textfield_button{background-color:#84AED4; color:#FFFFFF;}
+.textfield_button{background-color: #84AED4;
+    color: #FFFFFF;
+    padding: 6px 12px;}
 
 .uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word;}
 
 
 .uplod_button img{  max-width:100%; height:auto; margin-left:5px;}
 
-@media all and (max-width: 1200px) { 
- .uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word; font-size:10px !important;;}
-  }
-  
-  
-  
-@media all and (max-width: 1300px) { 
- .uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word; font-size:10px !important}
-  }
-  
-  @media all and (max-width: 1400px) { 
- .uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word; font-size:12px !important;}
-  }
-    @media all and (max-width: 1500px) { 
- .uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word; font-size:14px !important;} 
 
-  
-    @media all and (max-width: 1024px) and  (max-width: 1200px) { 
- .top-nav ul.top-menu > li > a {
-    padding: 24px 3px;
-    background: none;
-    margin-right: 0;
-    line-height: 17px; font-size:14px;
+ @media all and (max-width: 1024px) and (max-width: 1200px)
+{
+    .top-nav ul.top-menu > li > a
+    {
+        padding: 24px 3px;
+        background: none;
+        margin-right: 0;
+        line-height: 17px;
+        font-size: 14px;
+    }
+
+    .uplod_button
+    {
+        background-color: #84AED4;
+        color: #FFFFFF;
+        border-radius: 0px 0px 0px 0px;
+        width: 100%;
+        overflow-wrap: break-word;
+        overflow-wrap: break-word;
+        font-size: 10px !important;
+    }
 }
- .uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word; font-size:10px !important;
-
-  }
-  }
   
   select.droupdown1 {
     width: 100%;
@@ -4769,6 +4768,11 @@ select.droupdown1 img{width:15px  !important; height:10px  !important;}
 .button2:hover {
     background-color: #4c779c;
     color:#fff;
+}
+
+button.btn.btn-danger-deactive {
+    border: 1px solid #ff2d55;
+    color: #ff2d55;background-color: #fff;
 }
 .datepicker{padding-left:10px !important; padding-right:10px !important;}
 
@@ -4828,6 +4832,8 @@ select.droupdown1 img{width:15px  !important; height:10px  !important;}
 .margin-left20{margin-left:20px;}
 
 .margin-left30{margin-left:30px;}
+
+.margin-left40{margin-left:40px;}
 
 .margin-right10{margin-right:10px;}
 
