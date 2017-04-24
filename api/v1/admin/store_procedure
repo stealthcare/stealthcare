@@ -32,3 +32,12 @@ FROM `SCP_FormBuilder`
 WHERE SCP_FormBuilder.StatusID=1;
 END//
 DELIMITER ;
+
+// For Load all countries
+DELIMITER //
+CREATE PROCEDURE `loadAllCountry`()
+BEGIN
+SELECT *
+FROM `SCP_Country`;
+END//
+DELIMITER ;

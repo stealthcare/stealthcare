@@ -5,6 +5,15 @@
 body {
   background: hsl(0, 0%, 94%) none repeat scroll 0 0 !important;
 }
+.panel {
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+.user_upload a {
+  color: hsl(0, 0%, 100%) !important;
+  text-decoration: none;
+}
 .nicescroll-rails > div {
   border: 1px solid hsl(209, 48%, 67%) !important;
 }
@@ -19,6 +28,9 @@ a{
   margin-right: 20px;
   font-size: 28px;
 }
+.margin-top50 {
+  margin-top: 50px;
+}
 .menu-arrow-close::before {
   content: "\f105";
   font-family: FontAwesome;
@@ -31,6 +43,14 @@ a{
   cursor: not-allowed !important;
   opacity: 0.5;
   pointer-events: none !important;
+}
+.form-group {
+  display: inline-block;
+  margin-bottom: 15px;
+  width: 100%;
+}
+.btn.calender-btn {
+  color: hsl(0, 0%, 100%);
 }
 a:hover{
 	cursor: pointer;

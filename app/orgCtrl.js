@@ -3,6 +3,8 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
     $scope.login = {};
     $scope.signup = {};
 
+    $scope.mindate = new Date();
+
     /*var numberOfYears = (new Date()).getYear() - 0;
     var years = $.map($(Array(numberOfYears)), function (val, i) { return i + 1900; });
     var months = $.map($(Array(12)), function (val, i) { return i + 1; });
@@ -106,6 +108,20 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
         })
         .success(function(results){ 
             $scope.allForms = results.responseData;
+        });
+    };
+
+    // Load All Country
+    $scope.loadAllCountry = function () {
+        var request = '[{"id":"3"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            $scope.allCountry = results.responseData;
         });
     };
     

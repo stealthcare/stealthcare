@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('myApp', ['ngRoute', 'ngAnimate', 'toaster', 'datatables', 'angularUtils.directives.dirPagination', 'builder', 'builder.components', 'validator.rules']);
+var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'toaster', 'datatables', 'angularUtils.directives.dirPagination', 'builder', 'builder.components', 'validator.rules']);
 
 app.config(['$locationProvider','$routeProvider', function($locationProvider, $routeProvider) {
         $locationProvider.html5Mode(true);
@@ -108,14 +108,27 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/client/clients.html',
                 controller: 'orgCtrl'
             })
-            // FOR ADMIN PORTAL END
+
+            // FOR ADMIN PORTAL SATFF MEMBERS
+            .when('/organisation/carers', {
+                title: 'Staffs',
+                templateUrl: 'partials/careOrg/staff/staff.html',
+                controller: 'orgCtrl'
+            })
+            .when('/organisation/carers/create', {
+                title: 'Add Staff',
+                templateUrl: 'partials/careOrg/staff/add-staff-Member.html',
+                controller: 'orgCtrl'
+            })
 
             // FOR ADMIN PORTAL FORM BUILDER START
             .when('/organisation/form-builder', {
-                title: 'Clients',
+                title: 'Form Builder',
                 templateUrl: 'partials/careOrg/form-builder/form-builder.html',
                 controller: 'orgCtrl'
             })
+
+            // FOR ADMIN PORTAL END
             .otherwise({
                 title: 'Page Not Found',
                 templateUrl: 'partials/includes/pagenotfound.html',
@@ -264,7 +277,7 @@ app.directive('stringNumber', function() {
     }  
 });  
 
-app.directive("datepicker", function () {
+/*app.directive("datepicker", function () {
   return {
     restrict: "A",
     require: "ngModel",
@@ -276,6 +289,7 @@ app.directive("datepicker", function () {
       };
       var options = {
         dateFormat: "dd/mm/yy",
+        startDate: new Date(),
 		autoclose: true,
         onSelect: function (dateText) {
           updateModel(dateText);
@@ -284,7 +298,7 @@ app.directive("datepicker", function () {
       elem.datepicker(options);
     }
   }
-});
+});*/
 
 app.run([
     '$builder', function($builder) {

@@ -239,10 +239,6 @@ table tr th {
 .login-form a:hover {
     color: #34aadc;
 }
-.form .required {
-    font-size: 16px;
-    color: #00a0df;
-}
 .login-wrap {
     padding: 20px;
 }
@@ -1667,32 +1663,39 @@ div[data-role="editor-toolbar"] {
     font-size: 10px;
     line-height: 17px;
 }
-.pagination li {
+.alfa-pagination li {
     padding: 0px 6px;
     text-transform: uppercase;
     font-family: 'humnstb';
     font-size: 16px;
     color: #666666;
 }
-.pagination ul {
+.alfa-pagination ul {
     list-style: none;
 }
-.pagination li {
+.alfa-pagination li {
     display: inline-block;
     float: left;
 }
-.pagination li a.active {
+.alfa-pagination li a.active {
     color: #84AED4;
     border-bottom: 1px solid #84AED4;
 }
-.pagination li a:hover {
+.alfa-pagination li a:hover {
     color: #84AED4;
     border-bottom: 1px solid #84AED4;
 }
-.pagination li a {
+.alfa-pagination li a {
     color: #333333;
 }
-pagination a {
+.alfa-pagination {
+  border-radius: 4px;
+  display: inline-block;
+  float: right;
+  margin: 20px 0;
+  padding-left: 0;
+}
+..alfa-pagination a {
     text-decoration: underline;
 }
 /* Widget white extras */
@@ -3607,29 +3610,29 @@ ul.amounts li {
 .border-top {
     border-top: 1px solid #ddd;
 }
-.dataTables_paginate.paging_bootstrap.pagination li {
+.dataTables_paginate.paging_bootstrap.alfa-pagination li {
     float: left;
     margin: 0 1px;
     border: 1px solid #ddd;
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-.dataTables_paginate.paging_bootstrap.pagination li.disabled a {
+.dataTables_paginate.paging_bootstrap.alfa-pagination li.disabled a {
     color: #c7c7c7;
 }
-.dataTables_paginate.paging_bootstrap.pagination li a {
+.dataTables_paginate.paging_bootstrap.alfa-pagination li a {
     color: #797979;
     padding: 5px 10px;
     display: inline-block;
 }
-.dataTables_paginate.paging_bootstrap.pagination li:hover a,
-.dataTables_paginate.paging_bootstrap.pagination li.active a {
+.dataTables_paginate.paging_bootstrap.alfa-pagination li:hover a,
+.dataTables_paginate.paging_bootstrap.alfa-pagination li.active a {
     color: #797979;
     background: #eee;
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-.dataTables_paginate.paging_bootstrap.pagination {
+.dataTables_paginate.paging_bootstrap.alfa-pagination {
     float: right;
     margin-right: 15px;
     margin-top: -5px;

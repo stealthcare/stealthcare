@@ -82,4 +82,5 @@
   <script src="<?php echo URL; ?>assets/form-builder/angular-form-builder-components.js"></script>
   <script type="text/javascript" src="<?php echo URL; ?>js/angular-validator.min.js"></script>
   <script type="text/javascript" src="<?php echo URL; ?>js/angular-validator-rules.min.js"></script>
+  <script src="<?php echo URL; ?>js/ui-bootstrap-tpls.js"></script>
 </html>

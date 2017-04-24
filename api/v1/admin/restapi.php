@@ -34,6 +34,7 @@ $baseUrl = base_url;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// FUNCTIONS /////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
+
 /******************************************************************************************************************/
 /* 
 *   ID=1
@@ -71,6 +72,7 @@ function loginWithUsername($post)
     mysql_close($con);   //close the connection
 }
 
+/******************************************************************************************************************/
 /* 
 *   ID=2
 *   A function used as a response to ID=2
@@ -141,6 +143,40 @@ function createEnquiry($post)
 
 /******************************************************************************************************************/
 /* 
+*   ID=3
+*   A function used as a response to ID=3
+*   It is used to loadAllCountry
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadAllCountry($post)
+{
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    $result = mysql_query("call loadAllCountry();");
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['responseMessage'] = "All country get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Request error";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+
+/******************************************************************************************************************/
+/* 
 *   ID=10
 *   A function used as a response to ID=10
 *   It is used to loadAllOrgniserForms
@@ -174,6 +210,63 @@ function loadAllOrgniserForms($post)
     mysql_close($con);   //close the connection
 }
 
+/******************************************************************************************************************/
+/* 
+*   ID=15
+*   A function used as a response to ID=15
+*   It is used to createStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function createStaff($post)
+{
+    $CustomerTitle = $post['title'];
+    $CustomerName = $post['fname'];
+    $CustomerSurname = $post['sname'];
+    $CustomerMiddleName = $post['mname'];
+    $DateOfBirth = $post['dob'];
+    $NHSNumber = $post['nhsno'];
+    $Gender = $post['gender'];
+    $Ethnicity=$post['ethnicity'];
+    $Address1=$post['address1'];
+    $Address2=$post['address2'];
+    $PostCode=strtoupper($post['postcode1'].' '.$post['postcode2']);
+    $City=$post['city'];
+    $Landline=$post['landline'];
+    $ContactNo=$post['mobile'];
+    $OtherDetails=$post['otherinfo'];
+    $CareInfo=$post['desc'];
+    $OutcomesInfo=$post['outcomes'];
+    $SupportInfo=$post['support'];
+    $MakeEnq=$post['makeenq'];
+    $CreatedDateTime = date('Y-m-d H:i:s');
+    $ModifyDateTime = date('Y-m-d H:i:s');
+    $AccessLevelID='5';
+    $RightsID='9';
+    $UserTypeID='6';
+    $StatusID='1';
+    session_start();
+    $OrgID=$_SESSION['OrgID'];
+
+    $con=connectToDB(); //connect to the DB
+
+    $result = mysql_query("call createEnquiry('".$OrgID."','".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
+
+    if($result) {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Created successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Error in Creation";
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ////////////////////////////////////////// MAIN //////////////////////////////////////////////////////
@@ -184,7 +277,11 @@ switch($ID) {
          break; 
 	case 2: createEnquiry($post);
          break;
+    case 3: loadAllCountry($post);
+         break;
     case 10: loadAllOrgniserForms($post);
+         break;  
+    case 15: createStaff($post);
          break;     	             
     default: myError(); 
 }
