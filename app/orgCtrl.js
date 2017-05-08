@@ -78,7 +78,7 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
   	$scope.signup.makeenq = 'self';
 	
     $scope.sendRequest = function (request,pathlink) {
-		request = angular.toJson(request);
+		  request = angular.toJson(request);
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -133,6 +133,16 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
             $location.path("");
             $scope.loading = false;
         });
+    };
+
+    // laod all visit
+    $scope.loadVisitCalander = function () {
+        
+    };
+
+    // laod all visit by date
+    $scope.loadVisitCalanderByDate = function (date) {
+        alert(date);
     };
 
     $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {

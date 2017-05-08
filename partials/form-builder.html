@@ -42,8 +42,9 @@
                     <!--contaent are start-->
                     <div class="row">
                       <div class="col-md-9">
+
                           <div class="panel panel-default">
-                              <div fb-builder="default"></div>
+                              <div id="fb-builder" fb-builder="default" style="display:none;"></div>
                                 <!--div class="panel-footer">
                                   <div class="checkbox">
                                       <label><input type="checkbox" ng-model="isShowScope" />
@@ -54,10 +55,10 @@
                               </div-->
                               <div id="isShowScope">{{form}}</div>
                           </div>
-                          <div class="form-group formBuilderActionBtn">
-                              <button class="btn button2" type="button">SAVE FORM</button>
-                              <button class="btn button2" type="submit" ng-click="submitted=true">VIEW FORM</button>
-                              <button class="btn button2" type="reset">CANCEL</button>
+                          <div class="form-group formBuilderActionBtn" style="display:none;">
+                              <button class="btn button2" type="button" ng-click="saveForm()">SAVE FORM</button>
+                              <button class="btn button2" type="submit" ng-click="viewForm()">VIEW FORM</button>
+                              <button class="btn button2" type="reset" ng-click="cancelForm()">CANCEL</button>
                           </div>
                       </div>
                       <div class="col-md-3 position-fixed">
@@ -84,9 +85,6 @@
                     </div>
                   </div>
 
-                  <div class="row">
-                      <div class="col-md-12 footer"></div>
-                  </div>
                   <!--contaent are start-->
                 </div>
                 <div class="col-md-3 col-lg-3 fb-components-sidebar" ng-nicescroll nice-option="{cursorcolor: '#82ACD3'}"> 

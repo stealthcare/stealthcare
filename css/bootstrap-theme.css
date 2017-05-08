@@ -270,7 +270,7 @@ select,
 textarea {
   font-family: inherit;
   font-size: inherit;
-  line-height: inherit;
+  line-height: inherit;resize: none;
 }
 button,
 input,
@@ -441,7 +441,7 @@ h2,
 }
 h3,
 .h3 {
-  font-size: 17px;
+  font-size: 20px;
 }
 h4,
 .h4 {
@@ -1548,25 +1548,25 @@ input[type="number"]::-webkit-inner-spin-button {
   height: auto;
 }
 .form-control:-moz-placeholder {
-  color: #d7d7d7;
+  color: #252525;
 }
 .form-control::-moz-placeholder {
-  color: #d7d7d7;
+  color: #252525;
 }
 .form-control:-ms-input-placeholder {
-  color: #d7d7d7;
+  color:#252525;
 }
 .form-control::-webkit-input-placeholder {
-  color: #d7d7d7;
+  color: #252525;
 }
 .form-control {
   display: block;
   width: 100%;
   height: 34px;
   padding: 6px 12px;
-  font-size: 17px;
+  font-size: 15px;
   line-height: 1.428571429;
-  color: #000;
+  color: #252525;
   vertical-align: middle;
   background-color: #ffffff;
   border: 1px solid #84AED4;
@@ -1806,7 +1806,7 @@ textarea.input-lg {
 }
 .btn {
   display: inline-block;
-  padding: 10px 30px;
+  padding: 4px 12px;
   margin-bottom: 0;
   font-size: 14px;
   font-weight: normal;
@@ -1966,8 +1966,8 @@ fieldset[disabled] .btn-warning.active {
 }
 .btn-danger {
   color: #ffffff;
-  background-color: #ff2d55;
-  border-color: #ff2d55;
+  background-color: #DB4F4E;
+  border-color: #DB4F4E;
 }
 .btn-danger:hover,
 .btn-danger:focus,
@@ -4051,8 +4051,7 @@ textarea.input-group-sm > .input-group-btn > .btn {
   display: inline-block;
   padding-left: 0;
   margin: 20px 0;
-  border-radius: 4px; 
-  float:right; 
+  border-radius: 4px; float:right; margin-right:15px;
 }
 .pagination > li {
   display: inline;

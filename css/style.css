@@ -24,6 +24,18 @@ body {
     color: #000;
   /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f9f9fa+0,e4e4e4+100 */
 
+   padding: 0px !important;
+   margin: 0px !important;
+    font-family: 'humnstl';
+    font-size: 14px;
+}
+
+@media screen and (min-width: 1600px) , screen and (min-height: 900px) {
+
+body {
+    color: #000;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f9f9fa+0,e4e4e4+100 */
+
 background: #f9f9fa !important; /* Old browsers */
 
 background: -moz-linear-gradient(top,  #f9f9fa 0%, #e4e4e4 100%) !important; /* FF3.6-15 */
@@ -33,14 +45,45 @@ background: -webkit-linear-gradient(top,  #f9f9fa 0%,#e4e4e4 100%) !important; /
 background: linear-gradient(to bottom,  #f9f9fa 0%,#e4e4e4 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9fa', endColorstr='#e4e4e4',GradientType=0 ) !important; /* IE6-9 */
+min-height:820px;
+}
 
 
    
-    padding: 0px !important;
-    margin: 0px !important;
-  font-family: 'humnstl';
-    font-size: 14px;
 }
+
+
+
+
+@media screen and (min-width: 1024px) , screen and (max-height: 900px) {
+
+body {
+    color: #000;
+  /* Permalink - use to edit and share this gradient: http://colorzilla.com/gradient-editor/#f9f9fa+0,e4e4e4+100 */
+
+background: #f9f9fa !important; /* Old browsers */
+
+background: -moz-linear-gradient(top,  #f9f9fa 0%, #e4e4e4 100%) !important; /* FF3.6-15 */
+
+background: -webkit-linear-gradient(top,  #f9f9fa 0%,#e4e4e4 100%) !important; /* Chrome10-25,Safari5.1-6 */
+
+background: linear-gradient(to bottom,  #f9f9fa 0%,#e4e4e4 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9fa', endColorstr='#e4e4e4',GradientType=0 ) !important; /* IE6-9 */
+min-height:810px;
+}
+
+ 	.add {
+    display: block;
+    margin-top:28%  !important;
+}  
+   
+   
+   
+}
+
+
+
 h1,
 h2,
 h3,
@@ -52,10 +95,11 @@ label {
    font-weight: 500;
     text-align: left !important;
     font-family: 'humnstl';
-    font-size: 14px;
+    font-size: 15px;
 }
 ul li {
     list-style: none;
+
 }
 a,
 a:hover,
@@ -164,7 +208,7 @@ table tr th {
     font-size: 18px;
     text-transform: uppercase;
     font-weight: 300;
-    font-family: 'Lato', sans-serif;
+   font-family: 'humnstl';
 }
 .login-form .checkbox {
     margin-bottom: 14px;
@@ -239,6 +283,10 @@ table tr th {
 .login-form a:hover {
     color: #34aadc;
 }
+/*.form .required {
+    font-size: 16px;
+    color: #00a0df;
+}*/
 .login-wrap {
     padding: 20px;
 }
@@ -340,7 +388,7 @@ ul.sidebar-menu li ul.sub li.active a {
     display: block; 
 }
 ul.sidebar-menu li {
-    line-height: 20px !important;
+    line-height: 20px !important; background-color:#2B4051;
     /*margin-bottom: 5px;
 
     margin-left:10px;
@@ -361,11 +409,11 @@ ul.sidebar-menu li a span {
     display: inline-block;
 }
 ul.sidebar-menu li a {
-    color: #d0d8df;
+    color: #ffffff;
     text-decoration: none;
     display: block;
     padding: 10px 0 10px 20px;;
-    font-size: 14px;
+    font-size: 16px;
     font-weight: 300;
     outline: none;
     -webkit-transition: all 0.3s ease;
@@ -374,7 +422,7 @@ ul.sidebar-menu li a {
     -ms-transition: all 0.3s ease;
     transition: all 0.3s ease;
     border-right: 1px solid #405364;
-    border-bottom: 1px solid #405364;
+    border-bottom: 1px solid #405364; display: block;
 }
 /*ul.sidebar-menu li a i{
 
@@ -391,7 +439,7 @@ ul.sidebar-menu li.active:before
    content: "";
    display: block;
    height: 18px;
-    margin: 11px auto 0 7px;
+    margin: 14px auto 0 0px;
    position: absolute;
    width: 8px; 
 }
@@ -399,9 +447,9 @@ ul.sidebar-menu li.active:before
 ul.sidebar-menu li.active a,
 ul.sidebar-menu li a:hover,
 ul.sidebar-menu li a:focus {
-    background-color: #2e3b46;
+    background-color: #223442;
     color: #fff;
-    display: block;
+    display: block; font-weight: bold;
     /*border-radius: 4px;
 
     -webkit-border-radius: 4px;*/
@@ -583,6 +631,13 @@ a.logo {
     margin-top: 19px;
     text-transform: uppercase;
 }
+
+body .logo img {
+float: left;
+height: 27px;
+max-width: 110px;
+}
+
 a.logo:hover,
 a.logo:focus {
     text-decoration: none;
@@ -616,8 +671,8 @@ ul.top-menu > li {
 }
 ul.top-menu > li > a {
     color: #fff;
-    font-size: 15px;
-    padding: 2px 6px;
+    font-size: 16px;
+    padding: 2px 6px; font-weight:600;
     /*    margin-right: 15px;*/
 }
 ul.top-menu > li > a:hover,
@@ -899,10 +954,10 @@ div[data-role="editor-toolbar"] {
 /*----*/
 
 .page-header {
-    margin: 12px 0 11px;
+    margin: 9px 0 9px;
     border-bottom: none;
     font-weight: 500;
-    color: #91abc4;
+    color: #84AED3;
     font-family: 'humnstb';
 }
 .page-header i {
@@ -1185,7 +1240,7 @@ div[data-role="editor-toolbar"] {
   /*  border-width: 1px 1px 2px;
     border-style: solid;
     border-top: none;*/
-    font-size: 14px;
+    font-size: 15px; font-family:  font-family: 'humnstl';
     /*border-right-color: #f5f5f5!important;
     border-bottom-color: #f5f5f5!important;
     border-left-color: #f5f5f5!important;*/
@@ -1663,18 +1718,48 @@ div[data-role="editor-toolbar"] {
     font-size: 10px;
     line-height: 17px;
 }
-.alfa-pagination li {
+.pagination li {
     padding: 0px 6px;
     text-transform: uppercase;
     font-family: 'humnstb';
     font-size: 16px;
     color: #666666;
 }
+.pagination ul {
+    list-style: none;
+}
+.pagination li {
+    display: inline-block;
+    float: left;
+}
+.pagination li a.active {
+    color: #84AED4;
+    border-bottom: 1px solid #84AED4;
+}
+.pagination li a:hover {
+    color: #84AED4;
+    border-bottom: 1px solid #84AED4;
+}
+.pagination li a {
+    color: #333333;
+}
+pagination a {
+    text-decoration: underline;
+}
+
+
+.alfa-pagination li {
+    padding: 0px 6px;
+    text-transform: uppercase;
+    font-family: 'humnstb';
+    font-size: 15px;
+    color: #666666; 
+}
 .alfa-pagination ul {
     list-style: none;
 }
 .alfa-pagination li {
-    display: inline-block;
+    display: inline-block; text-transform:uppercase; padding:0px 7px;
     float: left;
 }
 .alfa-pagination li a.active {
@@ -1688,16 +1773,9 @@ div[data-role="editor-toolbar"] {
 .alfa-pagination li a {
     color: #333333;
 }
-.alfa-pagination {
-  border-radius: 4px;
-  display: inline-block;
-  float: right;
-  margin: 20px 0;
-  padding-left: 0;
-}
-..alfa-pagination a {
-    text-decoration: underline;
-}
+
+
+
 /* Widget white extras */
 
 .widget .nav-tabs > li a {} .widget .nav-tabs {
@@ -3577,9 +3655,19 @@ ul.amounts li {
 }
 /*table*/
 
-.table-advance tr td {
-    vertical-align: middle !important;
+.table-schedular tr td {
+    vertical-align: middle !important;padding:8px 18px  !important; text-align:center; background-color:#FFFFFF;
 }
+
+.table-schedular tr th {
+    vertical-align: middle !important;padding:12px 10px  !important; text-align:center; 
+}
+
+
+.table-advance tr td {
+    vertical-align: middle !important; 
+}
+
 .no-border {
     border-bottom: none;
 }
@@ -3610,29 +3698,29 @@ ul.amounts li {
 .border-top {
     border-top: 1px solid #ddd;
 }
-.dataTables_paginate.paging_bootstrap.alfa-pagination li {
+.dataTables_paginate.paging_bootstrap.pagination li {
     float: left;
     margin: 0 1px;
     border: 1px solid #ddd;
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-.dataTables_paginate.paging_bootstrap.alfa-pagination li.disabled a {
+.dataTables_paginate.paging_bootstrap.pagination li.disabled a {
     color: #c7c7c7;
 }
-.dataTables_paginate.paging_bootstrap.alfa-pagination li a {
+.dataTables_paginate.paging_bootstrap.pagination li a {
     color: #797979;
     padding: 5px 10px;
     display: inline-block;
 }
-.dataTables_paginate.paging_bootstrap.alfa-pagination li:hover a,
-.dataTables_paginate.paging_bootstrap.alfa-pagination li.active a {
+.dataTables_paginate.paging_bootstrap.pagination li:hover a,
+.dataTables_paginate.paging_bootstrap.pagination li.active a {
     color: #797979;
     background: #eee;
     border-radius: 3px;
     -webkit-border-radius: 3px;
 }
-.dataTables_paginate.paging_bootstrap.alfa-pagination {
+.dataTables_paginate.paging_bootstrap.pagination {
     float: right;
     margin-right: 15px;
     margin-top: -5px;
@@ -4702,13 +4790,73 @@ span.customSelect.changed {
 .customSelectInner {
     background: url(../img/customSelect-arrow.gif) no-repeat center right;
 }
+
+@media screen and (min-width: 1600px) {
+	.add {
+    display: block;
+    margin-top:35px  !important;
+}
+h3,
+.h3 {
+  font-size: 23px;
+}
+
+.user {
+    width: 100%;
+    border: 1px solid #84AED3;
+    border-radius: 4px 4px 0px 0px;
+    background-color: #FFFFFF;
+    margin-top: 3.0em !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    text-align: center;
+}
+
+}
+
 @media screen and (max-width: 1360px) {
     .top-nav ul.top-menu > li > a {
-        padding: 24px 7px;
+        padding: 24px 15px;
         background: none;
         margin-right: 0;
         line-height: 17px; 
     }
+	
+	.user {
+    width: 100%;
+    border: 1px solid #84AED3;
+    border-radius: 4px 4px 0px 0px;
+    background-color: #FFFFFF;
+    margin-top: 3.2em !important;
+    margin-left: auto;
+    margin-right: auto;
+    padding: 15px;
+    text-align: center;
+}
+	
+	label {
+    font-weight: 500;
+    text-align: left !important;
+    font-family: 'humnstl';
+    font-size: 13px;
+}
+
+	employee .small1 {
+    font-size: 12px !important;
+    padding: 0px 5px;
+    font-weight: bold;
+    color: #666666;
+    letter-spacing: 0.6px;
+    padding-top: 23px !important;
+}
+	
+	
+	.add {
+    display: block;
+    margin-top36px  !important;
+}
+
 }
 
 small.errorMessage {color: hsl(0, 100%, 50%);}
@@ -4723,14 +4871,20 @@ header.header, .header .col-md-10,.navbar-collapse {padding-right: 0 !important;
     color: #FFFFFF;
     padding: 6px 12px;}
 
-.uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word;}
+.uplod_button{background-color:#84AED4; color:#FFFFFF; border-radius:0px  0px  0px  0px ; width:100%;overflow-wrap: break-word;overflow-wrap: break-word;     padding: 4px 6px;}
 
 
 .uplod_button img{  max-width:100%; height:auto; margin-left:5px;}
 
-
  @media all and (max-width: 1024px) and (max-width: 1200px)
 {
+
+
+.add {
+    display: block;
+    margin-top: 51px  !important;
+}
+
     .top-nav ul.top-menu > li > a
     {
         padding: 24px 3px;
@@ -4739,7 +4893,14 @@ header.header, .header .col-md-10,.navbar-collapse {padding-right: 0 !important;
         line-height: 17px;
         font-size: 14px;
     }
-
+.employee .small1 {
+    font-size: 12px !important;
+    padding: 0px 5px;
+    font-weight: bold;
+    color: #666666;
+    letter-spacing: 0.6px;
+    padding-top: 23px !important;
+}
     .uplod_button
     {
         background-color: #84AED4;
@@ -4780,11 +4941,19 @@ button.btn.btn-danger-deactive {
 .datepicker{padding-left:10px !important; padding-right:10px !important;}
 
 /*Padding Classes*/
+
+
 .padding-top10{padding-top:10px;}
 
 .padding-top20{padding-top:20px;}
 
 .padding-top30{padding-top:30px;}
+
+
+.padding-bottom0{padding-bottom:0px;}
+
+
+.margin-bottom0{margin-bottom:0px !important;}
 
 .padding-bottom10{padding-bottom:10px;}
 
@@ -4804,6 +4973,8 @@ button.btn.btn-danger-deactive {
 
 .padding-left30{padding-left:30px;}
 
+.padding-right0{padding-right:0px;}
+
 .padding-right10{padding-right:10px;}
 
 .padding-right20{padding-right:20px;}
@@ -4811,6 +4982,7 @@ button.btn.btn-danger-deactive {
 .padding-right30{padding-right:30px;}
 
 /*Margin Classes*/
+.margin-top7{padding-top:7px;}
 
 .margin-top10{margin-top:10px;}
 
@@ -4832,14 +5004,22 @@ button.btn.btn-danger-deactive {
 
 .margin-left10{margin-left:10px;}
 
+.margin-left0{margin-left:0px;}
+
+.margin-left5{margin-left:5px;}
+
 .margin-left20{margin-left:20px;}
 
 .margin-left30{margin-left:30px;}
 
 .margin-left40{margin-left:40px;}
 
+.margin-right0{margin-right:0px;}
+
 .margin-right10{margin-right:10px;}
 
 .margin-right20{margin-right:20px;}
 
 .margin-right30{margin-right:30px;}
+
+

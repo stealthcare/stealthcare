@@ -507,6 +507,29 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $window, $rou
             $scope.loading = false;
         });
     }*/
+
+    // create license request
+    $scope.createDocument = function (reqparams) {
+        $('#fb-builder').css('display','block');
+        $('#fb-builder').css('border-top','1px dashed');
+        $('#fb-builder').css('border-bottom','1px dashed');
+        $('.formBuilderActionBtn').css('display','block');
+    }; 
+
+    // create license request
+    $scope.createDocument = function (reqparams) {
+        $('#fb-builder').css('display','block');
+        $('#fb-builder').css('border-top','1px dashed');
+        $('#fb-builder').css('border-bottom','1px dashed');
+        $('.formBuilderActionBtn').css('display','block');
+    }; 
+
+    // create license request
+    $scope.cancelForm = function () {
+        $scope.loading = true;
+        $route.reload();
+        $scope.loading = false;
+    }; 
 	
 
     // logout request

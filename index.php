@@ -17,7 +17,7 @@
     <link href="<?php echo URL; ?>css/font-awesome.min.css" rel="stylesheet" />
     <!-- owl carousel -->
     <link href="<?php echo URL; ?>css/style.css" rel="stylesheet">
-    <link href="<?php echo URL; ?>css/new_style.css" rel="stylesheet">
+    <!--link href="<?php echo URL; ?>css/new_style.css" rel="stylesheet"-->
 	  <!--For sidebar-->
 	  <link href="<?php echo URL; ?>css/new_style2.css" rel="stylesheet">
     <link href="<?php echo URL; ?>css/style-responsive.css" rel="stylesheet" />

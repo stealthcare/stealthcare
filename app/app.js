@@ -128,6 +128,13 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 controller: 'orgCtrl'
             })
 
+            // FOR ADMIN PORTAL ROSTER START
+            .when('/organisation/roster', {
+                title: 'Roster',
+                templateUrl: 'partials/careOrg/roster/roster.html',
+                controller: 'orgCtrl'
+            })
+
             // FOR ADMIN PORTAL END
             .otherwise({
                 title: 'Page Not Found',
@@ -225,6 +232,12 @@ app.directive('numbersOnly', function () {
         }
     };
 });
+
+app.config(function (datepickerConfig, datepickerPopupConfig) {
+  datepickerConfig.showWeeks = false;
+  datepickerPopupConfig.toggleWeeksText = null;
+});
+
 
 app.directive("mwInputRestrict", [
     function () {

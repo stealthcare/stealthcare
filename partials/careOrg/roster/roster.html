@@ -1,0 +1,352 @@
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('roster')">
+   <!------------ Start Header ---------------->
+   <div class="title" data-ng-init="loadCurrntOrgPageTitle('Roster System')">
+   <div ng-include="'partials/careOrg/includes/header.html'"></div>
+   <!------------ End Header ---------------->
+   <!--sidebar start-->
+   <!------------ Start Header ---------------->
+   <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
+   <!------------ End Header ---------------->
+   <!--sidebar end-->
+   <!--main content start-->
+   <div class="row">
+      <section class="wrapper">
+         <!-- Form validations -->
+         <div class="row">
+            <div class="col-md-12">
+               <section class="panel">
+                  <div class="panel-body">
+                     <div class="row margin-top20 margin-bottom20">
+                        <div class="col-md-4">
+                           <h3 class="page-header"> Thursday, 11 Jan 2017</h3>
+                           <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
+                              <div class="input-group">
+                                 <input type="text" class="form-control"  placeholder="Search">
+                                 <span class="input-group-btn">
+                                 <button class="btn textfield_button" type="button"><img src="img/Search Icon.png"  ></button>
+                                 </span> 
+                              </div>
+                           </form>
+                        </div>
+                        <div class="col-md-5">
+                           <div id="button_float">
+                              <button type="button" class="btn button2" data-toggle="modal" data-target="#myModal">Add Visit<i class="fa icon" aria-hidden="true"><img src="images/Pluswhiteicon.png" class="padding-left10"></i></button> 
+                              <div class="modal fade" id="myModal" role="dialog">
+                                 <div class="modal-dialog">
+                                    <!-- Modal content-->
+                                    <div class="modal-content">
+                                       <div class="modal-header">
+                                          <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                          <h4 class="modal-title">New Scheduler</h4>
+                                       </div>
+                                       <div class="modal-body">
+                                          <ul class="nav nav-pills">
+                                             <li  class="active"><a data-toggle="pill" href="#menu1">Client</a></li>
+                                             <li><a data-toggle="pill" href="#menu2">Care Worker</a></li>
+                                          </ul>
+                                          <div class="tab-content">
+                                             <div id="menu1" class="tab-pane fade in active">
+                                                <p>
+                                                <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
+                                                   <div class="row">
+                                                      <div class="col-md-12">
+                                                         <div class="form-group ">
+                                                            <label for="cname" class="control-label col-md-12">Careworker</label>
+                                                         </div>
+                                                         <div class="form-group ">
+                                                            <div class="col-md-12">
+                                                               <select name="title" class="droupdown1">
+                                                                  <option value="volvo">Select Careworker</option>
+                                                                  <option value="saab">Mrs.</option>
+                                                               </select>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                   <div class="row margin-top30">
+                                                      <div class="col-md-4 col-md-offset-7">
+                                                         <div id="button_float">
+                                                            <div class="form-group">
+                                                               <div class="row">
+                                                                  <div class="col-md-6 col-lg-6 col-xs-6">
+                                                                     <button class="btn button2" type="submit">SAVE</button>
+                                                                  </div>
+                                                                  <div class="col-md-6 col-lg-6 col-xs-6">
+                                                                     <button class="btn button2" type="button">CANCEL</button>
+                                                                  </div>
+                                                               </div>
+                                                            </div>
+                                                         </div>
+                                                      </div>
+                                                   </div>
+                                                </form>
+                                                </p>
+                                             </div>
+                                             <div id="menu2" class="tab-pane fade">
+                                                <h3>Menu 1</h3>
+                                                <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="modal-footer">
+                                          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                           </div>
+                        </div>
+                        <div class="col-md-3 ">
+                           <div id="button_float">
+                              <button class=" btn button2 " type="submit">Import<i class="fa fa-download padding-left10" aria-hidden="true"></i></button>
+                              <button class=" btn button2 " type="submit">Export<i class="fa fa-upload padding-left10" aria-hidden="true"></i> </button>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="row">
+                        <section class="panel">
+                           <div class="panel-body">
+                              <div class="row">
+                                 <div class="col-lg-9 col-md-9 margin-left0">
+                                    <table class="table table-bordered table-schedular table_radius margin-bottom30">
+                                       <tbody>
+                                          <tr >
+                                             <th class="roster-client-heading_leftt" >Client</th>
+                                             <th class="roster-client-heading">07.00</th>
+                                             <th class="roster-client-heading">08.00</th>
+                                             <th class="roster-client-heading">09.00</th>
+                                             <th class="roster-client-heading">10.00</th>
+                                             <th class="roster-client-heading">11.00</th>
+                                             <th class="roster-client-heading">12.00</th>
+                                             <th class="roster-client-heading">13.00</th>
+                                             <th class="roster-client-heading">14.00</th>
+                                             <th class="roster-client-heading">15.00</th>
+                                             <th class="roster-client-heading">16.00</th>
+                                             <th class="roster-client-heading">17.00</th>
+                                             <th class="roster-client-heading">18.00</th>
+                                             <th class="roster-client-heading">19.00</th>
+                                             <th class="roster-client-heading">20.00</th>
+                                             <th class="roster-client-heading_rightt">21.00</th>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-client">Martin</td>
+                                             <td class="roster-visit-completed">John Smith</td>
+                                             <td></td>
+                                             <td class="roster-visit-missed">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-visit-missed">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-client">Martin </td>
+                                             <td> </td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-visit-completed">John Smith</td>
+                                             <td></td>
+                                             <td colspan="3" class="roster-visit-completed">John Smith</td>
+                                             <td class="roster-new-visit-half ">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-client">Martin</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-new-visit">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-client">Martin</td>
+                                             <td></td>
+                                             <td class="roster-visit-incomplete">John Smith</td>
+                                             <td></td>
+                                             <td class="roster-visit-incomplete">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-new-visit"> John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 ">
+                                    <!--pre>Selected date is: <em>{{dt | date:'fullDate' }}</em></pre-->
+                                    <div class="inline-calender">
+                                       <div class="well well-sm" ng-model="dt">
+                                           <datepicker ng-click="loadVisitCalanderByDate(dt)" min="minDate" show-weeks="showWeeks"></datepicker>
+                                       </div>
+                                    </div>
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-9 col-md-9">
+                                    <div class="row">
+                                       <div class="col-lg-6">
+                                          <div class="row margin-top20 margin-bottom20 margin-right30 padding-right20">
+                                             <div class="col-md-12">
+                                                <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
+                                                   <div class="input-group">
+                                                      <input type="text" class="form-control" placeholder="Search">
+                                                      <span class="input-group-btn">
+                                                      <button class="btn textfield_button" type="button"><img src="img/Search Icon.png"  ></button>
+                                                      </span> 
+                                                   </div>
+                                                </form>
+                                             </div>
+                                          </div>
+                                       </div>
+                                       <div class="col-lg-6"></div>
+                                    </div>
+                                    <table class="table table-bordered table-schedular table_radius margin-top10">
+                                       <tbody>
+                                          <tr >
+                                             <th class="roster-client-heading_leftt" >Client</th>
+                                             <th class="roster-client-heading">07.00</th>
+                                             <th class="roster-client-heading">08.00</th>
+                                             <th class="roster-client-heading">09.00</th>
+                                             <th class="roster-client-heading">10.00</th>
+                                             <th class="roster-client-heading">11.00</th>
+                                             <th class="roster-client-heading">12.00</th>
+                                             <th class="roster-client-heading">13.00</th>
+                                             <th class="roster-client-heading">14.00</th>
+                                             <th class="roster-client-heading">15.00</th>
+                                             <th class="roster-client-heading">16.00</th>
+                                             <th class="roster-client-heading">17.00</th>
+                                             <th class="roster-client-heading">18.00</th>
+                                             <th class="roster-client-heading">19.00</th>
+                                             <th class="roster-client-heading">20.00</th>
+                                             <th class="roster-client-heading_rightt">21.00</th>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-careworker-heading">Martin</td>
+                                             <td class="roster-visit-completed">John Smith</td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-visit-missed">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-new-visit"> John Smith</td>
+                                             <td></td>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-careworker-heading">Martin </td>
+                                             <td> </td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-visit-completed">John Smith</td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td class="roster-new-visit-half ">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-careworker-heading">Martin</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td class="roster-new-visit">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                          <tr>
+                                             <td class="roster-careworker-heading">Martin</td>
+                                             <td></td>
+                                             <td class="roster-visit-incomplete">John Smith</td>
+                                             <td class="roster-visit-missed">John Smith</td>
+                                             <td class="roster-visit-incomplete">John Smith</td>
+                                             <td></td>
+                                             <td colspan="3" class="roster-visit-completed">John Smith</td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td></td>
+                                             <td ></td>
+                                             <td></td>
+                                             <td></td>
+                                          </tr>
+                                       </tbody>
+                                    </table>
+                                 </div>
+                                 <div class="col-lg-3 col-md-3 ">
+                                 </div>
+                              </div>
+                              <div class="row">
+                                 <div class="col-lg-5">
+                                    <ul class="list-inline">
+                                       <li><i class="fa roster-visit-completed-icon margin-right10"></i>Visit Completed</li>
+                                       <li><i class="fa roster-visit-missed-icon margin-right10"></i>Visit Missed</li>
+                                       <li><i class="fa roster-visit-incomplete-icon margin-right10"></i>Visit Incomplete</li>
+                                       <li><i class="fa roster-new-visit-icon margin-right10"></i>Visit Visit</li>
+                                    </ul>
+                                 </div>
+                                 <div class="col-lg-5"></div>
+                              </div>
+                           </div>
+                        </section>
+                     </div>
+                  </div>
+               </section>
+            </div>
+         </div>
+         <!-- page end-->
+      </section>
+   </div>
+
+
+</section>
