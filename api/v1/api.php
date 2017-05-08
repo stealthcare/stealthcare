@@ -566,6 +566,47 @@ class API extends REST {
             $this->response($this->json($error), 200);
         }
     }
+	
+	private function checkStaffEmailOrUsername(){
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $status = false;
+        if(@$_POST['username']) {
+            $UserName = $_POST['username'];
+            $CareOrg = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE UserName='$UserName'", $this->db);
+            $CareOrg = mysql_fetch_array($CareOrg, MYSQL_ASSOC);
+            if($CareOrg) {
+                $status = true;
+                if($CareOrg['UserID'] == $_POST['UserID']) {
+                    $status = false;
+                }
+            }
+        } else {
+            $EmailID = $_POST['email'];
+            $CareOrg = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE EmailID='$EmailID'", $this->db);
+            $CareOrg = mysql_fetch_array($CareOrg, MYSQL_ASSOC);
+            if($CareOrg) {
+                $status = true;
+                if($CareOrg['UserID'] == $_POST['UserID']) {
+                    $status = false;
+                }
+            }
+        }
+        
+        if($status) {
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Care Organizers Get Successfully", 'response_code' => "200");
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200");
+            $this->response($this->json($error), 200);
+        }
+    }
+	
 
     // ******************************* Plans API *******************************
     private function LicensePlans() {

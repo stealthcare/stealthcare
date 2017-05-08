@@ -262,3 +262,33 @@ app.directive('moveFocus', function() {
       }
     };
 });
+
+
+app.directive('usernameAvailableorg', function($http, $timeout, $q, $rootScope) {
+    var serviceBase = 'api/v1/api.php?request='; 
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, elm, attr, control) { 
+            elm.bind("change", function() {  
+                var username = angular.element('#UserName').val(); 				
+                var UserID = angular.element('#UserID').val(); 
+                $rootScope.checkExists = true;
+                $http({
+                    method: 'post',
+                    data: $.param({username: username,UserID: UserID}),
+                    url: serviceBase+'checkStaffEmailOrUsername',
+                    headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+                })
+                .success(function(results){
+                    $rootScope.checkExists = false;
+                    if (results.status_code == "1") {
+                        control.$setValidity('usernameExists', false); 
+                    } else {
+                        control.$setValidity('usernameExists', true); 
+                    }                       
+                });
+            });
+        }
+    } 
+});

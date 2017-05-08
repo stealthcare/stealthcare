@@ -1,4 +1,4 @@
-app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeParams, $location, $http, Data, DOBService) {
+app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $route, $routeParams, $location, $http, Data, DOBService) {
     //initially set those objects to null to avoid undefined error
     $scope.login = {};
     $scope.signup = {};
@@ -71,8 +71,10 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
     };
 	
   	// create enquiry
-  	$scope.signup = {id:2};
+	var requestID = angular.element('#requestID').val();
+  	$scope.signup = {id:requestID};
   	$scope.signup.title = 'Mr';
+	$scope.signup.role = '3';
   	$scope.signup.gender = 'Male';
   	$scope.signup.support = 'Personal Care';
   	$scope.signup.makeenq = 'self';
@@ -96,6 +98,29 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
 
         });
     };
+	
+	
+	
+	$scope.fileReaderSupported = window.FileReader != null;
+    $scope.profilePhotoChanged = function(files){
+        if (files != null) {
+            var file = files[0];
+            if ($scope.fileReaderSupported && file.type.indexOf('image') > -1) {
+                $timeout(function() {
+                    var fileReader = new FileReader();
+                    fileReader.readAsDataURL(file);
+                    fileReader.onload = function(e) {
+                        $timeout(function(){
+                        $scope.resultData.ProfilePhoto = e.target.result;
+                        });
+                    }
+                });
+            }
+        }
+    };
+	
+	
+	
 
     // Load All Orgniser Forms 
     $scope.loadAllOrgniserForms = function (OrgID) {
@@ -150,6 +175,11 @@ app.controller('orgCtrl', function ($scope, $rootScope, $window, $route, $routeP
     };
 
 });
+
+
+
+
+
 
 app.$inject = ['$scope', 'DOBService'];
 

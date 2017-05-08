@@ -104,8 +104,10 @@ function createEnquiry($post)
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
     $AccessLevelID='5';
-    $RightsID='9';
-    $UserTypeID='6';
+    //$RightsID='9';
+	$RightsID='8';
+   // $UserTypeID='6';
+    $UserTypeID='3';
     $StatusID='1';
     session_start();
     $OrgID=$_SESSION['OrgID'];
@@ -220,37 +222,67 @@ function loadAllOrgniserForms($post)
 */
 function createStaff($post)
 {
-    $CustomerTitle = $post['title'];
-    $CustomerName = $post['fname'];
-    $CustomerSurname = $post['sname'];
-    $CustomerMiddleName = $post['mname'];
-    $DateOfBirth = $post['dob'];
-    $NHSNumber = $post['nhsno'];
+echo '<pre/>';
+print_r($post);die;
+    $role = $post['role'];
+    $Title = $post['title'];
+    $FirstName = $post['FirstName'];
+    $Surname = $post['Surname'];
+    $MiddleName = $post['MiddleName'];
+    $DateOfBirth = $post['DateOfBirth'];
     $Gender = $post['gender'];
-    $Ethnicity=$post['ethnicity'];
-    $Address1=$post['address1'];
-    $Address2=$post['address2'];
+    $Ethnicity = $post['Ethnicity'];
+    $HouseNumber=$post['HouseNumber'];
+    $Address1=$post['Address1'];
+    $Address2=$post['Address2'];
+	$City=$post['City'];
+	$Country=$post['Country'];
     $PostCode=strtoupper($post['postcode1'].' '.$post['postcode2']);
-    $City=$post['city'];
-    $Landline=$post['landline'];
-    $ContactNo=$post['mobile'];
-    $OtherDetails=$post['otherinfo'];
-    $CareInfo=$post['desc'];
-    $OutcomesInfo=$post['outcomes'];
-    $SupportInfo=$post['support'];
-    $MakeEnq=$post['makeenq'];
+    $Mobile=$post['Mobile'];
+    $ProfilePhoto=$post['ProfilePhoto'];   
+    $NOKName=$post['NOKName'];
+    $NOKMobile=$post['NOKMobile'];
+    $NOKEmail=$post['NOKEmail'];
+    $UserName=$post['UserName'];
+	$Password=$post['Password'];
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
-    $AccessLevelID='5';
-    $RightsID='9';
-    $UserTypeID='6';
-    $StatusID='1';
+    
     session_start();
     $OrgID=$_SESSION['OrgID'];
 
     $con=connectToDB(); //connect to the DB
+	
+	
+	$Licenses=mysql_query("SELECT * FROM `SCP_Licenses` WHERE UserID IS NULL AND StatusID='1' ORDER BY LicenseID ASC LIMIT 1")or die(mysql_error());
+	$Licenses = mysql_fetch_array($Licenses, MYSQL_ASSOC);
+	$LicenseID = $Licenses['LicenseID'];
+	
+	
 
-    $result = mysql_query("call createEnquiry('".$OrgID."','".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
+    if($role=='3'){
+	  $RightsID='2';
+	  $AccessLevelID='2';
+	  $UserTypeID=$role;
+	}elseif($role=='4'){
+	  $RightsID='3';
+	  $AccessLevelID='3';
+	  $UserTypeID=$role;	
+	}elseif($role=='5'){
+	  $RightsID='4';
+	  $AccessLevelID='4';
+	  $UserTypeID=$role;	
+	}
+	
+	$StatusID='1';
+	
+	
+	
+    
+	
+	$result = mysql_query("call createStaff('".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
+   
+   
 
     if($result) {
         $data['responseData'] = '';

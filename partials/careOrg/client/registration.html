@@ -136,7 +136,7 @@
                     <div class="form-group required">
                       <label for="landline" class="control-label col-md-4">Landline </label>
                       <div class="col-md-8">
-                        <input class="form-control " id="landline" name="landline" ng-minlength="8" ng-maxlength="16" ng-model="signup.landline">
+                        <input class="form-control " id="landline" name="landline" ng-minlength="8" ng-maxlength="16" ng-model="signup.landline" numbers-only>
 						<small class="errorMessage" 
                                           ng-show="((enqueryForm.landline.$error.minlength ||
                                                    enqueryForm.landline.$error.maxlength) && 
@@ -149,7 +149,7 @@
                     <div class="form-group required">
                       <label for="mobile" class="control-label col-md-4">Mobile</label>
                       <div class="col-md-8">
-                        <input class="form-control " id="mobile" type="text" name="mobile" ng-minlength="8" ng-maxlength="16" ng-model="signup.mobile" required/>
+                        <input class="form-control " id="mobile" type="text" name="mobile" ng-minlength="8" ng-maxlength="16" ng-model="signup.mobile" required numbers-only/>
 						 <small class="errorMessage" 
                                           ng-show="((enqueryForm.mobile.$error.minlength ||
                                                    enqueryForm.mobile.$error.maxlength) && 
@@ -221,7 +221,7 @@
                     </div>
                   </div>
                 </div>
-				<input type="hidden" name="id" ng-model="signup.id"/>
+				<input type="hidden" name="id" id="requestID" value="2" ng-model="signup.id"/>
                 <div class="row">
                   <div class="form-group">
                     <div class="col-md-5 col-md-offset-7 align-right margin-top20">
