@@ -174,6 +174,130 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $rootScope.orgPageTitle = orgPageTitle;
     };
 
+    //************************* For form builder module ****************************//
+
+    // create Document request
+    $scope.createDocument = function (reqparams) {
+        $('#fb-builder').css('display','block');
+        $('#fb-builder').css('border-top','1px dashed');
+        $('#fb-builder').css('border-bottom','1px dashed');
+        $('.formBuilderActionBtn').css('display','block');
+    };
+
+    // edit Document request
+    $scope.editDocument = function (reqparams) {
+        $('.formBuilderActionBtn').css('display','block');
+    };
+
+    var query = $location.path();
+    var data = query.split("/");
+    $scope.FormDataID = data[3];
+
+    // Duplicate Document statas request
+    $scope.duplicateDocument = function(index){
+        if(confirm("Are you sure to want to create duplicate document")){
+            $scope.loading = true;
+            var FormDataJson = angular.element('#isShowScope').text();
+            var FormDataJsonValue = angular.element('#isShowValueScope').text();
+            $http({
+                method: 'post',
+                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue}),
+                url: serviceBase+'saveForm',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                $window.location.href = 'form-builder';
+                $scope.loading = false;
+            });
+        }
+    };
+
+    // delete Document statas request
+    $scope.deleteDocument = function(index){
+        if(confirm("Are you sure to want to delete this document")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({FormID: index}),
+                url: serviceBase+'deleteDocument',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status_code == "1") {
+                    $location.path('form-builder');
+                }
+                $scope.loading = false;
+            });
+        }
+    };
+
+    // call Form request
+    $scope.callOrgForm = function (id) {
+        $scope.loading = true;
+        $window.location.href = 'organisation/form-builder/edit/'+id;
+        $scope.loading = false;
+    }; 
+    $scope.callAllForms = function () {
+        $window.location.href = 'form-builder';
+    };
+
+    // cancel Form request
+    $scope.cancelForm = function () {
+        $scope.loading = true;
+        $templateCache.removeAll();
+        $window.location.reload();
+        $scope.loading = false;
+    }; 
+
+    // view Form request
+    $scope.viewForm = function () {
+        $scope.loading = true;
+        $('.viewForm').css('display','block');
+        $('html, body').animate({
+              scrollTop: $(".viewForm").offset().top
+        }, 1000);
+        $scope.loading = false;
+    }; 
+
+    // save form request
+    $scope.saveForm = function(){
+        $scope.loading = true;
+        var FormDataJson = angular.element('#isShowScope').text();
+        var FormDataJsonValue = angular.element('#isShowValueScope').text();
+        //alert(StatusID);
+        $http({
+            method: 'post',
+            data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue}),
+            url: serviceBase+'saveForm',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+            $templateCache.removeAll();
+            $window.location.reload();
+            $scope.loading = false;
+        });
+    };
+
+    // update form request
+    $scope.updateForm = function(FormID){
+        $scope.loading = true;
+        var FormDataJson = angular.element('#isShowScope').text();
+        //alert(StatusID);
+        $http({
+            method: 'post',
+            data: $.param({FormDataJson: FormDataJson,FormID: FormID}),
+            url: serviceBase+'updateForm',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+            $window.location.href = 'form-builder';
+            $scope.loading = false;
+        });
+    };
+
 });
 
 

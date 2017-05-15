@@ -35,9 +35,12 @@
   </head>
 
   <body ng-cloak="">
+    <?php //$uri =  explode('/', $_SERVER['REQUEST_URI']); ?>
+    <?php //if($uri[2] == '') { ?>
     <div id="preloader">
       <div id="status">&nbsp;</div>
     </div>
+    <?php //} ?>
     
     <div class="containers">
 

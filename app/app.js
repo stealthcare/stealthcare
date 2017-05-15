@@ -76,8 +76,13 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 controller: 'authCtrl'
             })
             .when('/form-builder', {
-                title: 'Clients',
+                title: 'Form Builder',
                 templateUrl: 'partials/form-builder.html',
+                controller: 'authCtrl'
+            })
+            .when('/form-builder/edit/:id', {
+                title: 'Edit Form',
+                templateUrl: 'partials/edit-form-builder.html',
                 controller: 'authCtrl'
             })
             /*.when('/', {
@@ -125,6 +130,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
             .when('/organisation/form-builder', {
                 title: 'Form Builder',
                 templateUrl: 'partials/careOrg/form-builder/form-builder.html',
+                controller: 'orgCtrl'
+            })
+            .when('/organisation/form-builder/edit/:id', {
+                title: 'Form Builder',
+                templateUrl: 'partials/careOrg/form-builder/edit-form-builder.html',
                 controller: 'orgCtrl'
             })
 
@@ -315,30 +325,6 @@ app.directive('stringNumber', function() {
 
 app.run([
     '$builder', function($builder) {
-      /*$builder.registerComponent('sampleInput', {
-        group: 'from html',
-        label: 'Sample',
-        description: 'From html template',
-        placeholder: 'placeholder',
-        required: false,
-        validationOptions: [
-          {
-            label: 'none',
-            rule: '/.*'
-          /*}, {
-            label: 'number',
-            rule: '[number]'
-          }, {
-            label: 'email',
-            rule: '[email]'
-          }, {
-            label: 'url',
-            rule: '[url]'
-          }
-        ],
-        templateUrl: 'assets/form-builder/template.html',
-        popoverTemplateUrl: 'assets/form-builder/popoverTemplate.html'
-      });*/
       return $builder.registerComponent('postCode', {
         group: 'Default',
         label: 'Postal Code',
@@ -349,44 +335,51 @@ app.run([
       });
     }
   ]).controller('DemoController', [
-    '$scope', '$builder', '$validator', function($scope, $builder, $validator) {
-      /*var checkbox, textbox;
-      textbox = $builder.addFormObject('default', {
-        id: 'textbox',
-        component: 'textInput',
-        label: 'Name',
-        description: 'Your name',
-        placeholder: 'Your name',
-        required: true,
-        editable: false
-      });
-      checkbox = $builder.addFormObject('default', {
-        id: 'checkbox',
-        component: 'checkbox',
-        label: 'Pets',
-        description: 'Do you have any pets?',
-        options: ['Dog', 'Cat']
-      });
-      $builder.addFormObject('default', {
-        component: 'sampleInput'
-      });
-      $builder.addFormObject('default', {
-        component: 'header'
-      });*/
-      $scope.form = $builder.forms['default'];
-      $scope.input = [];
-      $scope.defaultValue = {};
-      //$scope.defaultValue[textbox.id] = 'default value';
-      //$scope.defaultValue[checkbox.id] = [true, true];
-      return $scope.submit = function() {
-        return $validator.validate($scope, 'default').success(function() {
-          return console.log('success');
-        }).error(function() {
-          return console.log('error');
+    '$scope', '$builder', '$http', '$location', '$validator', function($scope, $builder, $http, $location, $validator) {
+        var serviceBase = 'api/v1/api.php?request=';
+        var query = $location.path();
+        var data = query.split("/");
+        var FormID = data[3];
+        $http({
+            method: 'post',
+            data: $.param({FormID: FormID}),
+            url: serviceBase+'getForm',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if(results.status === 'success') {
+                var json = results.response_data; 
+                var component = $.parseJSON(json);
+                $.each(component, function(i, item){
+                    var formObj = $builder.addFormObject('default', item);
+                });
+            }
         });
-      };
+        $scope.form = $builder.forms['default'];
+        $scope.input = [];
+        $scope.defaultValue = {};
+        return $scope.submit = function() {
+            return $validator.validate($scope, 'default').success(function() {
+                return console.log('success');
+            }).error(function() {
+                return console.log('error');
+            });
+        };
     }
 ]);
+
+
+/*app.run([
+    '$builder', function($builder) {} ]).controller('DemoController', [ '$scope', '$builder', '$validator', function($scope, $builder, $validator) {
+  var json = '[{"component":"textInput","editable":true,"index":0,"label":"National ID","description":"","placeholder":"","options":[],"required":true,"validation":"[number]"},{"component":"checkbox","editable":true,"index":1,"label":"Interest","description":"","placeholder":"","options":["Games","Reading","Movies"],"required":false,"validation":"\/.*\/"},{"component":"radio","editable":true,"index":2,"label":"Gender","description":"","placeholder":"","options":["Male","Female"],"required":false,"validation":"\/.*\/"},{"component":"select","editable":true,"index":3,"label":"Country","description":"","placeholder":"","options":["Egypt","Russia"],"required":false,"validation":"\/.*\/"},{"component":"textArea","editable":true,"index":4,"label":"Feedback","description":"","placeholder":"","options":[],"required":false,"validation":"\/.*\/"}]'; 
+
+  var component = $.parseJSON(json);
+  $.each(component, function(i, item){
+      var formObj = $builder.addFormObject('default', item);
+  });
+  $scope.form = $builder.forms['default'];
+  }
+]);*/
 
 
 app.directive('ngNicescroll', ngNicescroll);

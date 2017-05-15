@@ -20,6 +20,9 @@ body {
 ul{
 	list-style: none;
 }
+.viewForm i.fa {
+  display: none;
+}
 a{
 	color: #333;
 }
@@ -377,9 +380,15 @@ body .logo img {
   display: none;
 }
 .form-group.formBuilderActionBtn {
+  background: hsl(0, 0%, 94%) none repeat scroll 0 0;
   bottom: 0;
-  margin-left: 3%;
+  height: 70px;
+  margin-bottom: 0;
+  margin-left: -10px;
+  padding-left: 50px;
+  padding-top: 15px;
   position: fixed;
+  width: 40%;
 }
 .fb-components-section {
   min-height: 500px;
@@ -673,7 +682,35 @@ reset_pass{margin-top:10px!important}.login_content div .reset_pass{margin-top:1
   background-color: hsla(0, 0%, 0%, 0);
   border-color: hsla(0, 0%, 0%, 0);
   color: hsl(0, 0%, 100%);
-  padding: 0 5px;
+  font-size: 14px;
+  font-weight: bold;
+  margin: 0 1px;
+  padding: 0;
+}
+
+.inline-calender .btn-default i {
+  font-size: 22px;
+}
+
+.text-muted {
+  color: hsla(0, 0%, 0%, 0);
+  pointer-events: none;
+}
+
+.day-header small {
+  font-family: "Trebuchet MS";
+  font-size: 17px;
+  font-weight: bold;
+}
+
+button .ng-binding {
+  font-family: Helvetica;
+  font-size: 14px;
+  font-weight: bold;
+  line-height: 1;
+  padding: 3px;
+  position: relative;
+  text-transform: uppercase;
 }
 
 .inline-calender .btn-default.active {
@@ -681,9 +718,10 @@ reset_pass{margin-top:10px!important}.login_content div .reset_pass{margin-top:1
   border-color: hsla(0, 0%, 0%, 0);
   border-radius: 50%;
   color: hsl(209, 48%, 67%);
-  height: 25px;
-  padding: 0 5px;
-  width: 25px !important;
+}
+
+.text-info {
+  color: hsl(204, 38%, 16%);
 }
 
 .inline-calender table thead tr:first-child {

@@ -1139,6 +1139,98 @@ class API extends REST {
         curl_close($curl);           
     }
 
+    // ******************************* CREATE FORM API *******************************
+    private function saveForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $title = '';
+        //print_r(json_decode($_POST['FormDataJson'])); die();
+        $arrayData = json_decode($_POST['FormDataJson']);
+        foreach ($arrayData as $key => $value) {
+            if($value->component == 'header') {
+                $title = $value->label;
+            }
+        }
+        $arr = array();
+        $FormDataID = strtoupper('FORM'.strtotime(date('d-m-Y H:i:s'))); 
+        $FormName = $title; 
+        $FormDataJson = $_POST['FormDataJson']; 
+        $FormDataJsonValue = $_POST['FormDataJsonValue'];
+        $CreatedDateTime = date('Y-m-d H:i:s');
+        $ModifyDateTime = date('Y-m-d H:i:s');
+        $sql_insert = mysql_query("INSERT INTO `SCP_FormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+        $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
+        $this->response($this->json($error), 200);
+    }
+
+    // ******************************* UPDATE FORM API *******************************
+    private function updateForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $title = '';
+        //print_r(json_decode($_POST['FormDataJson'])); die();
+        $arrayData = json_decode($_POST['FormDataJson']);
+        foreach ($arrayData as $key => $value) {
+            if($value->component == 'header') {
+                $title = $value->label;
+            }
+        }
+        $arr = array();
+        $FormName = $title; 
+        $FormDataJson = $_POST['FormDataJson'];
+        $FormID = $_POST['FormID'];
+        $ModifyDateTime = date('Y-m-d H:i:s');
+        $sql = mysql_query("UPDATE `SCP_FormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormID` = '$FormID'", $this->db);
+        $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
+        $this->response($this->json($error), 200);
+    }
+
+    // ******************************* DELETE Document API *******************************
+    private function deleteDocument() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+
+        $arr = array();
+        $FormID = $_POST['FormID'];
+
+        $sql = mysql_query("DELETE FROM `SCP_FormBuilder` WHERE FormID='$FormID'", $this->db);
+
+        if($sql) {
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Document Deleted Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+
+    // ******************************* GET FORM BY ID API *******************************
+    private function getForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $FormID = $_POST['FormID'];
+        $sql = mysql_query("SELECT * FROM SCP_FormBuilder WHERE FormID='$FormID'", $this->db);
+        $row = mysql_fetch_array($sql, MYSQL_ASSOC);
+        if($row) {
+            $status = "success";
+        } else {
+            $status = "fail";
+        }
+        $error = array('status_code' => "1", 'status' => $status, 'message' => "Form Get Successfully", 'response_code' => "200", 'response_data' => $row["FormDataJson"]);
+        $this->response($this->json($error), 200);
+    }
+
     // ******************************* CREATE PLAN API *******************************
     private function insertData() {
         if ($this->get_request_method() != "POST") {

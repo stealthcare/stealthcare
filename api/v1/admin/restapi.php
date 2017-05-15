@@ -115,19 +115,6 @@ function createEnquiry($post)
     $con=connectToDB(); //connect to the DB
 
     $result = mysql_query("call createEnquiry('".$OrgID."','".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
-
-    /*$result = mysql_query("insert into SCP_UserLogin(StatusID,CreatedDateTime,ModifyDateTime)values('1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
-    $last_id=mysql_insert_id();
-
-
-    $result = mysql_query("insert into SCP_UserAccess(RightsID,AccessLevelID,UserID,UserTypeID,CreatedDateTime,ModifyDateTime,StatusID)values('".$RightsID."','".$AccessLevelID."','".$last_id."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','1')")or die(mysql_error());
-
-    $result = mysql_query("insert into SCP_Customer(CustomerTitle,CustomerName,CustomerSurname,CustomerMiddleName,DateOfBirth,NHSNumber,Gender,Ethnicity,Address1,Address2,PostCode,City,Landline,ContactNo,OtherDetails,CareInfo,OutcomesInfo,SupportInfo,MakeEnq,UserID,StatusID,CreatedDateTime,ModifyDateTime)values('".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$last_id."','1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
-    $last_id_cm=mysql_insert_id();
-
-    $result = mysql_query("insert into SCP_Enquiry(CustomerID,StatusID,CreatedDateTime,ModifyDateTime)values('".$last_id_cm."','1','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
-    */
-
     if($result) {
         $data['responseData'] = '';
         $data['responseMessage'] = "Created successfully";
@@ -191,15 +178,34 @@ function loadAllOrgniserForms($post)
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
     $result = mysql_query("call loadAllOrgniserForms('".$OrgID."');");
-    //CHECK FOR ERROR
+    //CHECK FOR ERROR    
     if (!$result) die('Invalid query: ' . mysql_error());
-    $rows = array();
+    $orgForms = array();
     while($row = mysql_fetch_assoc($result)) {
-        $rows[] = $row;
+        $orgForms[] = $row;
     }
+    mysql_close($con);   //close the connection
+    $allForms = loadAllForms();
+    $filterAllForms = array();
+    foreach ($allForms as $key => $value) {
+        if(!in_array_r($value['FormDataID'], $orgForms)) {
+            $array['FormID'] = $value['FormID'];
+            $array['FormDataID'] = $value['FormDataID'];
+            $array['FormName'] = $value['FormName'];
+            $array['FormDataJson'] = $value['FormDataJson'];
+            $array['FormDataJsonValue'] = $value['FormDataJsonValue'];
+            $array['UserID'] = $value['UserID'];
+            $array['StatusID'] = $value['StatusID'];
+            $array['CreatedDateTime'] = $value['CreatedDateTime'];
+            $array['ModifyDateTime'] = $value['ModifyDateTime'];
+            $filterAllForms[] = $array;
+        }
+    }
+    //print_r($newArray2); die();
+    $rows = array_merge($orgForms,$filterAllForms);
     if($rows) {
         $data['responseData'] = $rows;
-        $data['responseMessage'] = "All forms get successfully";
+        $data['responseMessage'] = "Get all forms successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
@@ -209,7 +215,29 @@ function loadAllOrgniserForms($post)
         $data['status'] = "0";
     }
     print json_encode($data);
+}
+
+function loadAllForms()
+{
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    $result = mysql_query("call loadAllForms();");
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    return $rows;
     mysql_close($con);   //close the connection
+}
+
+function in_array_r($needle, $haystack, $strict = false) {
+    foreach ($haystack as $item) {
+        if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && in_array_r($needle, $item, $strict))) {
+            return true;
+        }
+    }
+    return false;
 }
 
 /******************************************************************************************************************/
@@ -222,8 +250,8 @@ function loadAllOrgniserForms($post)
 */
 function createStaff($post)
 {
-echo '<pre/>';
-print_r($post);die;
+//echo '<pre/>';
+//print_r($post);die;
     $role = $post['role'];
     $Title = $post['title'];
     $FirstName = $post['FirstName'];
@@ -247,19 +275,12 @@ print_r($post);die;
 	$Password=$post['Password'];
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
-    
     session_start();
     $OrgID=$_SESSION['OrgID'];
-
     $con=connectToDB(); //connect to the DB
-	
-	
 	$Licenses=mysql_query("SELECT * FROM `SCP_Licenses` WHERE UserID IS NULL AND StatusID='1' ORDER BY LicenseID ASC LIMIT 1")or die(mysql_error());
 	$Licenses = mysql_fetch_array($Licenses, MYSQL_ASSOC);
 	$LicenseID = $Licenses['LicenseID'];
-	
-	
-
     if($role=='3'){
 	  $RightsID='2';
 	  $AccessLevelID='2';
@@ -275,15 +296,8 @@ print_r($post);die;
 	}
 	
 	$StatusID='1';
-	
-	
-	
-    
-	
 	$result = mysql_query("call createStaff('".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
    
-   
-
     if($result) {
         $data['responseData'] = '';
         $data['responseMessage'] = "Created successfully";
@@ -292,6 +306,43 @@ print_r($post);die;
     } else {
         $data['responseData'] = '';
         $data['responseMessage'] = "Error in Creation";
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+
+/******************************************************************************************************************/
+/* 
+*   ID=16
+*   A function used as a response to ID=16
+*   It is used to insertDynamicFormData
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function insertDynamicFormData($post)
+{
+print_r($post);die;    
+    $FormName = $post['FormName'];
+    $FormValueData = $post['FormValueData'];
+    $UserID = $post['UserID'];
+    $OrgID = $post['OrgID'];
+    $FormDataID = $post['FormDataID'];
+    $StatusID='1';
+    $CreatedDateTime = date('Y-m-d H:i:s');
+    $ModifyDateTime = date('Y-m-d H:i:s');
+    $con=connectToDB(); //connect to the DB
+    $StatusID='1';
+    $result = mysql_query("call insertDynamicFormData('".$FormName."','".$FormValueData."','".$UserID."','".$OrgID."','".$FormDataID."','".$StatusID."','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
+    if($result) {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Form data inserted successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Error in creation";
         $data['responseCode'] = "200";
         $data['status'] = "0";
     }
@@ -314,6 +365,8 @@ switch($ID) {
     case 10: loadAllOrgniserForms($post);
          break;  
     case 15: createStaff($post);
+         break;    
+    case 16: insertDynamicFormData($post);
          break;     	             
     default: myError(); 
 }
