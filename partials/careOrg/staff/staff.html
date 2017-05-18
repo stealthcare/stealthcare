@@ -77,7 +77,13 @@
         <div class="col-md-7  col-lg-6 col-xs-12 col-sm-8">
           <div class="alfa-pagination">
             <ul>
-              <li><a href="#" class="active">A</a></li>
+			
+			  <li ng-repeat="tp in totalPages"><a href="">{{$index+1}}</a></li>
+			
+              <li>
+			  <a href="javascript:void(0);" class="active" ng-click="sendReq(signup, 'organisation/carers/create')">A</a></li>
+			  
+			  <input type="hidden" name="id" id="requestID" value="17" ng-model="signup.id"/>
               <li><a href="#">B</a></li>
               <li><a href="#">C</a></li>
               <li><a href="#">D</a></li>
@@ -110,9 +116,42 @@
       </div>
       <div class="clearfix"></div>
       
+	  
+	  
+
+	  
+	  
       <div class="row">
-        <div class="wrapper top0">
-          <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 ">
+        <div class="wrapper top0" data-ng-init="loadAllStaff()">
+		
+		  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 " ng-repeat="S in allStaff">
+            <div class="employee">
+              <div class="col-md-4 col-xs-4 col_margin">
+                <div class="emimage"><img src="{{S.ProfilePhoto}}"></div>
+              </div>
+              <div class="col-md-8 col-xs-8">
+			    <!--<p>{{$index+1}}</p>-->
+                <h2>{{S.Title}} {{S.Name}}</h2>
+                <p>{{S.Address1}}</p>
+                <p>{{S.Mobile}}</p>
+				
+				<div data-ng-if="S.StatusID !== '2'">
+        <span class="active_employee">Active</span>
+    </div>
+	
+	<div data-ng-if="S.StatusID !== '1'">
+        <span class="inactive_employee">Inactive</span>
+    </div>
+				
+				
+                
+                <p class="small1">last logged in {{ S.ModifyDateTime }}</p>
+              </div>
+            </div>
+          </div>
+		
+		
+          <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -125,9 +164,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
             
-          <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+          <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -140,9 +179,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -155,9 +194,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -170,9 +209,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -185,9 +224,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -200,9 +239,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -215,9 +254,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -230,9 +269,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -245,9 +284,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -260,9 +299,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -275,9 +314,9 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
     	  
-    	  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
+    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"><img src="img/employee.jpg"></div>
@@ -290,7 +329,7 @@
                 <p class="small1">last logged in 12 Jan 11:30 pm</p>
               </div>
             </div>
-          </div>
+          </div>-->
           
           
           

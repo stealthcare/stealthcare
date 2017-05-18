@@ -76,7 +76,12 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	
   	// create enquiry
 	var requestID = angular.element('#requestID').val();
-  	$scope.signup = {id:requestID};
+  	var statusid = angular.element('#statusid').val();
+	if(statusid!=''){
+	  $scope.signup = {id:requestID,statusid:statusid};
+	}else{
+	  $scope.signup = {id:requestID}; 	
+	}
   	$scope.signup.title = 'Mr';
 	$scope.signup.role = '3';
   	$scope.signup.gender = 'Male';
@@ -93,9 +98,11 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         })
         .success(function(results){							  
             Data.toast(results.responseMessage);
+			$route.reload();
             if (results.status == "1") {  
-      				$scope.signup = {};
-      				$location.path(pathlink);
+			$route.reload();
+      				//$scope.signup = {};
+      				//$location.path(pathlink);
             }
         })
         .error(function(results){
@@ -105,17 +112,76 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	
 	
 	
+$scope.sendReq = function (request,pathlink) {
+		  request = angular.toJson(request);
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	
+            Data.toast(results.responseMessage);
+			$scope.allStaff = results.responseData;
+        })
+        .error(function(results){
+
+        });
+		  
+		  
+		  
+    };
+	
+	$scope.loadAllStaff = function () {
+		  var request = '[{"serviceRequestID":"17"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	
+            Data.toast(results.responseMessage);
+			$scope.allStaff = results.responseData;
+        })
+        .error(function(results){
+
+        });
+		  
+		  
+		  
+    };
+	
+	
+	$scope.toggleShow = function(){
+		if($scope.showStartEvent==true){
+		  var statusid = angular.element('#statusid').val('1');	
+		}else{
+		  var statusid = angular.element('#statusid').val('2');		
+		}
+       $scope.showStartEvent = !$scope.showStartEvent;
+    }
+	
+	
+
+	/*$scope.myhtml = function () {
+        $scope.myhtml = '<div class="myclass">some content</div>';
+    };*/
+	
+
+	// Profile Photo
 	$scope.fileReaderSupported = window.FileReader != null;
     $scope.profilePhotoChanged = function(files){
         if (files != null) {
             var file = files[0];
+			
             if ($scope.fileReaderSupported && file.type.indexOf('image') > -1) {
                 $timeout(function() {
                     var fileReader = new FileReader();
                     fileReader.readAsDataURL(file);
                     fileReader.onload = function(e) {
-                        $timeout(function(){
-                        $scope.resultData.ProfilePhoto = e.target.result;
+                        $timeout(function(){			  
+                        $scope.signup.ProfilePhoto = e.target.result;
                         });
                     }
                 });

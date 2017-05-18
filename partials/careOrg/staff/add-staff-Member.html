@@ -21,7 +21,7 @@
                         <div class="panel-body">
 
                             <div class="form">
-                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="sendRequest(signup, 'organisation/carers/create')">
+                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="sendRequest(signup, 'organisation/carers/create')" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <h3 class="page-header">Enter Employee Details</h3>
@@ -196,13 +196,13 @@
                                         <div class="col-md-2 col-lg-2 col-sm-3 col-xs-8">
                                             <div class="input-group margin-top50">
                                                 <div class="photo_preview"> 
-                                                    <img ng-src="{{resultData.ProfilePhoto}}" id='img-upload'>
+                                                    <img ng-src="{{signup.ProfilePhoto}}" id='img-upload'>
                                                 </div>
                                                 <div class="user_upload">
                                                     <a href="javascript:;">
                                                         Upload Image
                                                         <img src="img/Upload_Icon.png"> 
-                                                        <input type="file" accept=".png, .jpg, .jpeg" onchange="angular.element(this).scope().profilePhotoChanged(this.files)" ng-model="resultData.ProfilePhoto" name="ProfilePhoto" id="imgInp">
+                                                        <input type="file" accept=".png, .jpg, .jpeg" onchange="angular.element(this).scope().profilePhotoChanged(this.files)" ng-model="signup.ProfilePhoto" name="ProfilePhoto" id="imgInp">
                                                     </a>
                                                 </div>
                                             </div>
@@ -275,13 +275,21 @@
                                                 </div>
 
                                                 <div class="col-md-6 col-xs-7">
-                                                    <button type="button" class="btn btn-danger button_float">Deactivate</button>
+                                                    <!--<button type="button" class="btn btn-danger button_float" id="modalCreateBtn" ng-hide="myVar" ng-click="addSegments()">Deactivate</button>-->
+													
+													
+													<button ng-click="toggleShow(); StartEvent()" ng-show="showStartEvent" type="button" class="btn btn-danger button_float">Deactivate</button>
+
+<button ng-click="toggleShow(); StopEvent()" ng-show="!showStartEvent" type="button" class="btn btn-success button_float">Activate</button>
+													
+													
                                                 </div>
 
                                             </div>
                                         </div>
                                     </div>
                                     <input type="hidden" name="id" id="requestID" value="15" ng-model="signup.id"/>
+									<input type="hidden" name="statusid"  value="1" ng-model="signup.statusid" id="statusid"/>
                                     <div class="row margin-top30">
                                         <div class="col-md-4 col-md-offset-7">
                                             <div id="button_float">
