@@ -5,6 +5,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 
     $scope.mindate = new Date();
 
+    $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
+        $rootScope.orgPageTitle = orgPageTitle;
+    };
+
     /*var numberOfYears = (new Date()).getYear() - 0;
     var years = $.map($(Array(numberOfYears)), function (val, i) { return i + 1900; });
     var months = $.map($(Array(12)), function (val, i) { return i + 1; });
@@ -124,7 +128,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 
     // Load All Orgniser Forms 
     $scope.loadAllOrgniserForms = function (OrgID) {
-        var request = '[{"id":"10","OrgID":"'+OrgID+'"}]';
+        var request = '[{"serviceRequestID":"10","OrgID":"'+OrgID+'"}]';
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -138,7 +142,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 
     // Load All Country
     $scope.loadAllCountry = function () {
-        var request = '[{"id":"3"}]';
+        var request = '[{"serviceRequestID":"3"}]';
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -158,20 +162,6 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             $location.path("");
             $scope.loading = false;
         });
-    };
-
-    // laod all visit
-    $scope.loadVisitCalander = function () {
-        
-    };
-
-    // laod all visit by date
-    $scope.loadVisitCalanderByDate = function (date) {
-        alert(date);
-    };
-
-    $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
-        $rootScope.orgPageTitle = orgPageTitle;
     };
 
     //************************* For form builder module ****************************//
@@ -297,6 +287,55 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             $scope.loading = false;
         });
     };
+
+    /***************************** ROSTER SYSTEM ****************************/
+    // get format date request
+    $scope.getCurrentDayWithFormat = function(dateObj){
+        var monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
+          "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"
+        ];
+        var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+        var todayMonth = monthNames[dateObj.getMonth()];
+        var todayDate = dateObj.getDate();
+        var todayYear = dateObj.getUTCFullYear();
+        var todayDay = dayNames[dateObj.getDay()];
+        return todayDay+', '+todayDate+' '+todayMonth+' '+todayYear;
+    };
+
+    // get current date with format
+    $scope.getCurrentDate = function (date) {
+        var format = $scope.getCurrentDayWithFormat(date);
+        $('h3.page-header').text(format);
+        var timestamp = Math.floor(date / 1000);
+        $('#timestamp').val(timestamp);
+    };
+
+    // laod all visit by Single date
+    $scope.loadVisitsBySingleDate = function (date) {
+        var currentTimestamp = $('#timestamp').val();
+        var timestamp = Math.floor(date / 1000);
+        //alert(currentTimestamp+'-'+timestamp);
+        if(currentTimestamp != timestamp) {
+            var format = $scope.getCurrentDayWithFormat(date);
+            $('h3.page-header').text(format);
+            $('#timestamp').val(timestamp);
+            var request = '[{"serviceRequestID":"21","date":"'+timestamp+'"}]';
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({request: request}),
+                url: serviceBase,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                $rootScope.clientVisits = results.clientVisits;
+                $rootScope.careWorkerVisits = results.careWorkerVisits;
+                $scope.loading = false;
+            });
+        }
+    };
+
 
 });
 

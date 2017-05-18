@@ -73,4 +73,61 @@ update SCP_Licenses SET OrgID=iOrgID,UserID=UID where LicenseID=iLicenseID;
 END//
 DELIMITER ;
 
+// For insert data in to form api
+DROP PROCEDURE IF EXISTS `insertDynamicFormData`;
+DELIMITER //
+CREATE  PROCEDURE `insertDynamicFormData`(in iFormValueData longtext,in iUserID int(11),in iFormDataID varchar(156),in iStatusID int(11),in iCreatedDateTime datetime, in iModifyDateTime datetime)
+BEGIN
+    IF EXISTS(select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID) then 
+        update SCP_OrgFormBuilderDataAction
+        set  FormValueData= iFormValueData, ModifyDateTime=iModifyDateTime
+        where  UserID = iUserID and FormDataID = iFormDataID;
+    ELSE 
+        insert into `SCP_OrgFormBuilderDataAction`(FormValueData,UserID,FormDataID,StatusID,CreatedDateTime,ModifyDateTime) 		values(iFormValueData,iUserID,iFormDataID,iStatusID,iCreatedDateTime,iModifyDateTime);
+    END IF;
+    select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID;
+END //
+DELIMITER ;
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DROP PROCEDURE IF EXISTS `SP_DeleteFileInfo`;
+DELIMITER //
+CREATE  PROCEDURE `SP_DeleteFileInfo`(IN pFileID int)
+BEGIN
+    Set @FileRef= null;
+    select filesinfo.ReferenceID into @FileRef FROM filesinfo where filesinfo.FileID =pFileID;
+    DELETE From filesinfo WHERE filesinfo.FileID= pFileID;
+    IF EXISTS(SELECT * from filesrefrences where filesrefrences.ReferenceID= @FileRef and filesrefrences.RefrenceCount>1) then 
+        update filesrefrences
+        set  filesrefrences.RefrenceCount= filesrefrences.RefrenceCount-1
+        where  filesrefrences.ReferenceID= @FileRef;
+        SELECT @FileRef;
+    ELSE 
+        IF(@FileRef is Not NULL) THEN
+            DELETE from filesrefrences WHERE filesrefrences.ReferenceID = @FileRef;
+            SELECT -77;
+        ELSE
+            SELECT -99;
+        END IF;
+    END IF;
+END //
+DELIMITER ;

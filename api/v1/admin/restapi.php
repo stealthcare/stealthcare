@@ -8,7 +8,7 @@ include '../../config.php';
 if(@$_REQUEST['request']) {
     // request in json string '[{"username":"abanwar","password":"123456","id":"1"}]';
     $post = json_decode($_REQUEST['request']);
-	//print_r($post);
+	//print_r($post); die();
 	if(is_array($post)){
 	  $post = $post['0'];
 	}
@@ -18,7 +18,7 @@ if(@$_REQUEST['request']) {
         $postArray[$key] = $field;
     }
     $post = $postArray;
-    $ID = $post['id'];
+    $ID = $post['serviceRequestID'];
 } 
 
 $_content_type = "application/json;charset=utf-8";
@@ -323,27 +323,84 @@ function createStaff($post)
 */
 function insertDynamicFormData($post)
 {
-print_r($post);die;    
-    $FormName = $post['FormName'];
-    $FormValueData = $post['FormValueData'];
+    $FormValueData = serialize(json_decode($post['data']));
+    //print_r(unserialize($imagesIndex)); die;
+    $explode = explode(',', $_POST['imagesIndex']);
+    //print_r($explode); die();
     $UserID = $post['UserID'];
-    $OrgID = $post['OrgID'];
     $FormDataID = $post['FormDataID'];
     $StatusID='1';
+    $success = false;
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
     $con=connectToDB(); //connect to the DB
     $StatusID='1';
-    $result = mysql_query("call insertDynamicFormData('".$FormName."','".$FormValueData."','".$UserID."','".$OrgID."','".$FormDataID."','".$StatusID."','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
-    if($result) {
-        $data['responseData'] = '';
+    $result = mysql_query("call insertDynamicFormData('".$FormValueData."','".$UserID."','".$FormDataID."','".$StatusID."','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
+    $formsData = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows['FormValueData'] = unserialize($row['FormValueData']);
+        $rows['UserID'] = $row['UserID'];
+        $rows['FormDataID'] = $row['FormDataID'];
+        $formsData[] = $rows;
+        $success = true;
+    }
+    if(!empty($_POST['imagesIndex'])) {
+        foreach ($explode as $key => $value) {
+            //echo $value; die();
+            $fileName = $_FILES[$value]['name'];
+            $targetDir = $_SERVER['DOCUMENT_ROOT']."/stealthcare/uploads/";
+            $targetFile = $targetDir . $fileName;
+            if(move_uploaded_file($_FILES[$value]['tmp_name'], $targetFile)) {
+                $success = true;
+            } else {
+                $success = false;
+            }
+        }
+    }
+    if($success) {
+        $data['responseData'] = $formsData;
         $data['responseMessage'] = "Form data inserted successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
-        $data['responseData'] = '';
-        $data['responseMessage'] = "Error in creation";
+        $data['responseData'] = $post;
+        $data['responseMessage'] = "Error in uploading...";
         $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+
+/******************************************************************************************************************/
+/* 
+*   ID=21
+*   A function used as a response to ID=21
+*   It is used to insertDynamicFormData
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function getRosterDataByDate($post)
+{
+    $Date = $post['date'];
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    $result = mysql_query("call getRosterDataByDate('".$Date."');");
+    //CHECK FOR ERROR    
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['responseMessage'] = "Get data successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Request error";
+        $data['responseCode'] = "201";
         $data['status'] = "0";
     }
     print json_encode($data);
@@ -367,6 +424,8 @@ switch($ID) {
     case 15: createStaff($post);
          break;    
     case 16: insertDynamicFormData($post);
+         break;
+    case 21: getRosterDataByDate($post);
          break;     	             
     default: myError(); 
 }

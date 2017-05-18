@@ -17,7 +17,8 @@
                <div class="wrapper">
                   <div class="row margin-top0 margin-bottom0">
                      <div class="col-md-4">
-                        <h3 class="page-header"> Thursday, 11 Jan 2017</h3>
+                        <h3 class="page-header" data-ng-init="getCurrentDate(mindate)">---</h3>
+                        <input type="hidden" value="" id="timestamp">
                      </div>
                      <div class="col-md-5">
                         <div id="button_float">
@@ -213,18 +214,102 @@
                                              <th class="roster-client-heading">18:00</th>
                                              <th class="roster-client-heading">19:00</th>
                                              <th class="roster-client-heading">20:00</th>
-                                             <th class="roster-client-heading_rightt">21:00</th>
+                                             <th class="roster-client-heading">21:00</th>
+                                             <th class="roster-client-heading">22:00</th>
+                                             <th class="roster-client-heading">23:00</th>
+                                             <th class="roster-client-heading">24:00</th>
+                                             <th class="roster-client-heading">01:00</th>
+                                             <th class="roster-client-heading">02:00</th>
+                                             <th class="roster-client-heading">03:00</th>
+                                             <th class="roster-client-heading">04:00</th>
+                                             <th class="roster-client-heading">05:00</th>
+                                             <th class="roster-client-heading_rightt">06:00</th>
                                           </tr>
                                           <tr>
-                                             <td class="roster-client headcol ">Martin</td>
-                                             <td class="roster-visit-completed">John Smith</td>
-                                             <td></td>
-                                             <td class="roster-visit-missed">John Smith</td>
-                                             <td></td>
+                                             <td class="roster-client headcol">
+                                                Martin 
+                                             </td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
-                                             <td class="roster-visit-missed">John Smith</td>
+                                             <td class="roster-visit-completed">
+                                                John Smith
+                                             </td>
+                                             <td></td>
+                                             <td colspan="3" class="roster-visit-completed">
+                                                John Smith
+                                                <div class="tootip1" style="display:none;">
+                                                   <div class="row">
+                                                      <div class="col-md-6 font-color-blue">Status</p></div>
+                                                      <div class="col-md-1 margin-right0 padding-right0">:</div>
+                                                      <div class="col-md-3 margin-left0 padding-left0"><a class="btn background-color-green">Complete</a></p></div>
+                                                      <div class="col-md-1"><a class="btn btn-primary edit2" href="#"><i class="fa fa-pencil" aria-hidden="true"> </i></a> </p></div>
+                                                   </div>
+                                                   <div class="row">
+                                                      <div class="col-md-6 font-color-blue">
+                                                         <p>Time</p>
+                                                      </div>
+                                                      <div class="col-md-1">
+                                                         <p>:</p>
+                                                      </div>
+                                                      <div class="col-md-3 margin-left0 padding-left0">
+                                                         <p>20:00 to 21:00</p>
+                                                      </div>
+                                                   </div>
+                                                   <div class="row">
+                                                      <div class="col-md-6 font-color-blue">
+                                                         <p>Care Worker</p>
+                                                      </div>
+                                                      <div class="col-md-1">
+                                                         <p>:</p>
+                                                      </div>
+                                                      <div class="col-md-3 margin-left0 padding-left0">
+                                                         <p>Johan Smith</p>
+                                                      </div>
+                                                   </div>
+                                                   <div class="row">
+                                                      <div class="col-md-6 font-color-blue">
+                                                         <p>Client</p>
+                                                      </div>
+                                                      <div class="col-md-1">
+                                                         <p>:
+                                                      </div>
+                                                      <div class="col-md-3 margin-left0 padding-left0">
+                                                         <p>Martin</p>
+                                                      </div>
+                                                   </div>
+                                                   <div class="row">
+                                                      <div class="col-md-6 font-color-blue">
+                                                         <p>Outcomes Achieved</p>
+                                                      </div>
+                                                      <div class="col-md-1">
+                                                         <p>:
+                                                      </div>
+                                                      <div class="col-md-3 margin-left0 padding-left0">
+                                                         <p>Yes</p>
+                                                      </div>
+                                                   </div>
+                                                   <div class="row">
+                                                      <div class="col-md-6 font-color-blue">
+                                                         <p>Tasks</p>
+                                                      </div>
+                                                      <div class="col-md-1 ">:</div>
+                                                      <div class="col-md-3 text-color-green margin-left0 padding-left0">
+                                                         <p>Shopping Walk in park </p>
+                                                      </div>
+                                                   </div>
+                                                   <div class="row">
+                                                      <div class="col-md-6"></div>
+                                                      <div class="col-md-1"></div>
+                                                      <div class="col-md-3 margin-left0 padding-left0">
+                                                         <p><a href="#" class="text-color-dark">See More...</a> </p>
+                                                      </div>
+                                                   </div>
+                                                </div>
+                                             </td>
+                                             <td class="roster-new-visit-half ">
+                                                John Smith
+                                             </td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
@@ -232,74 +317,12 @@
                                              <td></td>
                                              <td></td>
                                              <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-client headcol">Martin </td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-visit-completed">John Smith</td>
-                                             <td></td>
-                                             <td colspan="3" class="roster-visit-completed">John Smith</td>
-                                             <td class="roster-new-visit-half ">John Smith</td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-client headcol ">Martin</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td ></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td ></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-new-visit">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-client headcol  headcol">Martin</td>
-                                             <td></td>
-                                             <td class="roster-visit-incomplete">John Smith</td>
-                                             <td></td>
-                                             <td class="roster-visit-incomplete">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-new-visit"> John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-client headcol  headcol">Martin</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-visit-incomplete">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-visit-incomplete">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-new-visit"> John Smith</td>
                                              <td></td>
                                              <td></td>
                                           </tr>
@@ -310,7 +333,7 @@
                               <div class="col-lg-3 col-md-3 ">
                                  <div class="inline-calender">
                                     <div class="well well-sm" ng-model="dt">
-                                       <datepicker ng-click="loadVisitCalanderByDate(dt)" min="minDate" show-weeks="showWeeks"></datepicker>
+                                       <datepicker ng-click="loadVisitsBySingleDate(dt)" min="minDate" show-weeks="showWeeks"></datepicker>
                                     </div>
                                  </div>
                               </div>
@@ -354,61 +377,16 @@
                                              <th class="roster-client-heading headrow">18:00</th>
                                              <th class="roster-client-heading headrow">19:00</th>
                                              <th class="roster-client-heading headrow"  >20:00</th>
-                                             <th class="roster-client-heading_rightt headrow">21:00</th>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-careworker-heading headcol">John Smith</td>
-                                             <td class="roster-visit-completed">Martin</td>
-                                             <td></td>
-                                             <td ></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-visit-missed">Martin</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-new-visit"> Martin</td>
-                                             <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-careworker-heading headcol">John Smith </td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-visit-completed">Martin</td>
-                                             <td></td>
-                                             <td ></td>
-                                             <td class="roster-new-visit-half ">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-careworker-heading headcol">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td ></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td ></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td class="roster-new-visit">Martin</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
+                                             <th class="roster-client-heading headrow">21:00</th>
+                                             <th class="roster-client-heading headrow">22:00</th>
+                                             <th class="roster-client-heading headrow">23:00</th>
+                                             <th class="roster-client-heading headrow">24:00</th>
+                                             <th class="roster-client-heading headrow">01:00</th>
+                                             <th class="roster-client-heading headrow">02:00</th>
+                                             <th class="roster-client-heading headrow">03:00</th>
+                                             <th class="roster-client-heading headrow">04:00</th>
+                                             <th class="roster-client-heading headrow">05:00</th>
+                                             <th class="roster-client-heading_rightt">06:00</th>
                                           </tr>
                                           <tr>
                                              <td class="roster-careworker-heading headcol">John Smith</td>
@@ -425,20 +403,13 @@
                                              <td ></td>
                                              <td></td>
                                              <td></td>
-                                          </tr>
-                                          <tr>
-                                             <td class="roster-careworker-heading headcol">John Smith</td>
-                                             <td></td>
-                                             <td></td>
-                                             <td></td>
-                                             <td colspan="3" class="roster-visit-completed">Martin</td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
                                              <td></td>
-                                             <td ></td>
                                              <td></td>
-                                             <td class="roster-visit-incomplete">Martin</td>
+                                             <td></td>
+                                             <td></td>
                                              <td></td>
                                              <td></td>
                                           </tr>
@@ -459,78 +430,6 @@
                                  </ul>
                               </div>
                               <div class="col-lg-5"></div>
-                           </div>
-                           <div class="row">
-                              <div class="col-md-4 col-md-offset-4">
-                                 <div class="tootip1">
-                                    <div class="row">
-                                       <div class="col-md-6 font-color-blue">Status</p></div>
-                                       <div class="col-md-1 margin-right0 padding-right0">:</div>
-                                       <div class="col-md-3 margin-left0 padding-left0"><a class="btn background-color-green">Complete</a></p></div>
-                                       <div class="col-md-1"><a class="btn btn-primary edit2" href="#"><i class="fa fa-pencil" aria-hidden="true"> </i></a> </p></div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-md-6 font-color-blue">
-                                          <p>Time</p>
-                                       </div>
-                                       <div class="col-md-1">
-                                          <p>:</p>
-                                       </div>
-                                       <div class="col-md-3 margin-left0 padding-left0">
-                                          <p>20:00 to 21:00</p>
-                                       </div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-md-6 font-color-blue">
-                                          <p>Care Worker</p>
-                                       </div>
-                                       <div class="col-md-1">
-                                          <p>:</p>
-                                       </div>
-                                       <div class="col-md-3 margin-left0 padding-left0">
-                                          <p>Johan Smith</p>
-                                       </div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-md-6 font-color-blue">
-                                          <p>Client</p>
-                                       </div>
-                                       <div class="col-md-1">
-                                          <p>:
-                                       </div>
-                                       <div class="col-md-3 margin-left0 padding-left0">
-                                          <p>Martin</p>
-                                       </div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-md-6 font-color-blue">
-                                          <p>Outcomes Achieved</p>
-                                       </div>
-                                       <div class="col-md-1">
-                                          <p>:
-                                       </div>
-                                       <div class="col-md-3 margin-left0 padding-left0">
-                                          <p>Yes</p>
-                                       </div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-md-6 font-color-blue">
-                                          <p>Tasks</p>
-                                       </div>
-                                       <div class="col-md-1 ">:</div>
-                                       <div class="col-md-3 text-color-green margin-left0 padding-left0">
-                                          <p>Shopping Walk in park </p>
-                                       </div>
-                                    </div>
-                                    <div class="row">
-                                       <div class="col-md-6"></div>
-                                       <div class="col-md-1"></div>
-                                       <div class="col-md-3 margin-left0 padding-left0">
-                                          <p><a href="#" class="text-color-dark">See More...</a> </p>
-                                       </div>
-                                    </div>
-                                 </div>
-                              </div>
                            </div>
                         </div>
                   </div>

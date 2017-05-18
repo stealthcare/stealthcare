@@ -718,6 +718,14 @@ button .ng-binding {
   border-color: hsla(0, 0%, 0%, 0);
   border-radius: 50%;
   color: hsl(209, 48%, 67%);
+  pointer-events: none;
+}
+
+.inline-calender .btn-default:hover {
+  background-color: hsl(0, 0%, 100%);
+  border-color: hsla(0, 0%, 0%, 0);
+  border-radius: 50%;
+  color: hsl(209, 48%, 67%);
 }
 
 .text-info {
