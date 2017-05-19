@@ -117,12 +117,12 @@ function createEnquiry($post)
     $result = mysql_query("call createEnquiry('".$OrgID."','".$CustomerTitle."','".$CustomerName."','".$CustomerSurname."','".$CustomerMiddleName."','".$DateOfBirth."','".$NHSNumber."','".$Gender."','".$Ethnicity."','".$Address1."','".$Address2."','".$PostCode."','".$City."','".$Landline."','".$ContactNo."','".$OtherDetails."','".$CareInfo."','".$OutcomesInfo."','".$SupportInfo."','".$MakeEnq."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."')")or die(mysql_error());
     if($result) {
         $data['responseData'] = '';
-        $data['responseMessage'] = "Created successfully";
+        $data['message'] = "Created successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['responseMessage'] = "Error in Creation";
+        $data['message'] = "Error in Creation";
         $data['responseCode'] = "200";
         $data['status'] = "0";
     }
@@ -347,12 +347,12 @@ function createStaff($post)
    
     if($result) {
         $data['responseData'] = '';
-        $data['responseMessage'] = "Created successfully";
+        $data['message'] = "Created successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['responseMessage'] = "Error in Creation";
+        $data['message'] = "Error in Creation";
         $data['responseCode'] = "200";
         $data['status'] = "0";
     }
@@ -510,7 +510,7 @@ function loadStaff($post){
 		
 	$sql="SELECT st.*
 	FROM SCP_Staff as st
-	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' LIMIT 0, 10";
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."'";
 	
 		$result = mysql_query($sql);
 	
@@ -522,18 +522,60 @@ function loadStaff($post){
     }
     if($rows) {
         $data['responseData'] = $rows;
-        $data['responseMessage'] = "All staff get successfully";
+        $data['message'] = "All staff get successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['responseMessage'] = "Request error";
+        $data['message'] = "Request error";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }
     print json_encode($data);
     mysql_close($con);   //close the connection
 } 
+
+
+function loadStaffAlpha($post){
+
+//echo '<pre/>';
+//print_r($post);die;
+    session_start();
+    $OrgID=$_SESSION['OrgID'];
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+   // $result = mysql_query("select*from SCP_Staff where OrgID='".$OrgID."'");
+	
+	$char=$post['name'];
+    $sql="SELECT st.*
+	FROM SCP_Staff as st
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.Name LIKE '".$char."%'";
+	
+		$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Request error";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+function searchUniversalParam($post){
+
+}
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -558,6 +600,12 @@ switch($ID) {
     case 21: getRosterClientDataByDate($post);
          break;  
     case 22: getRosterCareWorkerDataByDate($post);
+	     break;     
+	case 18: loadStaffAlpha($post);
+	     break; 
+	case 19: searchUniversalParam($post);	
+		 break;  	       	 
+    case 21: getRosterDataByDate($post);
          break;     	             
     default: myError(); 
 }

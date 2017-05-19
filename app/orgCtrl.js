@@ -97,7 +97,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){							  
-            Data.toast(results.responseMessage);
+            Data.toast(results);
 			$route.reload();
             if (results.status == "1") {  
 			$route.reload();
@@ -121,7 +121,7 @@ $scope.sendReq = function (request,pathlink) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){	
-            Data.toast(results.responseMessage);
+            Data.toast(results);
 			$scope.allStaff = results.responseData;
         })
         .error(function(results){
@@ -132,6 +132,48 @@ $scope.sendReq = function (request,pathlink) {
 		  
     };
 	
+	
+	$scope.sendReqAlpha = function (name) {
+		  var request = '[{"serviceRequestID":"18","name":"'+name+'"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	
+            Data.toast(results);
+			$scope.allStaff = results.responseData;
+        })
+        .error(function(results){
+
+        });
+		  
+		  
+		  
+    };
+	
+	$scope.searchUniversalParam = function (param) {
+		  var request = '[{"serviceRequestID":"19","param":"'+param+'"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	
+            Data.toast(results);
+			$scope.allStaff = results.responseData;
+        })
+        .error(function(results){
+
+        });	  
+    };
+	
+	
+	
+	
+	
 	$scope.loadAllStaff = function () {
 		  var request = '[{"serviceRequestID":"17"}]';
         $http({
@@ -141,7 +183,7 @@ $scope.sendReq = function (request,pathlink) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){	
-            Data.toast(results.responseMessage);
+            Data.toast(results);
 			$scope.allStaff = results.responseData;
         })
         .error(function(results){
