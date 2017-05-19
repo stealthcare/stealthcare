@@ -596,17 +596,15 @@ switch($ID) {
     case 16: insertDynamicFormData($post);
          break;
 	case 17: loadStaff($post);
-	     break;     	       	 
+	     break;      
+    case 18: loadStaffAlpha($post);
+         break; 
+    case 19: searchUniversalParam($post);   
+         break;    	       	 
     case 21: getRosterClientDataByDate($post);
          break;  
     case 22: getRosterCareWorkerDataByDate($post);
-	     break;     
-	case 18: loadStaffAlpha($post);
-	     break; 
-	case 19: searchUniversalParam($post);	
-		 break;  	       	 
-    case 21: getRosterDataByDate($post);
-         break;     	             
+	     break;     	             
     default: myError(); 
 }
 

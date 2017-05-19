@@ -1,4 +1,4 @@
-app.controller('authCtrl', function ($scope, $timeout, $rootScope, $templateCache, $window, $route, $routeParams, $location, $http, Data) {
+app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templateCache, $window, $route, $routeParams, $location, $http, Data) {
     //initially set those objects to null to avoid undefined error
     $scope.login = {};
     $scope.signup = {
@@ -157,7 +157,8 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $templateCach
     // Load All Forms 
     $scope.loadAllForms = function () {
         Data.get('loadAllForms').then(function (results) {
-            $scope.allForms = results.response_data;
+            $scope.assessorFroms = results.assessor;
+            $scope.careworkerFroms = results.careworker;
         });
     };
 
@@ -510,13 +511,26 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $templateCach
 
     //************************* For form builder module ****************************//
 
+    $( "#showModal" ).hide();
     // create Document request
-    $scope.createDocument = function (reqparams) {
+    $scope.createDocument = function () {
+        $( "#showModal" ).show();
+    };
+
+    $scope.createDocumentOk = function (reqparams) {
+        $( "#showModal" ).hide();
+        $( ".forms-default" ).hide();
+        var UserTypeID = angular.element('#UserTypeID').val();
         $('#fb-builder').css('display','block');
         $('#fb-builder').css('border-top','1px dashed');
         $('#fb-builder').css('border-bottom','1px dashed');
         $('.formBuilderActionBtn').css('display','block');
+        $( "#UTID" ).text(UserTypeID);
     };
+
+    $scope.cancel = function () {
+        $( "#showModal" ).hide();
+    }
 
     // edit Document request
     $scope.editDocument = function (reqparams) {
@@ -599,10 +613,11 @@ app.controller('authCtrl', function ($scope, $timeout, $rootScope, $templateCach
         $scope.loading = true;
         var FormDataJson = angular.element('#isShowScope').text();
         var FormDataJsonValue = angular.element('#isShowValueScope').text();
+        var UserTypeID = angular.element('#UTID').text();
         //alert(StatusID);
         $http({
             method: 'post',
-            data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue}),
+            data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue,UserTypeID: UserTypeID}),
             url: serviceBase+'saveForm',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })

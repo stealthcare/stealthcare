@@ -286,7 +286,7 @@ color: orange;
    margin: -100px 0 0 -100px;
 }
 .form-builder {
-  background-color: hsl(209, 30%, 67%) !important;
+  background-color: #6498C3 !important;
   box-shadow: 0 0 10px 0 hsl(209, 30%, 67%);
 }
 ul.form-builder-sidebar-menu {
@@ -505,6 +505,72 @@ div.popover form.ng-pristine {
 .fb-form-object-editable.fb-draggable {
   cursor: none;
   pointer-events: none;
+}
+ul.sub {
+  padding: 0;
+  width: 85%;
+}
+.sub li a {
+  background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0;
+  border: 1px solid hsl(0, 0%, 80%);
+  margin-bottom: 8px;
+  padding: 10px 15px;
+  color: hsl(0, 0%, 10%);
+  font-size: 16px;
+  width: 100%;
+  display: inline-block;
+}
+#showModal {
+  position: fixed;
+  top: 30%;
+  width: 100%;
+}
+.modal-bodys {
+  background: hsl(0, 0%, 100%) none repeat scroll 0 0;
+  border-radius: 15px;
+  box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.176) !important;
+  margin: 0 auto;
+  padding: 30px;
+  position: relative;
+  top: 30%;
+  width: 400px;
+  z-index: 2147483647;
+}
+.modal-bodys-bg {
+  background: hsl(0, 0%, 80%) none repeat scroll 0 0;
+  height: 100%;
+  opacity: 0.5;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 999;
+}
+
+/* button recolor */
+.nav-pills > li.active > a, .btn-primary {
+  background-color: #2A3F50 !important;
+  text-align: center;
+  color: #fff !important;
+  font-weight: bold;
+}
+.nav-pills > li > a{
+  text-align: center;
+  color: #000 !important;
+  background-color: #fff !important;
+  border-radius: 0 !important;
+}
+ul.nav.nav-pills {
+  display: table;
+  width: 100%;
+}
+ul.nav.nav-pills li {
+  background: #91ABC4;
+  display: table-cell;
+  width: 50%;
+}
+.jumbotron {
+  background-color: hsla(0, 0%, 0%, 0) !important;
+  padding: 0 !important;
 }
 
 

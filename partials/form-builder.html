@@ -44,6 +44,26 @@
                       <div class="col-md-9" style="margin-bottom: 80px;">
 
                           <div class="panel panel-default">
+                              <div class="forms-default">
+                                <h4 style="color: rgb(100, 152, 195);">Assessor Forms</h4>
+                                <ul class="sub">
+                                  <li ng-repeat="F in assessorFroms"> 
+                                    <a ng-click="callForm(F.FormID)" href="javascript:;">
+                                      <span>{{ F.FormName }}</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                                <br><br>
+                                <h4 style="color: rgb(100, 152, 195);">Care Worker Forms</h4>
+                                <ul class="sub">
+                                  <li ng-repeat="F in careworkerFroms"> 
+                                    <a ng-click="callForm(F.FormID)" href="javascript:;">
+                                      <span>{{ F.FormName }}</span>
+                                    </a>
+                                  </li>
+                                </ul>
+                              </div>
+
                               <div id="fb-builder" fb-builder="default" style="display:none;"></div>
                                 <!--div class="panel-footer">
                                   <div class="checkbox">
@@ -54,6 +74,7 @@
                                   <pre ng-if="isShowScope">{{form}}</pre>
                               </div-->
                               <div id="isShowScope">{{form}}</div>
+                              <div id="UTID" style="height: 0px; width: 0px; line-height: 0; visibility: hidden;"></div>
                           </div>
                           <div class="viewForm" style="display:none;">
                             <h2>New Document</h2>
@@ -109,3 +130,26 @@
     </section>
   <!-- container section start -->
 </section>
+
+<div id="showModal">
+  <div class="modal-bodys">
+    <div class="modal-header">
+        <h4>Select Staff</h4>
+    </div>
+    <div class="modal-body">
+        <select name="UserTypeID" id="UserTypeID" class="droupdown1">
+            <option value="4">
+                Assessor
+            </option>
+            <option value="5">
+                Care Worker
+            </option>
+        </select>
+    </div>
+    <div class="modal-footer">
+      <button class="btn button2" ng-click="createDocumentOk()">Okay</button>
+      <button class="btn button2" ng-click="cancel()">Cancel</button>
+    </div>
+  </div>
+  <div class="modal-bodys-bg"></div>
+</div>

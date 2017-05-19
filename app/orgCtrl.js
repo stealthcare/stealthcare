@@ -9,6 +9,16 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $rootScope.orgPageTitle = orgPageTitle;
     };
 
+    $scope.tab = 1;
+
+    $scope.setTab = function(newTab){
+      $scope.tab = newTab;
+    };
+
+    $scope.isSet = function(tabNum){
+      return $scope.tab === tabNum;
+    };
+
     /*var numberOfYears = (new Date()).getYear() - 0;
     var years = $.map($(Array(numberOfYears)), function (val, i) { return i + 1900; });
     var months = $.map($(Array(12)), function (val, i) { return i + 1; });
@@ -230,21 +240,20 @@ $scope.sendReq = function (request,pathlink) {
             }
         }
     };
-	
-	
-	
 
     // Load All Orgniser Forms 
     $scope.loadAllOrgniserForms = function (OrgID) {
+        var serviceBase = 'api/v1/api.php?request=';
         var request = '[{"serviceRequestID":"10","OrgID":"'+OrgID+'"}]';
         $http({
             method: 'post',
-            data: $.param({request: request}),
-            url: serviceBase,
+            data: $.param({OrgID: OrgID}),
+            url: serviceBase+'loadAllFormsByOrgID',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){ 
-            $scope.allForms = results.responseData;
+            $scope.assessorFroms = results.assessor;
+            $scope.careworkerFroms = results.careworker;
         });
     };
 

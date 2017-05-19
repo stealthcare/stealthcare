@@ -1013,20 +1013,6 @@ class API extends REST {
         $this->response($this->json($successdata), 200);         
     }
 
-    private function loadAllForms() {
-        if ($this->get_request_method() != "GET") {
-            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
-            $this->response($this->json($error), 406);
-        }
-        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder`", $this->db);
-        $arr = array();
-        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
-            $arr[] = $rlt;
-        }              
-        $successdata = array('status_code' => "1", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => $arr);
-        $this->response($this->json($successdata), 200);         
-    }
-
     // ******************************* SESSION API *******************************
     private function updateSessionByOrgID() {
         if ($this->get_request_method() != "POST") {
@@ -1140,6 +1126,47 @@ class API extends REST {
     }
 
     // ******************************* CREATE FORM API *******************************
+    private function loadAllForms() {
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='4'", $this->db);
+        $assessor = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $assessor[] = $rlt;
+        } 
+
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='5'", $this->db);
+        $careworker = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $careworker[] = $rlt;
+        }            
+        $successdata = array('status_code' => "1", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => '', 'assessor' => $assessor, 'careworker' => $careworker);
+        $this->response($this->json($successdata), 200);         
+    }
+
+    private function loadAllFormsByOrgID() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $OrgID = $_POST['OrgID']; 
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='4' ", $this->db);
+        $assessor = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $assessor[] = $rlt;
+        } 
+
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='5' ", $this->db);
+        $careworker = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $careworker[] = $rlt;
+        }            
+        $successdata = array('status_code' => "1", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => '', 'assessor' => $assessor, 'careworker' => $careworker);
+        $this->response($this->json($successdata), 200);         
+    }
+
     private function saveForm() {
         if ($this->get_request_method() != "POST") {
             $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
@@ -1158,9 +1185,10 @@ class API extends REST {
         $FormName = $title; 
         $FormDataJson = $_POST['FormDataJson']; 
         $FormDataJsonValue = $_POST['FormDataJsonValue'];
+        $UserTypeID = $_POST['UserTypeID'];
         $CreatedDateTime = date('Y-m-d H:i:s');
         $ModifyDateTime = date('Y-m-d H:i:s');
-        $sql_insert = mysql_query("INSERT INTO `SCP_FormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+        $sql_insert = mysql_query("INSERT INTO `SCP_FormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `UserTypeID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$UserTypeID', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
         $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
         $this->response($this->json($error), 200);
     }
