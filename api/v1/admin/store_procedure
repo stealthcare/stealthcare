@@ -90,6 +90,29 @@ END //
 DELIMITER ;
 
 
+// For all care workers and customers
+DROP PROCEDURE IF EXISTS `getRosterClientDataByDate`;
+DELIMITER //
+CREATE PROCEDURE `getRosterClientDataByDate`(IN `iDate` datetime, IN `iOrgID` INT(11))
+BEGIN
+SELECT C.*
+FROM `SCP_Customer` as C
+INNER JOIN `SCP_Enquiry` as E ON E.CustomerID=C.CustomerID
+WHERE E.OrgID=iOrgID AND E.StatusID=1;
+END//
+DELIMITER ;
+
+DROP PROCEDURE IF EXISTS `getRosterCareWorkerDataByDate`;
+DELIMITER //
+CREATE PROCEDURE `getRosterCareWorkerDataByDate`(IN `iDate` datetime, IN `iOrgID` INT(11))
+BEGIN
+SELECT *
+FROM SCP_Staff
+WHERE OrgID=iOrgID AND StatusID=1;
+END//
+DELIMITER ;
+
+
 
 
 

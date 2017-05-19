@@ -369,15 +369,37 @@ $scope.sendReq = function (request,pathlink) {
     };
 
     // get current date with format
-    $scope.getCurrentDate = function (date) {
+    $scope.getCurrentDate = function (date,OrgID) {
         var format = $scope.getCurrentDayWithFormat(date);
         $('h3.page-header').text(format);
         var timestamp = Math.floor(date / 1000);
         $('#timestamp').val(timestamp);
+        var request = '[{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            $rootScope.clientVisits = results.response_data;
+        });
+        var request1 = '[{"serviceRequestID":"22","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request1}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            $rootScope.careWorkerVisits = results.response_data;
+            $scope.loading = false;
+        });
     };
 
     // laod all visit by Single date
-    $scope.loadVisitsBySingleDate = function (date) {
+    $scope.loadVisitsBySingleDate = function (date,OrgID) {
         var currentTimestamp = $('#timestamp').val();
         var timestamp = Math.floor(date / 1000);
         //alert(currentTimestamp+'-'+timestamp);
@@ -385,7 +407,7 @@ $scope.sendReq = function (request,pathlink) {
             var format = $scope.getCurrentDayWithFormat(date);
             $('h3.page-header').text(format);
             $('#timestamp').val(timestamp);
-            var request = '[{"serviceRequestID":"21","date":"'+timestamp+'"}]';
+            var request = '[{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
             $scope.loading = true;
             $http({
                 method: 'post',
@@ -394,9 +416,17 @@ $scope.sendReq = function (request,pathlink) {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(results){
-                Data.toast(results);
-                $rootScope.clientVisits = results.clientVisits;
-                $rootScope.careWorkerVisits = results.careWorkerVisits;
+                $rootScope.clientVisits = results.response_data;
+            });
+            var request1 = '[{"serviceRequestID":"22","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+            $http({
+                method: 'post',
+                data: $.param({request: request1}),
+                url: serviceBase,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                $rootScope.careWorkerVisits = results.response_data;
                 $scope.loading = false;
             });
         }
