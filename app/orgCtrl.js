@@ -283,13 +283,26 @@ $scope.sendReq = function (request,pathlink) {
 
     //************************* For form builder module ****************************//
 
+    $( "#showModal" ).hide();
     // create Document request
-    $scope.createDocument = function (reqparams) {
+    $scope.createDocument = function () {
+        $( "#showModal" ).show();
+    };
+
+    $scope.createDocumentOk = function (reqparams) {
+        $( "#showModal" ).hide();
+        $( ".forms-default" ).hide();
+        var UserTypeID = angular.element('#UserTypeID').val();
         $('#fb-builder').css('display','block');
         $('#fb-builder').css('border-top','1px dashed');
         $('#fb-builder').css('border-bottom','1px dashed');
         $('.formBuilderActionBtn').css('display','block');
+        $( "#UTID" ).text(UserTypeID);
     };
+
+    $scope.cancel = function () {
+        $( "#showModal" ).hide();
+    }
 
     // edit Document request
     $scope.editDocument = function (reqparams) {
@@ -298,22 +311,23 @@ $scope.sendReq = function (request,pathlink) {
 
     var query = $location.path();
     var data = query.split("/");
-    $scope.FormDataID = data[3];
+    $scope.FormID = data[3];
 
     // Duplicate Document statas request
-    $scope.duplicateDocument = function(index){
+    $scope.duplicateDocument = function(OrgID){
+        serviceBase = 'api/v1/api.php?request=';
         if(confirm("Are you sure to want to create duplicate document")){
             $scope.loading = true;
             var FormDataJson = angular.element('#isShowScope').text();
             var FormDataJsonValue = angular.element('#isShowValueScope').text();
             $http({
                 method: 'post',
-                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue}),
-                url: serviceBase+'saveForm',
+                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue,OrgID :OrgID}),
+                url: serviceBase+'saveOrgForm',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(results){
-                $window.location.href = 'form-builder';
+                //$window.location.href = 'form-builder';
                 $scope.loading = false;
             });
         }
@@ -340,19 +354,18 @@ $scope.sendReq = function (request,pathlink) {
     };
 
     // call Form request
-    $scope.callOrgForm = function (id) {
+    $scope.callOrgForm = function (id,type) {
         $scope.loading = true;
-        $window.location.href = 'organisation/form-builder/edit/'+id;
+        $window.location.href = 'organisation/form-builder/edit/'+id+'/'+type;
         $scope.loading = false;
     }; 
     $scope.callAllForms = function () {
-        $window.location.href = 'form-builder';
+        $window.location.href = 'organisation/form-builder';
     };
 
     // cancel Form request
     $scope.cancelForm = function () {
         $scope.loading = true;
-        $templateCache.removeAll();
         $window.location.reload();
         $scope.loading = false;
     }; 
@@ -368,21 +381,22 @@ $scope.sendReq = function (request,pathlink) {
     }; 
 
     // save form request
-    $scope.saveForm = function(){
+    $scope.saveForm = function(OrgID){
+        serviceBase = 'api/v1/api.php?request=';
         $scope.loading = true;
         var FormDataJson = angular.element('#isShowScope').text();
         var FormDataJsonValue = angular.element('#isShowValueScope').text();
+        var UserTypeID = angular.element('#UTID').text();
         //alert(StatusID);
         $http({
             method: 'post',
-            data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue}),
-            url: serviceBase+'saveForm',
+            data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue,UserTypeID: UserTypeID,OrgID :OrgID}),
+            url: serviceBase+'saveOrgForm',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
             Data.toast(results);
-            $templateCache.removeAll();
-            $window.location.reload();
+            //$window.location.reload();
             $scope.loading = false;
         });
     };
@@ -485,6 +499,54 @@ $scope.sendReq = function (request,pathlink) {
 
 
 });
+
+
+app.run([
+    '$builder', function($builder) {
+      return $builder.registerComponent('postCode', {
+        group: 'Default',
+        label: 'Postal Code',
+        required: false,
+        arrayToText: true,
+        template: "<div class=\"form-group\">\n    <label for=\"{{formName+index}}\" class=\"col-md-12 control-label\" ng-class=\"{'fb-required':required}\">{{label}} <i class=\"fa fa-pencil edit-component-field\" title=\"Edit Field\"></i> <i ng-click=\"popover.remove($event)\" class=\"fa fa-trash-o delete-component-field\" title=\"Delete Field\"></i></label>\n    <div class=\"col-md-8\">\n        <input type='hidden' ng-model=\"inputText\" validator-required=\"{{required}}\" validator-group=\"{{formName}}\"/>\n        <div class=\"col-sm-6\" style=\"padding-left: 0;\">\n            <input type=\"text\"\n                ng-model=\"inputArray[0]\"\n                class=\"form-control\" id=\"{{formName+index}}-0\"/>\n             </div>\n        <div class=\"col-sm-6\" style=\"padding-left: 0;\">\n            <input type=\"text\"\n                ng-model=\"inputArray[1]\"\n                class=\"form-control\" id=\"{{formName+index}}-1\"/>\n             </div>\n    </div>\n</div>",
+        popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Field Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n    <div class=\"checkbox\">\n        <label>\n    Required?        <input type='checkbox' ng-model=\"required\" />\n   </label>\n    </div>\n\n  <div class='form-group'>\n        <input type='submit' ng-click=\"popover.save($event)\" class='btn button2' value='Save'/>\n        <input type='button' ng-click=\"popover.cancel($event)\" class='btn button2' value='Cancel'/>\n    </div>\n</form>"
+      });
+    }
+  ]).controller('orgFormBuilderController', [
+    '$scope', '$builder', '$http', '$location', '$validator', function($scope, $builder, $http, $location, $validator) {
+        var serviceBase = 'api/v1/api.php?request=';
+        var query = $location.path();
+        var data = query.split("/");
+        var FormDataID = data[4];
+        var FormType = data[5];
+        //alert(FormID);
+        $http({
+            method: 'post',
+            data: $.param({FormDataID: FormDataID,FormType: FormType}),
+            url: serviceBase+'getOrgForm',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if(results.status === 'success') {
+                var json = results.response_data; 
+                var component = $.parseJSON(json);
+                $.each(component, function(i, item){
+                    var formObj = $builder.addFormObject('default', item);
+                });
+            }
+        });
+        $scope.form = $builder.forms['default'];
+        $scope.input = [];
+        $scope.defaultValue = {};
+        return $scope.submit = function() {
+            return $validator.validate($scope, 'default').success(function() {
+                return console.log('success');
+            }).error(function() {
+                return console.log('error');
+            });
+        };
+    }
+]);
 
 
 

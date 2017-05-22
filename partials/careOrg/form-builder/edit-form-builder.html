@@ -1,101 +1,100 @@
-<section id="container" class="" data-ng-init="loadCurrntActiveClassForauthCtrlSidebarMenu('form_builder')">
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('formBuilder')">
     <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntPageTitle('Form Builder')">
-    <div ng-include="'partials/includes/SuperAdminHeader.html'"></div>
+    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Form Builder')">
+    <div ng-include="'partials/careOrg/includes/header.html'"></div>
     <!------------ End Header ---------------->
 
     <!-- start: Main Menu -->
     <aside>
-        <!------------ Start Sidebar ---------------->
-        <div ng-include="'partials/includes/SuperAdminSidebar.html'"></div>
-        <!------------ End Sidebar ---------------->
-    </aside>
-    <!-- end: Main Menu -->
-
-    <!-- start: Main Menu -->
-    <!--aside>
-      <div id="sidebar"  class="nav-collapse nav form-builder">
-        <ul class="form-builder-sidebar-menu">
-          <li class="active"> 
-            <a class="" href="{{baseUrl}}">
-              <span>Enquiry Form</span>
-              <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
-            </a>
-          </li>
-          <li class="active"> 
-            <a class="" href="{{baseUrl}}">
-              <span>Enquiry Form</span>
-              <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
-            </a>
-          </li>
-        </ul>
+      <!--sidebar start-->
+      <div data-ng-init="loadAllOrgniserForms(OrgID)"></div>
+      <div id="sidebar" class="nav-collapse nav form-builder" ng-nicescroll nice-option="{cursorcolor: '#2B4051'}">
+        <div class="tabs">
+          <ul class="nav nav-pills nav-stacked">
+            <li ng-class="{ active: isSet(1) }">
+                <a href ng-click="setTab(1)">Assessor</a>
+            </li>
+            <li ng-class="{ active: isSet(2) }">
+                <a href ng-click="setTab(2)">Care Worker</a>
+            </li>
+          </ul>
+        </div>
+        <div class="showtabs">
+          <div class="jumbotron">
+            <div ng-show="isSet(1)">                 
+              <ul class="form-builder-sidebar-menu">
+                <li ng-repeat="F in assessorFroms"> 
+                  <a ng-click="callOrgForm(F.FormDataID,F.FromType)" href="javascript:;">
+                    <span>{{ F.FormName }}</span>
+                    <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+            <div ng-show="isSet(2)">
+              <ul class="form-builder-sidebar-menu">
+                <li ng-repeat="F in careworkerFroms"> 
+                  <a ng-click="callOrgForm(F.FormDataID,F.FromType)" href="javascript:;">
+                    <span>{{ F.FormName }}</span>
+                    <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
       </div>
-    </aside-->
+      <!--sidebar end-->
+    </aside>
     <!-- end: Main Menu -->
     
     <!--main content start-->
-    <section id="main-content" ng-controller="DemoController">
+    <section id="main-content" ng-controller="orgFormBuilderController">
         <section class="wrapper"> 
             <!--contaent are start-->
             <div class="row">
-                <div class="col-md-9 col-lg-9">
+                <div class="col-md-9 col-lg-9">                    
                     <!--contaent are start-->
                     <div class="row">
-                      <div class="col-md-9" style="margin-bottom: 80px;">
-
-                          <div class="panel panel-default">
+                      <div class="col-md-9">
+                          <div class="panel panel-defaults">
                               <div id="fb-builder" fb-builder="default" style="display: block; border-top: 1px dashed; border-bottom: 1px dashed;"></div>
-                                <!--div class="panel-footer">
-                                  <div class="checkbox">
-                                      <label><input type="checkbox" ng-model="isShowScope" />
-                                          Show scope
-                                      </label>
-                                  </div>
-                                  <pre ng-if="isShowScope">{{form}}</pre>
-                              </div-->
                               <div id="isShowScope">{{form}}</div>
+                              <div id="UTID" style="height: 0px; width: 0px; line-height: 0; visibility: hidden;"></div>
                           </div>
                           <div class="viewForm" style="display:none;">
                             <h2>New Document</h2>
                             <form class="form-horizontal">
                                 <div ng-model="input" fb-form="default" fb-default="defaultValue"></div>
-                                <!--div class="form-group">
-                                    <div class="col-md-8 col-md-offset-4">
-                                        <input type="submit" ng-click="submit()" class="btn btn-default"/>
-                                    </div>
-                                </div-->
                             </form>
                             <div id="isShowValueScope" style="height: 0px; width: 0px; line-height: 0; visibility: hidden;">{{input}}</div>
-                            <!--div class="checkbox">
-                                <label><input type="checkbox" ng-model="isShowScope" ng-init="isShowScope=true" />
-                                    Show scope
-                                </label>
-                            </div>
-                            <pre ng-if="isShowScope">{{input}}</pre-->
                           </div>
                       </div>
                       <div class="col-md-3 position-fixed">
                       </div>
-                    </div>
+                  </div>
 
                   <div class="row">
                     <div class="form-group formBuilderActionBtn" style="display:none;">
                         <button class="btn button2" type="button" ng-click="updateForm(FormID)">UPDATE FORM</button>
                         <button class="btn button2" type="submit" ng-click="viewForm()">VIEW FORM</button>
                         <button class="btn button2" type="reset" ng-click="cancelForm()">CANCEL</button>
-                    </div>                    
+                    </div> 
                   </div>
 
+                  <div class="row">
+                      <div class="col-md-12 footer"></div>
+                  </div>
                   <!--contaent are start-->
                 </div>
                 <div class="col-md-3 col-lg-3 fb-components-sidebar" ng-nicescroll nice-option="{cursorcolor: '#82ACD3'}"> 
                     <div class="fb-components-opration">  
                         <div class="opration">
-                          <a ng-click="createDocument(FormID)" class="disabled">Create Document</a>
-                          <a ng-click="editDocument(FormID)">Edit Document</a>
-                          <a ng-click="duplicateDocument(FormID)">Duplicate Document</a>
-                          <a ng-click="deleteDocument(FormID)">Delete Document</a>
-                          <!--a id="showAllDocument" ng-click="showAllDocument()">Show All Forms</a-->
+                          <a ng-click="createDocument()" class="disabled">Create Document</a>
+                          <a ng-click="editDocument()">Edit Document</a>
+                          <a ng-click="duplicateDocument(OrgID)">Duplicate Document</a>
+                          <a ng-click="deleteDocument(OrgID)">Delete Document</a>
                         </div>
                     </div>
                     <div class="fb-components-section"> 
@@ -108,4 +107,3 @@
       <!--main content end-->
     </section>
   <!-- container section start -->
-</section>

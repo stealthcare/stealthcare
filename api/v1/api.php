@@ -1146,27 +1146,6 @@ class API extends REST {
         $this->response($this->json($successdata), 200);         
     }
 
-    private function loadAllFormsByOrgID() {
-        if ($this->get_request_method() != "POST") {
-            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
-            $this->response($this->json($error), 406);
-        }
-        $OrgID = $_POST['OrgID']; 
-        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='4' ", $this->db);
-        $assessor = array();
-        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
-            $assessor[] = $rlt;
-        } 
-
-        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='5' ", $this->db);
-        $careworker = array();
-        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
-            $careworker[] = $rlt;
-        }            
-        $successdata = array('status_code' => "1", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => '', 'assessor' => $assessor, 'careworker' => $careworker);
-        $this->response($this->json($successdata), 200);         
-    }
-
     private function saveForm() {
         if ($this->get_request_method() != "POST") {
             $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
@@ -1274,6 +1253,138 @@ class API extends REST {
         $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
         $error = array('status_code' => "1", 'status' => "success", 'message' => "Data Inserted Successfully", 'response_code' => "200", 'response_data' => $arr);
         $this->response($this->json($error), 200);
+    }
+
+
+    ///////////////////////////*****************************************************///////////////////////////////////************************/////////////////////////////////////////Orgnization Panel Code Area***************************************///////////*******************/////////////////////////////////////**************////////////*************************//////////////////////////////
+    private function loadAllFormsByOrgID() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $OrgID = $_POST['OrgID']; 
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='4' ", $this->db);
+        $assessorallForms = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $assessorallForms[] = $rlt;
+        } 
+
+        $sql = mysql_query("SELECT * FROM `SCP_OrgFormBuilder` WHERE UserTypeID='4' AND OrgID='$OrgID' ", $this->db);
+        $assessorOrgForms = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $assessorOrgForms[] = $rlt;
+        } 
+        $filterAllForms = array();
+        foreach ($assessorallForms as $key => $value) {
+            if(!$this->in_array_r($value['FormDataID'], $assessorOrgForms)) {
+                $array['FormID'] = $value['FormID'];
+                $array['FormDataID'] = $value['FormDataID'];
+                $array['FormName'] = $value['FormName'];
+                $array['FormDataJson'] = $value['FormDataJson'];
+                $array['FormDataJsonValue'] = $value['FormDataJsonValue'];
+                $array['UserID'] = $value['UserID'];
+                $array['StatusID'] = $value['StatusID'];
+                $array['FromType'] = '2';
+                $array['CreatedDateTime'] = $value['CreatedDateTime'];
+                $array['ModifyDateTime'] = $value['ModifyDateTime'];
+                $filterAllForms[] = $array;
+            }
+        }
+        $assessor = array_merge($assessorOrgForms,$filterAllForms);
+        //echo '<pre>'; print_r($assessor); 
+
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE UserTypeID='5' ", $this->db);
+        $careworkerallForms = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $careworkerallForms[] = $rlt;
+        }     
+
+        $sql = mysql_query("SELECT * FROM `SCP_OrgFormBuilder` WHERE UserTypeID='5' AND OrgID='$OrgID' ", $this->db);
+        $careworkerOrgForms = array();
+        while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+            $careworkerOrgForms[] = $rlt;
+        } 
+        $carefilterAllForms = array();
+        foreach ($careworkerallForms as $key => $value) {
+            if(!$this->in_array_r($value['FormDataID'], $careworkerOrgForms)) {
+                $array['FormID'] = $value['FormID'];
+                $array['FormDataID'] = $value['FormDataID'];
+                $array['FormName'] = $value['FormName'];
+                $array['FormDataJson'] = $value['FormDataJson'];
+                $array['FormDataJsonValue'] = $value['FormDataJsonValue'];
+                $array['UserID'] = $value['UserID'];
+                $array['StatusID'] = $value['StatusID'];
+                $array['FromType'] = '2';
+                $array['CreatedDateTime'] = $value['CreatedDateTime'];
+                $array['ModifyDateTime'] = $value['ModifyDateTime'];
+                $carefilterAllForms[] = $array;
+            }
+        }
+        $careworker = array_merge($careworkerOrgForms,$carefilterAllForms);  
+        //echo '<pre>'; print_r($careworker); die();     
+        $successdata = array('status_code' => "1", 'status' => "success", 'message' => '', 'response_code' => "200", 'response_data' => '', 'assessor' => $assessor, 'careworker' => $careworker);
+        $this->response($this->json($successdata), 200);         
+    }
+
+    private function saveOrgForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $title = '';
+        print_r(json_decode($_POST['FormDataJson'])); die();
+        $arrayData = json_decode($_POST['FormDataJson']);
+        foreach ($arrayData as $key => $value) {
+            if($value->component == 'header') {
+                $title = $value->label;
+            }
+        }
+        $arr = array();
+        $FormDataID = strtoupper('FORM'.strtotime(date('d-m-Y H:i:s'))); 
+        $FormName = $title; 
+        $OrgID = $_POST['OrgID']; 
+        $FormDataJson = $_POST['FormDataJson']; 
+        $FormDataJsonValue = $_POST['FormDataJsonValue'];
+        $UserTypeID = $_POST['UserTypeID'];
+        $CreatedDateTime = date('Y-m-d H:i:s');
+        $ModifyDateTime = date('Y-m-d H:i:s');        
+        $sql_insert = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$OrgID', '1', '0', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+        $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
+        $this->response($this->json($error), 200);
+    }
+
+    private function getOrgForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $FormDataID = $_POST['FormDataID'];
+        $FormType = $_POST['FormType'];
+        if($FormType == 2) {
+            $sql = mysql_query("SELECT * FROM SCP_FormBuilder WHERE FormDataID='$FormDataID'", $this->db);
+        } else {
+            $sql = mysql_query("SELECT * FROM SCP_OrgFormBuilder WHERE FormDataID='$FormDataID'", $this->db);
+        }
+        $row = mysql_fetch_array($sql, MYSQL_ASSOC);
+        if($row) {
+            $status = "success";
+        } else {
+            $status = "fail";
+        }
+        $error = array('status_code' => "1", 'status' => $status, 'message' => "Form Get Successfully", 'response_code' => "200", 'response_data' => $row["FormDataJson"]);
+        $this->response($this->json($error), 200);
+    }
+
+    private function in_array_r($needle, $haystack, $strict = false) {
+        foreach ($haystack as $item) {
+            if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
+                return true;
+            }
+        }
+        return false;
     }
     
     // ******************************* ENCODE ARRAY INTO JSON *******************************

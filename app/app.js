@@ -132,7 +132,7 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/form-builder/form-builder.html',
                 controller: 'orgCtrl'
             })
-            .when('/organisation/form-builder/edit/:id', {
+            .when('/organisation/form-builder/edit/:id/:type', {
                 title: 'Form Builder',
                 templateUrl: 'partials/careOrg/form-builder/edit-form-builder.html',
                 controller: 'orgCtrl'
@@ -322,52 +322,6 @@ app.directive('stringNumber', function() {
     }
   }
 });*/
-
-app.run([
-    '$builder', function($builder) {
-      return $builder.registerComponent('postCode', {
-        group: 'Default',
-        label: 'Postal Code',
-        required: false,
-        arrayToText: true,
-        template: "<div class=\"form-group\">\n    <label for=\"{{formName+index}}\" class=\"col-md-12 control-label\" ng-class=\"{'fb-required':required}\">{{label}} <i class=\"fa fa-pencil edit-component-field\" title=\"Edit Field\"></i> <i ng-click=\"popover.remove($event)\" class=\"fa fa-trash-o delete-component-field\" title=\"Delete Field\"></i></label>\n    <div class=\"col-md-8\">\n        <input type='hidden' ng-model=\"inputText\" validator-required=\"{{required}}\" validator-group=\"{{formName}}\"/>\n        <div class=\"col-sm-6\" style=\"padding-left: 0;\">\n            <input type=\"text\"\n                ng-model=\"inputArray[0]\"\n                class=\"form-control\" id=\"{{formName+index}}-0\"/>\n             </div>\n        <div class=\"col-sm-6\" style=\"padding-left: 0;\">\n            <input type=\"text\"\n                ng-model=\"inputArray[1]\"\n                class=\"form-control\" id=\"{{formName+index}}-1\"/>\n             </div>\n    </div>\n</div>",
-        popoverTemplate: "<form>\n    <div class=\"form-group\">\n        <label class='control-label'>Field Label</label>\n        <input type='text' ng-model=\"label\" validator=\"[required]\" class='form-control'/>\n    </div>\n    <div class=\"checkbox\">\n        <label>\n    Required?        <input type='checkbox' ng-model=\"required\" />\n   </label>\n    </div>\n\n  <div class='form-group'>\n        <input type='submit' ng-click=\"popover.save($event)\" class='btn button2' value='Save'/>\n        <input type='button' ng-click=\"popover.cancel($event)\" class='btn button2' value='Cancel'/>\n    </div>\n</form>"
-      });
-    }
-  ]).controller('DemoController', [
-    '$scope', '$builder', '$http', '$location', '$validator', function($scope, $builder, $http, $location, $validator) {
-        var serviceBase = 'api/v1/api.php?request=';
-        var query = $location.path();
-        var data = query.split("/");
-        var FormID = data[3];
-        $http({
-            method: 'post',
-            data: $.param({FormID: FormID}),
-            url: serviceBase+'getForm',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(results){
-            if(results.status === 'success') {
-                var json = results.response_data; 
-                var component = $.parseJSON(json);
-                $.each(component, function(i, item){
-                    var formObj = $builder.addFormObject('default', item);
-                });
-            }
-        });
-        $scope.form = $builder.forms['default'];
-        $scope.input = [];
-        $scope.defaultValue = {};
-        return $scope.submit = function() {
-            return $validator.validate($scope, 'default').success(function() {
-                return console.log('success');
-            }).error(function() {
-                return console.log('error');
-            });
-        };
-    }
-]);
-
 
 /*app.run([
     '$builder', function($builder) {} ]).controller('DemoController', [ '$scope', '$builder', '$validator', function($scope, $builder, $validator) {
