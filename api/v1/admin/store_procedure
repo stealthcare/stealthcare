@@ -73,6 +73,20 @@ update SCP_Licenses SET OrgID=iOrgID,UserID=UID where LicenseID=iLicenseID;
 END//
 DELIMITER ;
 
+
+// For all staff
+DROP PROCEDURE IF EXISTS `loadStaff`;
+DELIMITER //
+CREATE PROCEDURE `loadStaff`(IN `iOrgID` int(11))
+BEGIN
+SELECT st.*
+FROM `SCP_Staff` as st
+INNER JOIN `SCP_UserLogin` as ulogin ON st.UserID=ulogin.UserID 
+WHERE st.OrgID=iOrgID;
+END//
+DELIMITER ;
+
+
 // For insert data in to form api
 DROP PROCEDURE IF EXISTS `insertDynamicFormData`;
 DELIMITER //
@@ -111,25 +125,6 @@ FROM SCP_Staff
 WHERE OrgID=iOrgID AND StatusID=1;
 END//
 DELIMITER ;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 DROP PROCEDURE IF EXISTS `SP_DeleteFileInfo`;

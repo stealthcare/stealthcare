@@ -503,16 +503,11 @@ function loadStaff($post){
     $OrgID=$_SESSION['OrgID'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
-   // $result = mysql_query("select*from SCP_Staff where OrgID='".$OrgID."'");
-	
-	
-
-		
-	$sql="SELECT st.*
+	/*$sql="SELECT st.*
 	FROM SCP_Staff as st
-	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."'";
-	
-		$result = mysql_query($sql);
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."'";*/
+	$sql="call loadStaff('".$OrgID."');";
+	$result = mysql_query($sql);
 	
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
@@ -535,23 +530,24 @@ function loadStaff($post){
     mysql_close($con);   //close the connection
 } 
 
-
+/******************************************************************************************************************/
+/* 
+*   ID=18
+*   A function used as a response to ID=18
+*   It is used to loadStaffAlpha
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
 function loadStaffAlpha($post){
-
-//echo '<pre/>';
-//print_r($post);die;
     session_start();
     $OrgID=$_SESSION['OrgID'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
-   // $result = mysql_query("select*from SCP_Staff where OrgID='".$OrgID."'");
-	
 	$char=$post['name'];
     $sql="SELECT st.*
 	FROM SCP_Staff as st
 	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.Name LIKE '".$char."%'";
-	
-		$result = mysql_query($sql);
+	$result = mysql_query($sql);
 	
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
@@ -573,8 +569,100 @@ function loadStaffAlpha($post){
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
+/******************************************************************************************************************/
+/* 
+*   ID=19
+*   A function used as a response to ID=19
+*   It is used to searchUniversalParam
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
 function searchUniversalParam($post){
-
+    $param = $post['param'];
+	session_start();
+	$OrgID=$_SESSION['OrgID'];
+	$con=connectToDB(); //connect to the DB
+	mysql_query('SET NAMES UTF8');
+	
+	if($param=='Name'){
+	$sql="SELECT st.*
+	FROM SCP_Staff as st
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' ORDER BY st.Name";
+	}elseif($param=='Surname'){
+	$sql="SELECT st.*
+	FROM SCP_Staff as st
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' ORDER BY st.Surname";
+	
+	}elseif($param=='DateOfBirth'){
+		$sql="SELECT st.*
+	FROM SCP_Staff as st
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' ORDER BY st.DateOfBirth";
+	}elseif($param=='address'){
+		$sql="SELECT st.*
+	FROM SCP_Staff as st
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' ORDER BY st.Address1";
+	}
+	
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Request error";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=20
+*   A function used as a response to ID=20
+*   It is used to searchUniversalParam
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function searchStaff($post){
+   session_start();
+    $OrgID=$_SESSION['OrgID'];
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	$searchTxt=$post['searchTxt'];
+    $sql="SELECT st.*
+	FROM SCP_Staff as st
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.Name LIKE '".$searchTxt."%'";
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Request error";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -600,11 +688,13 @@ switch($ID) {
     case 18: loadStaffAlpha($post);
          break; 
     case 19: searchUniversalParam($post);   
-         break;    	       	 
+         break;  
+    case 20: searchStaff($post);   
+         break;   	       	 
     case 21: getRosterClientDataByDate($post);
          break;  
     case 22: getRosterCareWorkerDataByDate($post);
-	     break;     	             
+	     break;     	                  	       	  	             
     default: myError(); 
 }
 

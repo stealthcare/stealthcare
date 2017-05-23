@@ -163,6 +163,8 @@ $scope.sendReq = function (request,pathlink) {
 		  
     };
 	
+	//search staff by parameters
+	
 	$scope.searchUniversalParam = function (param) {
 		  var request = '[{"serviceRequestID":"19","param":"'+param+'"}]';
         $http({
@@ -180,9 +182,28 @@ $scope.sendReq = function (request,pathlink) {
         });	  
     };
 	
+	//search staff by txt
 	
+	$scope.searchStaff = function (param) {
+		 var searchTxt=angular.element('#searchTxt').val();
+		
+		  var request = '[{"serviceRequestID":"20","param":"'+param+'","searchTxt":"'+searchTxt+'"}]';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	
+            Data.toast(results);
+			$scope.allStaff = results.responseData;
+        })
+        .error(function(results){
+
+        });	  
+    };
 	
-	
+	//load staff
 	
 	$scope.loadAllStaff = function () {
 		  var request = '[{"serviceRequestID":"17"}]';
