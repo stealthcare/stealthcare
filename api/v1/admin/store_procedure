@@ -56,7 +56,7 @@ DELIMITER ;
 
 // For Create staff
 DELIMITER //
-CREATE PROCEDURE `createStaff`(IN `iOrgID` int(11),IN `iTitle` varchar(150),IN `iName` varchar(150),IN `iSurname` varchar(150),IN `iMiddleName` varchar(150),IN `iDateOfBirth` varchar(40),IN `iGender` varchar(40),IN `iEthnicity` varchar(40),IN `iHouseNumber` varchar(150),IN `iAddress1` varchar(150),IN `iAddress2` varchar(150),IN `iCity` varchar(9),IN `iCountry` varchar(150),IN `iPostCode` varchar(9),IN `iMobile` varchar(150),IN `iProfilePhoto` varchar(256),IN `iNOKName` varchar(150),IN `iNOKMobile` varchar(150),IN `iNOKEmail` varchar(150),IN `iUserName` varchar(150),IN `iPassword` varchar(150),IN `iRightsID` int(11), IN `iAccessLevelID` int(11),IN `iUserTypeID` int(11),`iCreatedDateTime` datetime(3),`iModifyDateTime` datetime(3),`iStatusID` int(11),`iLicenseID` int(11))
+CREATE PROCEDURE `createStaff`(IN `iOrgID` int(11),IN `iTitle` varchar(150),IN `iName` varchar(150),IN `iSurname` varchar(150),IN `iMiddleName` varchar(150),IN `iDateOfBirth` varchar(40),IN `iGender` varchar(40),IN `iEthnicity` varchar(40),IN `iHouseNumber` varchar(150),IN `iAddress1` varchar(150),IN `iAddress2` varchar(150),IN `iCity` varchar(9),IN `iCountry` varchar(150),IN `iPostCode` varchar(9),IN `iMobile` varchar(150),IN `iProfilePhoto` varchar(256),IN `iNOKName` varchar(150),IN `iNOKMobile` varchar(150),IN `iNOKEmail` varchar(150),IN `iUserName` varchar(150),IN `iPassword` varchar(150),IN `iRightsID` int(11), IN `iAccessLevelID` int(11),IN `iUserTypeID` int(11),`iCreatedDateTime` datetime,`iModifyDateTime` datetime,`iStatusID` int(11),`iLicenseID` int(11))
 BEGIN
 DECLARE UID int;
 DECLARE UserAccessID int;

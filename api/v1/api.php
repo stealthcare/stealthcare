@@ -1332,7 +1332,7 @@ class API extends REST {
             $this->response($this->json($error), 406);
         }
         $title = '';
-        print_r(json_decode($_POST['FormDataJson'])); die();
+        //print_r(json_decode($_POST['FormDataJson'])); die();
         $arrayData = json_decode($_POST['FormDataJson']);
         foreach ($arrayData as $key => $value) {
             if($value->component == 'header') {
@@ -1374,7 +1374,56 @@ class API extends REST {
         } else {
             $status = "fail";
         }
-        $error = array('status_code' => "1", 'status' => $status, 'message' => "Form Get Successfully", 'response_code' => "200", 'response_data' => $row["FormDataJson"]);
+        $error = array('status_code' => "1", 'status' => $status, 'message' => "Form Get Successfully", 'response_code' => "200", 'response_data' => $row["FormDataJson"], 'UserTypeID' => $row["UserTypeID"]);
+        $this->response($this->json($error), 200);
+    }
+
+    private function deleteOrgDocument() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+
+        $arr = array();
+        $FormDataID = $_POST['FormDataID'];
+        $sql = mysql_query("DELETE FROM `SCP_OrgFormBuilder` WHERE FormDataID='$FormDataID'", $this->db);
+        if($sql) {
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Document Deleted Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+
+    private function updateOrgForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $title = '';
+        //print_r(json_decode($_POST['FormDataJson'])); die();
+        $arrayData = json_decode($_POST['FormDataJson']);
+        foreach ($arrayData as $key => $value) {
+            if($value->component == 'header') {
+                $title = $value->label;
+            }
+        }
+        $arr = array();
+        $FormName = $title; 
+        $FormDataJson = $_POST['FormDataJson'];
+        $FormDataID = $_POST['FormDataID'];
+        $OrgID = $_POST['OrgID'];
+        $UserTypeID = $_POST['UserTypeID'];
+        $CreatedDateTime = date('Y-m-d H:i:s');  
+        $ModifyDateTime = date('Y-m-d H:i:s');   
+        $FormType = $_POST['FormType'];
+        if($FormType == 2) {
+            $sql = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '1', '$OrgID', '1', '1', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+        } else {
+            $sql = mysql_query("UPDATE `SCP_OrgFormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormDataID` = '$FormDataID'", $this->db);
+        }
+        $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
         $this->response($this->json($error), 200);
     }
 

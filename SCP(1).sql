@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Generation Time: May 19, 2017 at 08:48 PM
+-- Generation Time: May 23, 2017 at 12:28 PM
 -- Server version: 5.6.14
 -- PHP Version: 5.5.6
 
@@ -20,101 +20,6 @@ SET time_zone = "+00:00";
 -- Database: `SCP`
 --
 
-DELIMITER $$
---
--- Procedures
---
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createEnquiry`(IN `iOrgID` varchar(150),IN `iCustomerTitle` varchar(150),IN `iCustomerName` varchar(150),IN `iCustomerSurname` varchar(150),IN `iCustomerMiddleName` varchar(150),IN `iDateOfBirth` varchar(40),IN `iNHSNumber` varchar(150),IN `iGender` varchar(40),IN `iEthnicity` varchar(150),IN `iAddress1` varchar(150),IN `iAddress2` varchar(150),IN `iPostCode` varchar(9),IN `iCity` varchar(150),IN `iLandline` varchar(150),IN `iContactNo` varchar(150),IN `iOtherDetails` varchar(150),IN `iCareInfo` varchar(150),IN `iOutcomesInfo` varchar(150),IN `iSupportInfo` varchar(150),IN `iMakeEnq` varchar(150),IN `iRightsID` int(11), IN `iAccessLevelID` int(11),IN `iUserTypeID` int(11),`iCreatedDateTime` datetime(3),`iModifyDateTime` datetime(3),`iStatusID` int(11))
-BEGIN
-DECLARE UID int;
-insert into SCP_UserLogin (StatusID,CreatedDateTime,ModifyDateTime) values (iStatusID,iCreatedDateTime,iModifyDateTime);
-SET UID = LAST_INSERT_ID();
-insert into SCP_UserAccess (RightsID,AccessLevelID,UserID,UserTypeID,CreatedDateTime,ModifyDateTime,StatusID) values (iRightsID,iAccessLevelID,UID,iUserTypeID,iCreatedDateTime,iModifyDateTime,iStatusID);
-
-insert into SCP_Customer (CustomerTitle,CustomerName,CustomerSurname,CustomerMiddleName,DateOfBirth,NHSNumber,Gender,Ethnicity,Address1,Address2,PostCode,City,Landline,ContactNo,OtherDetails,CareInfo,OutcomesInfo,SupportInfo,MakeEnq,UserID,StatusID,CreatedDateTime,ModifyDateTime) values (iCustomerTitle,iCustomerName,iCustomerSurname,iCustomerMiddleName,iDateOfBirth,iNHSNumber,iGender,iEthnicity,iAddress1,iAddress2,iPostCode,iCity,iLandline,iContactNo,iOtherDetails,iCareInfo,iOutcomesInfo,iSupportInfo,iMakeEnq,UID,iStatusID,iCreatedDateTime,iModifyDateTime);
-SET UID = LAST_INSERT_ID();
-insert into SCP_Enquiry (OrgID,CustomerID,StatusID,CreatedDateTime,ModifyDateTime) values (iOrgID,UID,iStatusID,iCreatedDateTime,iModifyDateTime);
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `createStaff`(IN `iOrgID` int(11),IN `iTitle` varchar(150),IN `iName` varchar(150),IN `iSurname` varchar(150),IN `iMiddleName` varchar(150),IN `iDateOfBirth` varchar(40),IN `iGender` varchar(40),IN `iEthnicity` varchar(40),IN `iHouseNumber` varchar(150),IN `iAddress1` varchar(150),IN `iAddress2` varchar(150),IN `iCity` varchar(9),IN `iCountry` varchar(150),IN `iPostCode` varchar(9),IN `iMobile` varchar(150),IN `iProfilePhoto` varchar(256),IN `iNOKName` varchar(150),IN `iNOKMobile` varchar(150),IN `iNOKEmail` varchar(150),IN `iUserName` varchar(150),IN `iPassword` varchar(150),IN `iRightsID` int(11), IN `iAccessLevelID` int(11),IN `iUserTypeID` int(11),`iCreatedDateTime` datetime(3),`iModifyDateTime` datetime(3),`iStatusID` int(11),`iLicenseID` int(11))
-BEGIN
-DECLARE UID int;
-DECLARE UserAccessID int;
-
-insert into SCP_UserLogin (UserName,Password,ProfilePhoto,StatusID,CreatedDateTime,ModifyDateTime) values (iUserName,iPassword,iProfilePhoto,iStatusID,iCreatedDateTime,iModifyDateTime);
-SET UID = LAST_INSERT_ID();
-insert into SCP_UserAccess (RightsID,AccessLevelID,UserID,UserTypeID,CreatedDateTime,ModifyDateTime,StatusID) values (iRightsID,iAccessLevelID,UID,iUserTypeID,iCreatedDateTime,iModifyDateTime,iStatusID);
-SET UserAccessID = LAST_INSERT_ID();
-
-insert into SCP_Staff (Title,Name,Surname,MiddleName,DateOfBirth,Gender,Ethnicity,HouseNumber,Address1,Address2,City,Country,PostCode,Mobile,	ProfilePhoto,NOKName,NOKMobile,NOKEmail,OrgID,UserAccessID,LicenseID,UserID,StatusID,CreatedDateTime,ModifyDateTime) values (iTitle,iName,iSurname,iMiddleName,iDateOfBirth,iGender,iEthnicity,iHouseNumber,iAddress1,iAddress2,iCity,iCountry,iPostCode,iMobile,	iProfilePhoto,iNOKName,iNOKMobile,iNOKEmail,iOrgID,UserAccessID,iLicenseID,UID,iStatusID,iCreatedDateTime,iModifyDateTime);
-
-update SCP_Licenses SET OrgID=iOrgID,UserID=UID where LicenseID=iLicenseID;
-
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getRosterCareWorkerDataByDate`(IN `iDate` datetime, IN `iOrgID` INT(11))
-BEGIN
-SELECT *
-FROM SCP_Staff
-WHERE OrgID=iOrgID AND StatusID=1;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getRosterClientDataByDate`(IN `iDate` datetime, IN `iOrgID` INT(11))
-BEGIN
-SELECT C.*
-FROM `SCP_Customer` as C
-INNER JOIN `SCP_Enquiry` as E ON E.CustomerID=C.CustomerID
-WHERE E.OrgID=iOrgID AND E.StatusID=1;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getRosterDataByDate`(IN `iDate` datetime, IN `iOrgID` INT(11))
-BEGIN
-SELECT SCP_Staff.*, SCP_Customer.*
-FROM SCP_Staff, SCP_Customer
-WHERE SCP_Staff.OrgID=iOrgID AND SCP_Customer.OrgID=iOrgID AND SCP_Staff.StatusID=1 AND SCP_Customer.StatusID=1;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertDynamicFormData`(in iFormValueData longtext,in iUserID int(11),in iFormDataID varchar(156),in iStatusID int(11),in iCreatedDateTime datetime, in iModifyDateTime datetime)
-BEGIN
-    IF EXISTS(select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID) then 
-        update SCP_OrgFormBuilderDataAction
-        set  FormValueData= iFormValueData, ModifyDateTime=iModifyDateTime
-        where  UserID = iUserID and FormDataID = iFormDataID;
-    ELSE 
-        insert into `SCP_OrgFormBuilderDataAction`(FormValueData,UserID,FormDataID,StatusID,CreatedDateTime,ModifyDateTime) 		values(iFormValueData,iUserID,iFormDataID,iStatusID,iCreatedDateTime,iModifyDateTime);
-    END IF;
-    select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `loadAllCountry`()
-BEGIN
-SELECT *
-FROM `SCP_Country`;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `loadAllForms`()
-BEGIN
-SELECT *
-FROM `SCP_FormBuilder`
-WHERE StatusID=1;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `loadAllOrgniserForms`(IN `iOrgID` INT(11))
-BEGIN
-SELECT *
-FROM `SCP_OrgFormBuilder`
-WHERE OrgID=iOrgID AND StatusID=1;
-END$$
-
-CREATE DEFINER=`root`@`localhost` PROCEDURE `loginWithUsername`(IN `iUsername` VARCHAR(150), IN `iPassword` VARCHAR(150))
-BEGIN
-SELECT U.*
-FROM `SCP_UserLogin` AS U, SCP_Status AS S
-WHERE U.UserName=iUsername AND U.Password= iPassword AND S.StatusID=U.StatusID ;
-END$$
-
-DELIMITER ;
-
 -- --------------------------------------------------------
 
 --
@@ -124,8 +29,8 @@ DELIMITER ;
 CREATE TABLE IF NOT EXISTS `SCP_AccessLevel` (
   `AccessLevelID` int(11) NOT NULL AUTO_INCREMENT,
   `AccessLevelName` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`AccessLevelID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
@@ -154,8 +59,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Alert` (
   `TaskID` int(11) DEFAULT NULL,
   `StaffID` int(11) DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`AlertID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -171,8 +76,8 @@ CREATE TABLE IF NOT EXISTS `SCP_AssessmentAllocation` (
   `StaffID` int(11) DEFAULT NULL,
   `CustomerID` int(11) DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`AssessmentAllocationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -199,8 +104,8 @@ CREATE TABLE IF NOT EXISTS `SCP_CareOrg` (
   `WebSite` varchar(150) DEFAULT NULL,
   `UserID` int(11) DEFAULT NULL,
   `OtherDetails` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`OrgID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=10 ;
@@ -511,8 +416,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Customer` (
   `OutcomesInfo` varchar(150) NOT NULL,
   `SupportInfo` varchar(150) NOT NULL,
   `MakeEnq` varchar(150) NOT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`CustomerID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
@@ -539,8 +444,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Documents` (
   `StaffID` int(11) DEFAULT NULL,
   `Version` varchar(150) DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`DocumentID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -553,8 +458,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Documents` (
 CREATE TABLE IF NOT EXISTS `SCP_DocumentType` (
   `DocumentTypeID` int(11) NOT NULL,
   `Typename` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`DocumentTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -570,8 +475,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Enquiry` (
   `OrgID` int(11) NOT NULL,
   `CustomerID` int(11) DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`EnquiryID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=11 ;
 
@@ -620,9 +525,7 @@ INSERT INTO `SCP_FormBuilder` (`FormID`, `FormDataID`, `FormName`, `FormDataJson
 (12, 'FORM1494333149', 'My Form', '[{"component":"header","editable":true,"index":0,"label":"My Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textArea","editable":true,"index":2,"label":"Multi line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":3,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"radio","editable":true,"index":4,"label":"Radio","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"checkbox","editable":true,"index":5,"label":"Checkbox","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"date","editable":true,"index":6,"label":"Date","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"file","editable":true,"index":7,"label":"Image","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"postCode","editable":true,"index":8,"label":"Postal Code","value":"","description":"","placeholder":"","options":[],"required":false}]', '[{"label":"My Form","value":""},{"label":"Image","value":""},{"label":"Postal Code","value":""},{"label":"Dropdown","value":"value one"}]', 1, 4, 1, '2017-05-09 18:02:29', '2017-05-10 16:49:02'),
 (13, 'FORM1494400775', 'Test Form', '[{"component":"header","editable":true,"index":0,"label":"Test Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"date","editable":true,"index":1,"label":"Date","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"checkbox","editable":true,"index":2,"label":"Sex","value":"","description":"","placeholder":"Placeholder","options":["Baahubali","Bhalla"],"required":true},{"component":"select","editable":true,"index":3,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["Baahubali","Bhalla"],"required":false}]', '[{"label":"Test Form","value":""},{"label":"Date","value":""},{"label":"Sex","value":""}]', 1, 5, 1, '2017-05-10 12:49:35', '2017-05-17 19:15:41'),
 (14, 'FORM1495203092', 'Main Form', '[{"component":"header","editable":true,"index":0,"label":"Main Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"signature","editable":true,"index":1,"label":"Signature","value":"","description":"","placeholder":"Placeholder","options":[],"required":false}]', '[{"label":"Main Form","value":""},{"label":"Signature","value":""}]', 1, 5, 1, '2017-05-19 19:41:32', '2017-05-19 19:41:32'),
-(15, 'FORM1495203190', 'Walk Form', '[{"component":"header","editable":true,"index":0,"label":"Walk Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Name","value":"","description":"","placeholder":"Name","options":[],"required":true}]', '[{"label":"Walk Form","value":""},{"label":"Name","value":""}]', 1, 4, 1, '2017-05-19 19:43:10', '2017-05-19 19:43:10'),
-(16, 'FORM1495203312', 'sfasfasf', '[{"component":"header","editable":true,"index":0,"label":"sfasfasf","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false}]', '[{"label":"Heading","value":""},{"label":"Single line input","value":""}]', 1, 4, 1, '2017-05-19 19:45:12', '2017-05-19 19:45:31'),
-(17, 'FORM1495203353', 'testing', '[{"component":"header","editable":true,"index":0,"label":"testing","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textArea","editable":true,"index":1,"label":"Multi line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"radio","editable":true,"index":2,"label":"Radio","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false}]', '[{"label":"testing","value":""},{"label":"Multi line input","value":""},{"label":"Radio","value":"value one"}]', 1, 5, 1, '2017-05-19 19:45:53', '2017-05-19 19:45:53');
+(15, 'FORM1495203190', 'Walk Form', '[{"component":"header","editable":true,"index":0,"label":"Walk Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Name","value":"","description":"","placeholder":"Name","options":[],"required":true}]', '[{"label":"Walk Form","value":""},{"label":"Name","value":""}]', 1, 4, 1, '2017-05-19 19:43:10', '2017-05-19 19:43:10');
 
 -- --------------------------------------------------------
 
@@ -735,8 +638,8 @@ INSERT INTO `SCP_LicensesPlan` (`PlanID`, `PlanName`, `MinQty`, `MaxQty`, `Price
 CREATE TABLE IF NOT EXISTS `SCP_MedicationForm` (
   `FormID` int(11) NOT NULL AUTO_INCREMENT,
   `FormName` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`FormID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -750,8 +653,8 @@ CREATE TABLE IF NOT EXISTS `SCP_MedicationForm` (
 CREATE TABLE IF NOT EXISTS `SCP_MedicationRoute` (
   `RouteID` int(11) NOT NULL,
   `RouteName` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`RouteID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -769,8 +672,8 @@ CREATE TABLE IF NOT EXISTS `SCP_MedicationTaskDetails` (
   `MedicationRouteID` int(11) DEFAULT NULL,
   `Location` varchar(150) DEFAULT NULL,
   `Dosage` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`MedicationTaskID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -786,10 +689,10 @@ CREATE TABLE IF NOT EXISTS `SCP_Messaging` (
   `FromID` int(11) DEFAULT NULL,
   `ToID` int(11) DEFAULT NULL,
   `Text` longtext,
-  `DateTime` datetime(3) DEFAULT NULL,
+  `DateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`MessagingID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -809,18 +712,22 @@ CREATE TABLE IF NOT EXISTS `SCP_OrgFormBuilder` (
   `OrgID` int(11) NOT NULL,
   `StatusID` int(11) NOT NULL,
   `FromType` varchar(156) NOT NULL COMMENT '0=>new form,1=>custom form',
+  `UserTypeID` int(11) NOT NULL,
   `CreatedDateTime` datetime NOT NULL,
   `ModifyDateTime` datetime NOT NULL,
   PRIMARY KEY (`FormID`)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=16 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
 --
 -- Dumping data for table `SCP_OrgFormBuilder`
 --
 
-INSERT INTO `SCP_OrgFormBuilder` (`FormID`, `FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `OrgID`, `StatusID`, `FromType`, `CreatedDateTime`, `ModifyDateTime`) VALUES
-(14, 'FORM1494402810', 'Testing Form', '[{"component":"header","editable":true,"index":0,"label":"Testing Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":2,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false}]', '[{"label":"Testing Form","value":""},{"label":"Single line input","value":""},{"label":"Dropdown","value":"value one"}]', 1, 9, 1, '0', '2017-05-10 13:23:30', '2017-05-10 13:23:30'),
-(15, 'FORM1494333149', 'My Form', '[{"component":"header","editable":true,"index":0,"label":"My Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":2,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false}]', '[{"label":"Testing Form","value":""},{"label":"Single line input","value":""},{"label":"Dropdown","value":"value one"}]', 1, 9, 1, '1', '2017-05-10 13:23:30', '2017-05-10 13:23:30');
+INSERT INTO `SCP_OrgFormBuilder` (`FormID`, `FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES
+(14, 'FORM1494400775', 'Testing Form', '[{"component":"header","editable":true,"index":0,"label":"Testing Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":2,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"radio","editable":true,"index":3,"label":"Radio","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"checkbox","editable":true,"index":4,"label":"Checkbox","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"radio","editable":true,"index":5,"label":"Radio","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false}]', '[{"label":"Testing Form","value":""},{"label":"Single line input","value":""},{"label":"Dropdown","value":"value one"}]', 1, 9, 1, '1', 5, '2017-05-10 13:23:30', '2017-05-22 20:06:28'),
+(20, 'FORM1494333149', 'My Form', '[{"component":"header","editable":true,"index":0,"label":"My Form","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textArea","editable":true,"index":2,"label":"Multi line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":3,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"radio","editable":true,"index":4,"label":"Radio","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"checkbox","editable":true,"index":5,"label":"Checkbox","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"date","editable":true,"index":6,"label":"Date","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"file","editable":true,"index":7,"label":"Image","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"postCode","editable":true,"index":8,"label":"Postal Code","value":"","description":"","placeholder":"","options":[],"required":false}]', '', 1, 9, 1, '1', 4, '2017-05-22 19:48:02', '2017-05-22 19:48:02'),
+(21, 'FORM1495463816', 'REST', '[{"component":"header","editable":true,"index":0,"label":"REST","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":1,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"postCode","editable":true,"index":2,"label":"Postal Code","value":"","description":"","placeholder":"","options":[],"required":false}]', '[{"label":"REST","value":""},{"label":"Dropdown","value":"value one"},{"label":"Postal Code","value":""}]', 1, 9, 1, '0', 5, '2017-05-22 20:06:56', '2017-05-22 20:06:56'),
+(22, 'FORM1495463834', 'Heading', '[{"component":"header","editable":true,"index":0,"label":"Heading","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":1,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false},{"component":"textInput","editable":true,"index":2,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false}]', '[{"label":"Heading","value":""},{"label":"Dropdown","value":"value one"},{"label":"Single line input","value":""}]', 1, 9, 1, '0', 4, '2017-05-22 20:07:14', '2017-05-22 20:07:14'),
+(23, 'FORM1495465224', 'Heading', '[{"component":"header","editable":true,"index":0,"label":"Heading","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"textInput","editable":true,"index":1,"label":"Single line input","value":"","description":"","placeholder":"Placeholder","options":[],"required":false},{"component":"select","editable":true,"index":2,"label":"Dropdown","value":"","description":"","placeholder":"Placeholder","options":["value one","value two"],"required":false}]', '[{"label":"Heading","value":""},{"label":"Single line input","value":""},{"label":"Dropdown","value":"value one"}]', 1, 8, 1, '0', 4, '2017-05-22 20:30:24', '2017-05-22 20:30:24');
 
 -- --------------------------------------------------------
 
@@ -861,8 +768,8 @@ CREATE TABLE IF NOT EXISTS `SCP_OutComes` (
   `Description` varchar(150) DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   `CustomerID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`OutComeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
 
@@ -875,8 +782,8 @@ CREATE TABLE IF NOT EXISTS `SCP_OutComes` (
 CREATE TABLE IF NOT EXISTS `SCP_Rights` (
   `RightsID` int(11) NOT NULL AUTO_INCREMENT,
   `RightsType` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`RightsID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=9 ;
@@ -907,8 +814,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Settings` (
   `SettingsTypeID` int(11) DEFAULT NULL,
   `TypeName` varchar(150) DEFAULT NULL,
   `Value` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`SettingID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -922,8 +829,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Settings` (
 CREATE TABLE IF NOT EXISTS `SCP_SettingsValue` (
   `SettingsTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `SettingsValues` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`SettingsTypeID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -958,8 +865,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Staff` (
   `UserAccessID` int(11) DEFAULT NULL,
   `UserID` int(11) DEFAULT NULL,
   `LicenseID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`StaffID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=4 ;
@@ -1010,8 +917,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Task` (
   `StatusID` int(11) DEFAULT NULL,
   `CustomerID` int(11) DEFAULT NULL,
   `CreatedByStaffID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`TaskID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=6 ;
 
@@ -1036,8 +943,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Task2OtherRelations` (
   `Task2RelationID` int(11) NOT NULL AUTO_INCREMENT,
   `TaskID` int(11) DEFAULT NULL,
   `ToID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`Task2RelationID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 AUTO_INCREMENT=1 ;
@@ -1051,8 +958,8 @@ CREATE TABLE IF NOT EXISTS `SCP_Task2OtherRelations` (
 CREATE TABLE IF NOT EXISTS `SCP_TaskType` (
   `TaskTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `TaskTypeName` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`TaskTypeID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
@@ -1104,8 +1011,8 @@ CREATE TABLE IF NOT EXISTS `SCP_UserAccess` (
   `AccessLevelID` int(11) DEFAULT NULL,
   `UserID` int(11) DEFAULT NULL,
   `UserTypeID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`UserAccessID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
@@ -1152,8 +1059,8 @@ CREATE TABLE IF NOT EXISTS `SCP_UserLogin` (
   `ProfilePhoto` varchar(256) NOT NULL,
   `DashboardLogo` varchar(256) NOT NULL,
   `StatusID` int(11) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`UserID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=24 ;
 
@@ -1185,8 +1092,8 @@ INSERT INTO `SCP_UserLogin` (`UserID`, `UserName`, `EmailID`, `Password`, `Profi
 CREATE TABLE IF NOT EXISTS `SCP_UserType` (
   `UserTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `UserTypeName` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`UserTypeID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=7 ;
@@ -1219,15 +1126,15 @@ CREATE TABLE IF NOT EXISTS `SCP_Visits` (
   `VisitEndDate` date DEFAULT NULL,
   `IsFixed` tinyint(4) DEFAULT NULL,
   `VisitDays` varchar(150) DEFAULT NULL,
-  `VisitStartTime` time(6) DEFAULT NULL,
-  `VisitEndTime` time(6) DEFAULT NULL,
+  `VisitStartTime` time DEFAULT NULL,
+  `VisitEndTime` time DEFAULT NULL,
   `CareWorkerID` int(11) NOT NULL,
   `TaskIDs` varchar(256) NOT NULL,
   `StatusID` int(11) DEFAULT NULL,
   `CustomerID` int(11) DEFAULT NULL,
   `OtherDetails` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   PRIMARY KEY (`VisitID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=3 ;
 
@@ -1248,8 +1155,8 @@ INSERT INTO `SCP_Visits` (`VisitID`, `StaffID`, `VisitTitle`, `TimeOfDay`, `Visi
 CREATE TABLE IF NOT EXISTS `SCP_VisitType` (
   `VisitTypeID` int(11) NOT NULL AUTO_INCREMENT,
   `VisitTypeName` varchar(150) DEFAULT NULL,
-  `CreatedDateTime` datetime(3) DEFAULT NULL,
-  `ModifyDateTime` datetime(3) DEFAULT NULL,
+  `CreatedDateTime` datetime DEFAULT NULL,
+  `ModifyDateTime` datetime DEFAULT NULL,
   `StatusID` int(11) DEFAULT NULL,
   PRIMARY KEY (`VisitTypeID`)
 ) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;

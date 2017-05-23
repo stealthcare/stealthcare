@@ -77,7 +77,7 @@
 
                   <div class="row">
                     <div class="form-group formBuilderActionBtn" style="display:none;">
-                        <button class="btn button2" type="button" ng-click="updateForm(FormID)">UPDATE FORM</button>
+                        <button class="btn button2" type="button" ng-click="updateForm(OrgID,FormDataID,FormType)">UPDATE FORM</button>
                         <button class="btn button2" type="submit" ng-click="viewForm()">VIEW FORM</button>
                         <button class="btn button2" type="reset" ng-click="cancelForm()">CANCEL</button>
                     </div> 
@@ -94,7 +94,9 @@
                           <a ng-click="createDocument()" class="disabled">Create Document</a>
                           <a ng-click="editDocument()">Edit Document</a>
                           <a ng-click="duplicateDocument(OrgID)">Duplicate Document</a>
-                          <a ng-click="deleteDocument(OrgID)">Delete Document</a>
+                          <a ng-if="FormType === '0'" ng-click="deleteDocument(FormDataID)">Delete Document</a>
+                          <a ng-if="FormType === '1'" ng-click="deleteDocument(FormDataID)">Delete Document</a>
+                          <a ng-if="FormType === '2'" ng-click="deleteDocument(FormDataID)" class="disabled">Delete Document</a>
                         </div>
                     </div>
                     <div class="fb-components-section"> 

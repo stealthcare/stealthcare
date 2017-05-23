@@ -242,18 +242,23 @@ $scope.sendReq = function (request,pathlink) {
     };
 
     // Load All Orgniser Forms 
-    $scope.loadAllOrgniserForms = function (OrgID) {
+    $scope.loadAllOrgniserForms = function () {
         var serviceBase = 'api/v1/api.php?request=';
-        var request = '[{"serviceRequestID":"10","OrgID":"'+OrgID+'"}]';
-        $http({
-            method: 'post',
-            data: $.param({OrgID: OrgID}),
-            url: serviceBase+'loadAllFormsByOrgID',
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(results){ 
-            $scope.assessorFroms = results.assessor;
-            $scope.careworkerFroms = results.careworker;
+        //var request = '[{"serviceRequestID":"10","OrgID":"'+OrgID+'"}]';
+        $scope.loading = true;
+        $http.get('Session').then(function (results) {
+            var OrgID = $rootScope.OrgID;
+            $http({
+                method: 'post',
+                data: $.param({OrgID: OrgID}),
+                url: serviceBase+'loadAllFormsByOrgID',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){ 
+                $scope.assessorFroms = results.assessor;
+                $scope.careworkerFroms = results.careworker;
+                $scope.loading = false;
+            });
         });
     };
 
@@ -311,7 +316,8 @@ $scope.sendReq = function (request,pathlink) {
 
     var query = $location.path();
     var data = query.split("/");
-    $scope.FormID = data[3];
+    $scope.FormDataID = data[4];
+    $scope.FormType = data[5];
 
     // Duplicate Document statas request
     $scope.duplicateDocument = function(OrgID){
@@ -320,34 +326,34 @@ $scope.sendReq = function (request,pathlink) {
             $scope.loading = true;
             var FormDataJson = angular.element('#isShowScope').text();
             var FormDataJsonValue = angular.element('#isShowValueScope').text();
+            var UserTypeID = angular.element('#UTID').text();
             $http({
                 method: 'post',
-                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue,OrgID :OrgID}),
+                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue,OrgID :OrgID,UserTypeID: UserTypeID}),
                 url: serviceBase+'saveOrgForm',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(results){
-                //$window.location.href = 'form-builder';
+                $window.location.href = 'organisation/form-builder';
                 $scope.loading = false;
             });
         }
     };
 
     // delete Document statas request
-    $scope.deleteDocument = function(index){
+    $scope.deleteDocument = function(FormDataID){
+        serviceBase = 'api/v1/api.php?request=';
         if(confirm("Are you sure to want to delete this document")){
             $scope.loading = true;
             $http({
                 method: 'post',
-                data: $.param({FormID: index}),
-                url: serviceBase+'deleteDocument',
+                data: $.param({FormDataID: FormDataID}),
+                url: serviceBase+'deleteOrgDocument',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(results){
                 Data.toast(results);
-                if (results.status_code == "1") {
-                    $location.path('form-builder');
-                }
+                $window.location.href = 'organisation/form-builder';
                 $scope.loading = false;
             });
         }
@@ -396,25 +402,27 @@ $scope.sendReq = function (request,pathlink) {
         })
         .success(function(results){
             Data.toast(results);
-            //$window.location.reload();
+            $window.location.reload();
             $scope.loading = false;
         });
     };
 
     // update form request
-    $scope.updateForm = function(FormID){
+    $scope.updateForm = function(OrgID,FormDataID,FormType){
+        serviceBase = 'api/v1/api.php?request=';
         $scope.loading = true;
         var FormDataJson = angular.element('#isShowScope').text();
+        var UserTypeID = angular.element('#UTID').text();
         //alert(StatusID);
         $http({
             method: 'post',
-            data: $.param({FormDataJson: FormDataJson,FormID: FormID}),
-            url: serviceBase+'updateForm',
+            data: $.param({FormDataJson: FormDataJson,FormDataID: FormDataID,UserTypeID: UserTypeID,OrgID :OrgID,FormType: FormType}),
+            url: serviceBase+'updateOrgForm',
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
             Data.toast(results);
-            $window.location.href = 'form-builder';
+            $window.location.href = 'organisation/form-builder';
             $scope.loading = false;
         });
     };
@@ -529,6 +537,8 @@ app.run([
         .success(function(results){
             if(results.status === 'success') {
                 var json = results.response_data; 
+                var UserTypeID = results.UserTypeID; 
+                $( "#UTID" ).text(UserTypeID);
                 var component = $.parseJSON(json);
                 $.each(component, function(i, item){
                     var formObj = $builder.addFormObject('default', item);
