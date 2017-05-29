@@ -88,9 +88,9 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	var requestID = angular.element('#requestID').val();
   	var statusid = angular.element('#statusid').val();
 	if(statusid!=''){
-	  $scope.signup = {id:requestID,statusid:statusid};
+	  $scope.signup = {serviceRequestID:requestID,statusid:statusid};
 	}else{
-	  $scope.signup = {id:requestID}; 	
+	  $scope.signup = {serviceRequestID:requestID}; 	
 	}
   	$scope.signup.title = 'Mr';
 	$scope.signup.role = '3';
