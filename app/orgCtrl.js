@@ -463,11 +463,12 @@ $scope.sendReq = function (request,pathlink) {
     };
 
     // get current date with format
-    $scope.getCurrentDate = function (date,OrgID) {
+    $scope.getCurrentDate = function (date) {
         var format = $scope.getCurrentDayWithFormat(date);
         $('h3.page-header').text(format);
         var timestamp = Math.floor(date / 1000);
         $('#timestamp').val(timestamp);
+        var OrgID = 9;
         var request = '[{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
         $scope.loading = true;
         $http({
@@ -493,10 +494,11 @@ $scope.sendReq = function (request,pathlink) {
     };
 
     // laod all visit by Single date
-    $scope.loadVisitsBySingleDate = function (date,OrgID) {
+    $scope.loadVisitsBySingleDate = function (date) {
         var currentTimestamp = $('#timestamp').val();
         var timestamp = Math.floor(date / 1000);
         //alert(currentTimestamp+'-'+timestamp);
+        var OrgID = 9;
         if(currentTimestamp != timestamp) {
             var format = $scope.getCurrentDayWithFormat(date);
             $('h3.page-header').text(format);

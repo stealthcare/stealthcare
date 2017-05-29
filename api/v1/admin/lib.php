@@ -38,7 +38,18 @@ function connectToDB()
 */
 function myError()
 {
-    echo "sdemError";
+    $deviceType = $_SERVER['HTTP_DEVICETYPE'];
+    $appVersion = $_SERVER['HTTP_APPVERSION'];
+    $OSVersion = $_SERVER['HTTP_OSVERSION'];
+    $browserVersion = $_SERVER['HTTP_BROWSERVERSION'];
+    $data['ResponseData'] = "";
+    $data['Message'] = "404 Not Found";
+    $data['ResponseCode'] = "404";
+    $data['Status'] = "Failed";
+    $data['StatusCode'] = "0";
+    $data['Request'] = 'deviceType:-'.$deviceType.'-appVersion:-'.$appVersion.'-OSVersion:-'.$OSVersion.'-browserVersion:-'.$browserVersion;
+    $data['RequestJson'] = $_REQUEST['request'];
+    print json_encode($data);
 }
 
 /******************************************************************************************************************/

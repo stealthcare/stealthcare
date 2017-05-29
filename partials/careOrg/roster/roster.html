@@ -17,7 +17,7 @@
                <div class="wrapper">
                   <div class="row margin-top0 margin-bottom0">
                      <div class="col-md-4">
-                        <h3 class="page-header" data-ng-init="getCurrentDate(mindate, OrgID)">---</h3>
+                        <h3 class="page-header" data-ng-init="getCurrentDate(mindate)">---</h3>
                         <input type="hidden" value="" id="timestamp">
                      </div>
                      <div class="col-md-5">
@@ -184,7 +184,7 @@
                                           <div class="col-md-12">
                                              <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
                                                 <div class="input-group  ">
-                                                   <input type="text" class="form-control search-border"  placeholder="Search">
+                                                   <input type="text" id="lname" class="form-control search-border" ng-model="searchKeywordClient.CustomerName" placeholder="Search">
                                                    <span class="input-group-btn ">
                                                    <button class="btn textfield_button search-border-radius0" type="button"><img src="img/Search Icon.png"  ></button>
                                                    </span> 
@@ -225,7 +225,7 @@
                                              <th class="roster-client-heading">05:00</th>
                                              <th class="roster-client-heading_rightt">06:00</th>
                                           </tr>
-                                          <tr ng-repeat="CV in clientVisits">
+                                          <tr ng-repeat="CV in clientVisits | filter: searchKeywordClient ">
                                              <td class="roster-client headcol">
                                                 {{CV.CustomerName}} 
                                              </td>
@@ -333,7 +333,7 @@
                               <div class="col-lg-3 col-md-3 ">
                                  <div class="inline-calender">
                                     <div class="well well-sm" ng-model="dt">
-                                       <datepicker ng-click="loadVisitsBySingleDate(dt, OrgID)" min="minDate" show-weeks="showWeeks"></datepicker>
+                                       <datepicker ng-click="loadVisitsBySingleDate(dt)" min="minDate" show-weeks="showWeeks"></datepicker>
                                     </div>
                                  </div>
                               </div>
@@ -346,7 +346,7 @@
                                           <div class="col-md-12">
                                              <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
                                                 <div class="input-group">
-                                                   <input type="text" class="form-control search-border" placeholder="Search">
+                                                   <input type="text" class="form-control search-border" ng-model="searchKeywordCare.Name" placeholder="Search">
                                                    <span class="input-group-btn">
                                                    <button class="btn textfield_button search-border-radius0" type="button"><img src="img/Search Icon.png"  ></button>
                                                    </span> 
@@ -388,7 +388,7 @@
                                              <th class="roster-client-heading headrow">05:00</th>
                                              <th class="roster-client-heading_rightt">06:00</th>
                                           </tr>
-                                          <tr ng-repeat="CWV in careWorkerVisits">
+                                          <tr ng-repeat="CWV in careWorkerVisits | filter: searchKeywordCare">
                                              <td class="roster-careworker-heading headcol">{{CWV.Name}}</td>
                                              <td></td>
                                              <td class="roster-visit-incomplete">Martin</td>

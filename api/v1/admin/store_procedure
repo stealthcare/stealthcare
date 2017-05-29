@@ -1,10 +1,12 @@
-// Fol Login
+// For Login
+DROP PROCEDURE IF EXISTS `loginWithUsername`;
 DELIMITER //
 CREATE PROCEDURE `loginWithUsername`(IN `iUsername` VARCHAR(150), IN `iPassword` VARCHAR(150))
 BEGIN
-SELECT U.*
-FROM `SCP_UserLogin` AS U, SCP_Status AS S
-WHERE U.UserName=iUsername AND U.Password= iPassword AND S.StatusID=U.StatusID ;
+SELECT U.*, UA.*
+FROM `SCP_UserLogin` AS U
+INNER JOIN `SCP_UserAccess` AS UA ON UA.UserID=U.UserID
+WHERE U.UserName=iUsername AND U.Password= iPassword;
 END//
 DELIMITER ;
 
@@ -23,23 +25,59 @@ insert into SCP_Enquiry (OrgID,CustomerID,StatusID,CreatedDateTime,ModifyDateTim
 END//
 DELIMITER ;
 
+
+
 // For Load all forms of organisaers
+DROP PROCEDURE IF EXISTS `loadAllOrgniserForms`;
 DELIMITER //
-CREATE PROCEDURE `loadAllOrgniserForms`(IN `iOrgID` INT(11))
+CREATE PROCEDURE `loadAllOrgniserForms`(IN `iOrgID` INT(11), IN `iUserTypeID` INT(11))
 BEGIN
 SELECT *
 FROM `SCP_OrgFormBuilder`
-WHERE OrgID=iOrgID AND StatusID=1;
+WHERE OrgID=iOrgID AND StatusID=1 AND UserTypeID=iUserTypeID;
 END//
 DELIMITER ;
 
+// For Load all forms
+DROP PROCEDURE IF EXISTS `loadAllForms`;
 DELIMITER //
-CREATE PROCEDURE `loadAllForms`()
+CREATE PROCEDURE `loadAllForms`(IN `iUserTypeID` INT(11))
 BEGIN
 SELECT *
 FROM `SCP_FormBuilder`
-WHERE StatusID=1;
+WHERE StatusID=1 AND UserTypeID=iUserTypeID;
 END//
+DELIMITER ;
+
+// For get data with form api
+DROP PROCEDURE IF EXISTS `getFormWithdataByFormDataIDAndUserID`;
+DELIMITER //
+CREATE  PROCEDURE `getFormWithdataByFormDataIDAndUserID`(in iOrgID int(11), in iUserTypeID int(11), in iFormDataID varchar(156))
+BEGIN
+    IF EXISTS(select * from `SCP_OrgFormBuilder` where OrgID = iOrgID and UserTypeID = iUserTypeID and FormDataID = iFormDataID) then 
+        select * from `SCP_OrgFormBuilder` where OrgID = iOrgID and UserTypeID = iUserTypeID and FormDataID = iFormDataID;
+    ELSE 
+        select * from `SCP_FormBuilder` where UserTypeID = iUserTypeID and FormDataID = iFormDataID;
+    END IF;
+END //
+DELIMITER ;
+
+
+
+// For insert data in to form api
+DROP PROCEDURE IF EXISTS `insertDynamicFormData`;
+DELIMITER //
+CREATE  PROCEDURE `insertDynamicFormData`(in iFormValueData longtext,in iUserID int(11),in iFormDataID varchar(156),in iStatusID int(11),in iCreatedDateTime datetime, in iModifyDateTime datetime)
+BEGIN
+    IF EXISTS(select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID) then 
+        update SCP_OrgFormBuilderDataAction
+        set  FormValueData= iFormValueData, ModifyDateTime=iModifyDateTime
+        where  UserID = iUserID and FormDataID = iFormDataID;
+    ELSE 
+        insert into `SCP_OrgFormBuilderDataAction`(FormValueData,UserID,FormDataID,StatusID,CreatedDateTime,ModifyDateTime)         values(iFormValueData,iUserID,iFormDataID,iStatusID,iCreatedDateTime,iModifyDateTime);
+    END IF;
+    select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID;
+END //
 DELIMITER ;
 
 
@@ -84,23 +122,6 @@ FROM `SCP_Staff` as st
 INNER JOIN `SCP_UserLogin` as ulogin ON st.UserID=ulogin.UserID 
 WHERE st.OrgID=iOrgID;
 END//
-DELIMITER ;
-
-
-// For insert data in to form api
-DROP PROCEDURE IF EXISTS `insertDynamicFormData`;
-DELIMITER //
-CREATE  PROCEDURE `insertDynamicFormData`(in iFormValueData longtext,in iUserID int(11),in iFormDataID varchar(156),in iStatusID int(11),in iCreatedDateTime datetime, in iModifyDateTime datetime)
-BEGIN
-    IF EXISTS(select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID) then 
-        update SCP_OrgFormBuilderDataAction
-        set  FormValueData= iFormValueData, ModifyDateTime=iModifyDateTime
-        where  UserID = iUserID and FormDataID = iFormDataID;
-    ELSE 
-        insert into `SCP_OrgFormBuilderDataAction`(FormValueData,UserID,FormDataID,StatusID,CreatedDateTime,ModifyDateTime) 		values(iFormValueData,iUserID,iFormDataID,iStatusID,iCreatedDateTime,iModifyDateTime);
-    END IF;
-    select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID;
-END //
 DELIMITER ;
 
 
