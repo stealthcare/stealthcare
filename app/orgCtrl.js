@@ -216,6 +216,10 @@ $scope.sendReq = function (request,pathlink) {
         .success(function(results){	
             Data.toast(results);
 			$scope.allStaff = results.responseData;
+			if(results.status==0){
+			  $scope.responsemsg = results.message;
+			  $scope.showAlert = true;
+			}
         })
         .error(function(results){
 

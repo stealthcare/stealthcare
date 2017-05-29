@@ -639,7 +639,7 @@ function loadStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "Request error";
+        $data['message'] = "No Staff Found";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }

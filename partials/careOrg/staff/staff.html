@@ -61,7 +61,7 @@
               </div>
             </div>
             <div class="col-md-6 col-xs-12 col-lg-6">
-              <a href="organisation/carers/create" class="add_employee">
+              <a href="organisation/carers/create" class="btn add_employee">
                 Add Employee 
                 <i class="fa icon" aria-hidden="true">
                   <img src="img/Plus_icon.png">
@@ -116,6 +116,8 @@
 	  
       <div class="row">
         <div class="wrapper top0" data-ng-init="loadAllStaff()">
+		
+		<div class="responsemsg" ng-bind="responsemsg"  ng-show="showAlert"></div>
 		
 		  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 " ng-repeat="S in allStaff">
             <div class="employee">
