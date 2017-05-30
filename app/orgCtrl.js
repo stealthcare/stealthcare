@@ -9,16 +9,6 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $rootScope.orgPageTitle = orgPageTitle;
     };
 
-    $scope.tab = 1;
-
-    $scope.setTab = function(newTab){
-      $scope.tab = newTab;
-    };
-
-    $scope.isSet = function(tabNum){
-      return $scope.tab === tabNum;
-    };
-
     /*var numberOfYears = (new Date()).getYear() - 0;
     var years = $.map($(Array(numberOfYears)), function (val, i) { return i + 1900; });
     var months = $.map($(Array(12)), function (val, i) { return i + 1; });
@@ -315,7 +305,10 @@ $scope.sendReq = function (request,pathlink) {
 
     $( "#showModal" ).hide();
     // create Document request
-    $scope.createDocument = function () {
+    $scope.createDocument = function (index='') {
+        if(index === 'new') {
+            $window.location.href = 'organisation/form-builder';
+        }
         $( "#showModal" ).show();
     };
 
@@ -343,19 +336,32 @@ $scope.sendReq = function (request,pathlink) {
     var data = query.split("/");
     $scope.FormDataID = data[4];
     $scope.FormType = data[5];
+    $scope.UserTypeID = data[6];
+
+    if(data[6] === '4') {
+        $scope.tab = 1;
+    } else if(data[6] === '5') {
+        $scope.tab = 2;
+    } else {
+        $scope.tab = 1;
+    }
+    $scope.setTab = function(newTab){
+      $scope.tab = newTab;
+    };
+
+    $scope.isSet = function(tabNum){
+      return $scope.tab === tabNum;
+    };
 
     // Duplicate Document statas request
-    $scope.duplicateDocument = function(OrgID){
+    $scope.duplicateDocument = function(FormDataID,FormType,OrgID){
         serviceBase = 'api/v1/api.php?request=';
         if(confirm("Are you sure to want to create duplicate document")){
             $scope.loading = true;
-            var FormDataJson = angular.element('#isShowScope').text();
-            var FormDataJsonValue = angular.element('#isShowValueScope').text();
-            var UserTypeID = angular.element('#UTID').text();
             $http({
                 method: 'post',
-                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue,OrgID :OrgID,UserTypeID: UserTypeID}),
-                url: serviceBase+'saveOrgForm',
+                data: $.param({FormDataID: FormDataID,FormType: FormType,OrgID: OrgID}),
+                url: serviceBase+'duplicateOrgForm',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(results){
@@ -385,9 +391,9 @@ $scope.sendReq = function (request,pathlink) {
     };
 
     // call Form request
-    $scope.callOrgForm = function (id,type) {
+    $scope.callOrgForm = function (id,type,UserTypeID) {
         $scope.loading = true;
-        $window.location.href = 'organisation/form-builder/edit/'+id+'/'+type;
+        $window.location.href = 'organisation/form-builder/edit/'+id+'/'+type+'/'+UserTypeID;
         $scope.loading = false;
     }; 
     $scope.callAllForms = function () {
@@ -426,8 +432,11 @@ $scope.sendReq = function (request,pathlink) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);
-            $window.location.reload();
+            if(results.status_code === '0') {
+                Data.toast(results);
+            } else {
+                $window.location.reload();
+            }
             $scope.loading = false;
         });
     };
@@ -446,8 +455,11 @@ $scope.sendReq = function (request,pathlink) {
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);
-            $window.location.href = 'organisation/form-builder';
+            if(results.status_code === '0') {
+                Data.toast(results);
+            } else {
+                $window.location.href = 'organisation/form-builder';
+            }
             $scope.loading = false;
         });
     };

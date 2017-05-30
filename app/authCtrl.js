@@ -132,11 +132,11 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
         })
         .success(function(results){
             Data.toast(results);
-            if (results.status_code == "1") {
+            //if (results.status_code == "1") {
                 $route.reload(); 
-            } else if (results.status_code == "2") {
-                $location.path('organisation');
-            }
+            //} else if (results.status_code == "2") {
+                //$location.path('organisation');
+            //}
             $scope.loading = false;
         })
         .error(function(results){
@@ -513,7 +513,10 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
 
     $( "#showModal" ).hide();
     // create Document request
-    $scope.createDocument = function () {
+    $scope.createDocument = function (index='') {
+        if(index === 'new') {
+            $window.location.href = 'form-builder';
+        }
         $( "#showModal" ).show();
     };
 
@@ -542,15 +545,15 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
     $scope.FormID = data[3];
 
     // Duplicate Document statas request
-    $scope.duplicateDocument = function(index){
+    $scope.duplicateDocument = function(FormID){
         if(confirm("Are you sure to want to create duplicate document")){
             $scope.loading = true;
             var FormDataJson = angular.element('#isShowScope').text();
             var FormDataJsonValue = angular.element('#isShowValueScope').text();
             $http({
                 method: 'post',
-                data: $.param({FormDataJson: FormDataJson,FormDataJsonValue: FormDataJsonValue}),
-                url: serviceBase+'saveForm',
+                data: $.param({FormID: FormID}),
+                url: serviceBase+'duplicateForm',
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'}
             })
             .success(function(results){
@@ -622,9 +625,11 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);
-            $templateCache.removeAll();
-            $window.location.reload();
+            if(results.status_code === '0') {
+                Data.toast(results);
+            } else {
+                $window.location.reload();
+            }
             $scope.loading = false;
         });
     };
@@ -641,8 +646,11 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);
-            $window.location.href = 'form-builder';
+            if(results.status_code === '0') {
+                Data.toast(results);
+            } else {
+                $window.location.href = 'form-builder';
+            }
             $scope.loading = false;
         });
     };

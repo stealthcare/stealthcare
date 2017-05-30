@@ -1167,6 +1167,31 @@ class API extends REST {
         $UserTypeID = $_POST['UserTypeID'];
         $CreatedDateTime = date('Y-m-d H:i:s');
         $ModifyDateTime = date('Y-m-d H:i:s');
+        if(!empty($title)) { 
+            $sql_insert = mysql_query("INSERT INTO `SCP_FormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `UserTypeID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$UserTypeID', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
+        } else {
+            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+        }
+        $this->response($this->json($error), 200);
+    }
+
+    private function duplicateForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $FormID = $_POST['FormID']; 
+        $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE `FormID` = '$FormID'", $this->db);
+        $row = mysql_fetch_array($sql, MYSQL_ASSOC);
+        //print_r($row); die();
+        $FormDataID = strtoupper('FORM'.strtotime(date('d-m-Y H:i:s'))); 
+        $FormName = $row['FormName']; 
+        $FormDataJson = $row['FormDataJson']; 
+        $FormDataJsonValue = $row['FormDataJsonValue'];
+        $UserTypeID = $row['UserTypeID'];
+        $CreatedDateTime = date('Y-m-d H:i:s');
+        $ModifyDateTime = date('Y-m-d H:i:s');
         $sql_insert = mysql_query("INSERT INTO `SCP_FormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `UserTypeID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$UserTypeID', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
         $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
         $this->response($this->json($error), 200);
@@ -1191,8 +1216,12 @@ class API extends REST {
         $FormDataJson = $_POST['FormDataJson'];
         $FormID = $_POST['FormID'];
         $ModifyDateTime = date('Y-m-d H:i:s');
-        $sql = mysql_query("UPDATE `SCP_FormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormID` = '$FormID'", $this->db);
-        $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
+        if(!empty($title)) { 
+            $sql = mysql_query("UPDATE `SCP_FormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormID` = '$FormID'", $this->db);
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
+        } else {
+            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+        }
         $this->response($this->json($error), 200);
     }
 
@@ -1285,6 +1314,7 @@ class API extends REST {
                 $array['UserID'] = $value['UserID'];
                 $array['StatusID'] = $value['StatusID'];
                 $array['FromType'] = '2';
+                $array['UserTypeID'] = $value['UserTypeID'];
                 $array['CreatedDateTime'] = $value['CreatedDateTime'];
                 $array['ModifyDateTime'] = $value['ModifyDateTime'];
                 $filterAllForms[] = $array;
@@ -1315,6 +1345,7 @@ class API extends REST {
                 $array['UserID'] = $value['UserID'];
                 $array['StatusID'] = $value['StatusID'];
                 $array['FromType'] = '2';
+                $array['UserTypeID'] = $value['UserTypeID'];
                 $array['CreatedDateTime'] = $value['CreatedDateTime'];
                 $array['ModifyDateTime'] = $value['ModifyDateTime'];
                 $carefilterAllForms[] = $array;
@@ -1347,7 +1378,37 @@ class API extends REST {
         $FormDataJsonValue = $_POST['FormDataJsonValue'];
         $UserTypeID = $_POST['UserTypeID'];
         $CreatedDateTime = date('Y-m-d H:i:s');
-        $ModifyDateTime = date('Y-m-d H:i:s');        
+        $ModifyDateTime = date('Y-m-d H:i:s');       
+        if(!empty($title)) { 
+            $sql_insert = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$OrgID', '1', '0', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
+        } else {
+            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+        }
+        $this->response($this->json($error), 200);
+    }
+
+    private function duplicateOrgForm() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $FormDataID = $_POST['FormDataID']; 
+        $FormType = $_POST['FormType'];
+        if($FormType == '2') {
+            $sql = mysql_query("SELECT * FROM `SCP_FormBuilder` WHERE `FormDataID` = '$FormDataID'", $this->db);
+        } else {
+            $sql = mysql_query("SELECT * FROM `SCP_OrgFormBuilder` WHERE `FormDataID` = '$FormDataID'", $this->db);
+        }
+        $row = mysql_fetch_array($sql, MYSQL_ASSOC);
+        $FormDataID = strtoupper('FORM'.strtotime(date('d-m-Y H:i:s'))); 
+        $FormName = $row['FormName'];
+        $OrgID = $_POST['OrgID']; 
+        $FormDataJson = $row['FormDataJson']; 
+        $FormDataJsonValue = $row['FormDataJsonValue'];
+        $UserTypeID = $row['UserTypeID'];
+        $CreatedDateTime = date('Y-m-d H:i:s');
+        $ModifyDateTime = date('Y-m-d H:i:s');  
         $sql_insert = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$OrgID', '1', '0', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
         $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
         $this->response($this->json($error), 200);
@@ -1418,12 +1479,16 @@ class API extends REST {
         $CreatedDateTime = date('Y-m-d H:i:s');  
         $ModifyDateTime = date('Y-m-d H:i:s');   
         $FormType = $_POST['FormType'];
-        if($FormType == 2) {
-            $sql = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '1', '$OrgID', '1', '1', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+        if(!empty($title)) { 
+            if($FormType == 2) {
+                $sql = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '1', '$OrgID', '1', '1', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+            } else {
+                $sql = mysql_query("UPDATE `SCP_OrgFormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormDataID` = '$FormDataID'", $this->db);
+            }
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
         } else {
-            $sql = mysql_query("UPDATE `SCP_OrgFormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormDataID` = '$FormDataID'", $this->db);
+            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
         }
-        $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
         $this->response($this->json($error), 200);
     }
 

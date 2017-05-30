@@ -132,7 +132,7 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/form-builder/form-builder.html',
                 controller: 'orgCtrl'
             })
-            .when('/organisation/form-builder/edit/:id/:type', {
+            .when('/organisation/form-builder/edit/:id/:type/:UserTyepID', {
                 title: 'Form Builder',
                 templateUrl: 'partials/careOrg/form-builder/edit-form-builder.html',
                 controller: 'orgCtrl'

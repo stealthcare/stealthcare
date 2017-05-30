@@ -7,6 +7,7 @@ include '../../config.php';
 /* Store the id number sent by the application */
 if(@$_POST['request']) {
     $post = json_decode($_POST['request']);
+    ///print_r($post); die();
 	if(is_array($post)){
 	  $post = $post['0'];
 	}
@@ -210,7 +211,7 @@ function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserV
 
     $resultset = mysql_query($sql);
     $accessRow = mysql_fetch_assoc($resultset);  
-    //print_r($row); 
+    //print_r($accessRow); 
 
     $OrgID = $accessRow['OrgID'];
     $UserTypeID = $accessRow['UserTypeID'];
@@ -223,6 +224,7 @@ function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserV
     }
     mysql_close($con);   //close the connection
     $allForms = loadAllForms($UserTypeID);
+    //print_r($allForms); 
     $filterAllForms = array();
     foreach ($allForms as $key => $value) {
         if(!in_array_r($value['FormDataID'], $orgForms)) {
@@ -240,10 +242,10 @@ function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserV
             $filterAllForms[] = $array;
         }
     }
-    //print_r($newArray2); die();
+    //print_r($orgForms); die();
     $rows = array_merge($orgForms,$filterAllForms);
     if($rows) {
-        $data['ResponseData'] = $row;
+        $data['ResponseData'] = $rows;
         $data['Message'] = "Get all forms successfully.";
         $data['ResponseCode'] = "200";
         $data['Status'] = "Success";

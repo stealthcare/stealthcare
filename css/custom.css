@@ -313,6 +313,10 @@ i.pull-right {
 }
 ul.form-builder-sidebar-menu li a span {
   display: inline-block;
+  width: 85%;
+}
+ul.form-builder-sidebar-menu li a.active {
+  background: hsl(207, 81%, 77%) none repeat scroll 0 0;
 }
 .fb-components-sidebar {
   background: #2A3F50 none repeat scroll 0 0;
@@ -431,7 +435,7 @@ div.fb-component label {
 .edit-component-field {
   color: hsl(207, 44%, 58%);
   float: right;
-  font-size: 17px;
+  font-size: 22px;
   pointer-events: auto;
   position: absolute;
   right: 90px;
@@ -440,11 +444,15 @@ div.fb-component label {
 .delete-component-field {
   color: hsl(207, 44%, 58%);
   float: right;
-  font-size: 17px;
+  font-size: 22px;
   pointer-events: auto;
   position: absolute;
-  right: 65px;
+  right: 55px;
   top: 5px;
+}
+.fb-form-object-editable.fb-draggable label > span {
+  float: left;
+  width: 80%;
 }
 .fb-form-object-editable {
   left: -24px;
@@ -571,6 +579,16 @@ ul.nav.nav-pills li {
 .jumbotron {
   background-color: hsla(0, 0%, 0%, 0) !important;
   padding: 0 !important;
+}
+.viewForm label span {
+  float: left;
+  width: 75% !important;
+}
+.viewForm label.document-name {
+  color: hsl(209, 30%, 67%);
+  font-size: 16px;
+  font-weight: bold;
+  padding-top: 0;
 }
 
 

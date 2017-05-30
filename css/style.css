@@ -45,7 +45,7 @@ background: -webkit-linear-gradient(top,  #f9f9fa 0%,#e4e4e4 100%) !important; /
 background: linear-gradient(to bottom,  #f9f9fa 0%,#e4e4e4 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9fa', endColorstr='#e4e4e4',GradientType=0 ) !important; /* IE6-9 */
-min-height:820px;
+
 }
 
 
@@ -70,7 +70,7 @@ background: -webkit-linear-gradient(top,  #f9f9fa 0%,#e4e4e4 100%) !important; /
 background: linear-gradient(to bottom,  #f9f9fa 0%,#e4e4e4 100%) !important; /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
 
 filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#f9f9fa', endColorstr='#e4e4e4',GradientType=0 ) !important; /* IE6-9 */
-min-height:810px;
+
 }
 
  	.add {
