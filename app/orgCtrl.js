@@ -9,9 +9,14 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $rootScope.orgPageTitle = orgPageTitle;
     };
 	
-	$scope.BaseUrl = 'uploads/';
-	$scope.searchStaffKey = 'Name';
-	$scope.pageSize='10';
+    $scope.BaseUrl = 'uploads/'; 
+    $scope.pageSize='10';
+    $scope.filter = "Name";
+    $scope.search = {Name:'', Surname:'', DateOfBirth:'', Address1:''};
+    $scope.changeFilterTo = function(pr) {
+        $scope.filter = pr; 
+    }
+    $scope.employee='0';
 
     $scope.calcDays = DOBService.getDays(); 
     $scope.calcMonths = DOBService.getMonths();
@@ -102,8 +107,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         });
     };  
     
+    //alphabetic filteration staff    
     $scope.sendReqAlpha = function (name) {
-        var request = '{"serviceRequestID":"18","name":"'+name+'"}';
+        var ArchiveUser=$('#employee :selected').val();
+        var request = '{"serviceRequestID":"18","name":"'+name+'","ArchiveUser":"'+ArchiveUser+'"}';
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -113,6 +120,14 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         .success(function(results){ 
             Data.toast(results);
             $scope.allStaff = results.responseData;
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+              $scope.showPaging = false;
+            }else{
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
         });
     };
     
@@ -128,8 +143,17 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         .success(function(results){ 
             Data.toast(results);
             $scope.allStaff = results.responseData;
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+              $scope.showPaging = false;
+            }else{
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
         });
     };
+    
 	
 	//search append
 	$scope.append_data=function (param) {
@@ -149,18 +173,21 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         .success(function(results){ 
             Data.toast(results);
             $scope.allStaff = results.responseData;
-			if(results.status==0){
-			  $scope.responsemsg = results.message;
-			  $scope.showAlert = true;
-			}else{
-			  $scope.showAlert = false;
-			}
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+              $scope.showPaging = false;
+            }else{
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
         });   
     };
     
     //load staff    
     $scope.loadAllStaff = function () {
-        var request = '{"serviceRequestID":"17"}';
+        var ArchiveUser=$('#employee :selected').val();
+        var request = '{"serviceRequestID":"17","ArchiveUser":"'+ArchiveUser+'"}';
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -173,17 +200,19 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             if(results.status==0){
               $scope.responsemsg = results.message;
               $scope.showAlert = true;
+              $scope.showPaging = false;
             }else{
-			  $scope.showAlert = false;
-			}
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
         });
     };
     
     $scope.toggleShow = function(){
         if($scope.showStartEvent==true){
-          var statusid = angular.element('#statusid').val('1'); 
+          $scope.signup.statusid='1';
         }else{
-          var statusid = angular.element('#statusid').val('2');     
+          $scope.signup.statusid='2';  
         }
        $scope.showStartEvent = !$scope.showStartEvent;
     }

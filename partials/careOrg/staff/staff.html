@@ -26,28 +26,28 @@
                   <div class="form-group-col_paading0">
                     <div class="gender ">
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="fname" checked  ng-click="append_data('Name');">
+                      <input type="radio" name="search" value="fname" checked   ng-click="changeFilterTo('Name')">
                       <span> First Name </span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="lname" ng-click="append_data('Surname');" >
+                      <input type="radio" name="search" value="lname" ng-click="changeFilterTo('Surname');" >
                       <span>Surname</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="dob" ng-click="append_data('DateOfBirth');" >
+                      <input type="radio" name="search" value="dob" ng-click="changeFilterTo('DateOfBirth');" >
                       <span>D.O.B</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="address" ng-click="append_data('Address1');" >
+                      <input type="radio" name="search" value="address" ng-click="changeFilterTo('Address1');" >
                       <span>Address</span> </label>
                       <div class="clearfix"></div>
                       <div class="searching">
                         <div class="col-md-7 col-sm-7 col-xs-4 col_paading0" id="append_response">
-                          <input  placeholder="Search" type="text"  id="searchTxt" ng-model="searchKeywordStaff.Name">
+                          <input  placeholder="Search" type="text"  id="searchTxt" ng-model="search[filter]">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xs-4 col_paading0">
-                          <select name="employee" >
-                            <option>Current Employee</option>
-                            <option>Latest Employee</option>
+                          <select name="employee" ng-change="loadAllStaff()" ng-model="employee" id="employee">
+                            <option value="0">Current Employee</option>
+                            <option value="1">Deleted Employee</option>
                           </select>
-                          .</div>
+                          </div>
                         <div class="col-md-2 col-lg-2 col-xs-1 col_paading0">
                           <button ng-click="searchStaff('search');"><img src="img/Search Icon.png"></button>
                         </div>
@@ -103,7 +103,7 @@
       <div class="row">
         <div class="wrapper top0" data-ng-init="loadAllStaff()">
           <div class="responsemsg" ng-bind="responsemsg"  ng-show="showAlert"></div>
-          <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 " dir-paginate="S in allStaff | filter:searchKeywordStaff|itemsPerPage:pageSize">
+          <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 " dir-paginate="S in allStaff | filter:search|itemsPerPage:pageSize">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
                 <div class="emimage"> <img ng-if="S.ProfilePhoto != ''" src="{{S.ProfilePhoto}}"> <img ng-if="S.ProfilePhoto == ''" src="{{BaseUrl}}default_user.png"> </div>
@@ -120,7 +120,7 @@
             </div>
           </div>
         </div>
-        <p class="pagination_staff">
+        <p class="pagination_staff" ng-show="showPaging">
           <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true">
 		  </dir-pagination-controls>
         </p>

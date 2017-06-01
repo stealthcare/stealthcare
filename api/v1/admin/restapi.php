@@ -529,8 +529,8 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
     $HouseNumber=$post['HouseNumber'];
     $Address1=$post['Address1'];
     $Address2=$post['Address2'];
-	$City=$post['City'];
-	$Country=$post['Country'];
+    $City=$post['City'];
+    $Country=$post['Country'];
     $PostCode=strtoupper($post['postcode1'].' '.$post['postcode2']);
     $Mobile=$post['Mobile'];
     $ProfilePhoto=!empty ($post['ProfilePhoto'])?$post['ProfilePhoto']:'';   
@@ -538,79 +538,80 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
     $NOKMobile=$post['NOKMobile'];
     $NOKEmail=$post['NOKEmail'];
     $UserName=$post['UserName'];
-	$Password=md5($post['Password']);
+    $Password=md5($post['Password']);
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
+    $EmailID=$post['EmailID'];
     session_start();
     $OrgID=$_SESSION['OrgID'];
     $con=connectToDB(); //connect to the DB
-	$Licenses=mysql_query("SELECT * FROM `SCP_Licenses` WHERE UserID IS NULL AND StatusID='1' ORDER BY LicenseID ASC LIMIT 1")or die(mysql_error());
-	$Licenses = mysql_fetch_array($Licenses, MYSQL_ASSOC);
-	$LicenseID = $Licenses['LicenseID'];
+    $Licenses=mysql_query("SELECT * FROM `SCP_Licenses` WHERE UserID IS NULL AND StatusID='1' ORDER BY LicenseID ASC LIMIT 1")or die(mysql_error());
+    $Licenses = mysql_fetch_array($Licenses, MYSQL_ASSOC);
+    $LicenseID = $Licenses['LicenseID'];
     if($role=='3'){
-	  $RightsID='2';
-	  $AccessLevelID='2';
-	  $UserTypeID=$role;
-	}elseif($role=='4'){
-	  $RightsID='3';
-	  $AccessLevelID='3';
-	  $UserTypeID=$role;	
-	}elseif($role=='5'){
-	  $RightsID='4';
-	  $AccessLevelID='4';
-	  $UserTypeID=$role;	
-	}
-	$UserID = $UserTypeID.''.$post['UserName'];
-	if(!empty($ProfilePhoto)){
-	$ProfilePhotoData = explode('//', $ProfilePhoto);
+      $RightsID='2';
+      $AccessLevelID='2';
+      $UserTypeID=$role;
+    }elseif($role=='4'){
+      $RightsID='3';
+      $AccessLevelID='3';
+      $UserTypeID=$role;    
+    }elseif($role=='5'){
+      $RightsID='4';
+      $AccessLevelID='4';
+      $UserTypeID=$role;    
+    }
+    $UserID = $UserTypeID.''.$post['UserName'];
+    if(!empty($ProfilePhoto)){
+    $ProfilePhotoData = explode('//', $ProfilePhoto);
             if ($ProfilePhotoData[0] != 'http:') {
                 
-				
-				$photoData=$ProfilePhoto;
-				$fileName='user'.$UserID;
-				$imageData = explode(';', $photoData);
-				$imageData = explode(':', $imageData[0]);
-				if($imageData[0] == 'data') {
-					if($imageData[1] == 'image/png') {
-						$data = str_replace('data:image/png;base64,', '', $photoData);
-						$data = str_replace(' ', '+', $data);
-						$data = base64_decode($data);
-						$file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.png';
-						$Photo = img.$fileName . '.png';
-					} elseif($imageData[1] == 'image/jpg') {
-						$data = str_replace('data:image/jpg;base64,', '', $photoData);
-						$data = str_replace(' ', '+', $data);
-						$data = base64_decode($data);
-						$file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpg';
-						$Photo = img.$fileName . '.jpg';
-					} elseif($imageData[1] == 'image/jpeg') {
-						$data = str_replace('data:image/jpeg;base64,', '', $photoData);
-						$data = str_replace(' ', '+', $data);
-						$data = base64_decode($data);
-						$file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpeg';
-						$Photo = img.$fileName . '.jpeg';
-					} else {
-						$successdata = array('status_code' => "1", 'status' => "error", 'message' => 'Image format is wrong', 'response_code' => "200");
-						$this->response($this->json($successdata), 200); 
-						die();
-					}
-					$success = file_put_contents($file, $data);
-					$data = base64_decode($data); 
-					$source_img = @imagecreatefromstring($data);
-					$rotated_img = @imagerotate($source_img, 90, 0);
-					$imageSave = @imagejpeg($rotated_img, $file, 10);
-					@imagedestroy($source_img);
-					$ProfilePhoto=$Photo;
-				}
-				
-				
+                
+                $photoData=$ProfilePhoto;
+                $fileName='user'.$UserID;
+                $imageData = explode(';', $photoData);
+                $imageData = explode(':', $imageData[0]);
+                if($imageData[0] == 'data') {
+                    if($imageData[1] == 'image/png') {
+                        $data = str_replace('data:image/png;base64,', '', $photoData);
+                        $data = str_replace(' ', '+', $data);
+                        $data = base64_decode($data);
+                        $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.png';
+                        $Photo = img.$fileName . '.png';
+                    } elseif($imageData[1] == 'image/jpg') {
+                        $data = str_replace('data:image/jpg;base64,', '', $photoData);
+                        $data = str_replace(' ', '+', $data);
+                        $data = base64_decode($data);
+                        $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpg';
+                        $Photo = img.$fileName . '.jpg';
+                    } elseif($imageData[1] == 'image/jpeg') {
+                        $data = str_replace('data:image/jpeg;base64,', '', $photoData);
+                        $data = str_replace(' ', '+', $data);
+                        $data = base64_decode($data);
+                        $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpeg';
+                        $Photo = img.$fileName . '.jpeg';
+                    } else {
+                        $successdata = array('status_code' => "1", 'status' => "error", 'message' => 'Image format is wrong', 'response_code' => "200");
+                        $this->response($this->json($successdata), 200); 
+                        die();
+                    }
+                    $success = file_put_contents($file, $data);
+                    $data = base64_decode($data); 
+                    $source_img = @imagecreatefromstring($data);
+                    $rotated_img = @imagerotate($source_img, 90, 0);
+                    $imageSave = @imagejpeg($rotated_img, $file, 10);
+                    @imagedestroy($source_img);
+                    $ProfilePhoto=$Photo;
+                }
+                
+                
             }
-	
-	}
-	
-	
-	$StatusID=!empty($post['statusid'])?$post['statusid']:'1';
-	$result = mysql_query("call createStaff('".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
+    
+    }
+    
+    
+    $StatusID=!empty($post['statusid'])?$post['statusid']:'1';
+    $result = mysql_query("call createStaff('".$EmailID."','".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
    
     if($result) {
         $data['responseData'] = '';
@@ -707,16 +708,20 @@ function getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,
 *   Return Value: User Details se morfi json
 */
 function loadStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
-    session_start();
+     session_start();
     $OrgID=$_SESSION['OrgID'];
+    $ArchiveUser=$post['ArchiveUser'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
-	/*$sql="SELECT st.*
-	FROM SCP_Staff as st
-	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."'";*/
-	$sql="call loadStaff('".$OrgID."');";
-	$result = mysql_query($sql);
-	
+
+    //$sql="call loadStaff('".$OrgID."','".$ArchiveUser."');";
+    
+    
+    $sql="SELECT st.*
+    FROM SCP_Staff as st
+    INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.ArchiveUser='".$ArchiveUser."'";
+    $result = mysql_query($sql);
+    
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
@@ -747,16 +752,17 @@ function loadStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
 *   Return Value: User Details se morfi json
 */
 function loadStaffAlpha($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
-    session_start();
+   session_start();
     $OrgID=$_SESSION['OrgID'];
+    $ArchiveUser=$post['ArchiveUser'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
-	$char=$post['name'];
+    $char=$post['name'];
     $sql="SELECT st.*
-	FROM SCP_Staff as st
-	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.Name LIKE '".$char."%'";
-	$result = mysql_query($sql);
-	
+    FROM SCP_Staff as st
+    INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.ArchiveUser='".$ArchiveUser."' and st.Name LIKE '".$char."%'";
+    $result = mysql_query($sql);
+    
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
@@ -842,16 +848,16 @@ function searchUniversalParam($post,$deviceType,$appVersion,$OSVersion,$browserV
 *   Return Value: User Details se morfi json
 */
 function searchStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
-   session_start();
+  session_start();
     $OrgID=$_SESSION['OrgID'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
-	$searchTxt=$post['searchTxt'];
+    $searchTxt=$post['searchTxt'];
     $sql="SELECT st.*
-	FROM SCP_Staff as st
-	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.Name LIKE '".$searchTxt."%'";
-	$result = mysql_query($sql);
-	
+    FROM SCP_Staff as st
+    INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and st.Name LIKE '".$searchTxt."%'";
+    $result = mysql_query($sql);
+    
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();

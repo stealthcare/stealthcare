@@ -192,6 +192,18 @@
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.Mobile.$error.required"> This field is required. </small>
                                                 </div>
                                             </div>
+											<div class="form-group required">
+                                                <label for="Email" class="control-label col-md-4">Email </label>
+                                                <div class="col-md-8">
+                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="EmailID" ng-model="signup.EmailID" required/>
+                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.EmailID.$error.required">
+                                                        This field is required.
+                                                    </small>
+                                                    <small class="errorMessage" ng-show="addStaffForm.EmailID.$error.pattern" class="help-inline">Email is not valid</small> 
+                                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+                                                    <small class="errorMessage" ng-if="addStaffForm.$error.emailExists">Email already exists in our database</small>
+                                                </div>
+                                            </div>
                                         </div>
                                         <div class="col-md-2 col-lg-2 col-sm-3 col-xs-8">
                                             <div class="input-group margin-top50">
@@ -236,7 +248,7 @@
                                             <div class="form-group required">
                                                 <label for="NOKEmail" class="control-label col-md-4">NOK Email </label>
                                                 <div class="col-md-8">
-                                                    <input type="email" id="NOKEmail"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="NOK Email" email-available name="NOKEmail" ng-model="signup.NOKEmail" required/>
+                                                    <input type="email" id="NOKEmail"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="NOK Email"  name="NOKEmail" ng-model="signup.NOKEmail" required/>
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.NOKEmail.$error.required">
                                                         This field is required.
                                                     </small>
