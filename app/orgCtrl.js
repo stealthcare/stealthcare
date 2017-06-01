@@ -8,31 +8,6 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
         $rootScope.orgPageTitle = orgPageTitle;
     };
-	
-	$scope.BaseUrl = 'uploads/';
-	$scope.searchStaffKey = 'Name';
-	$scope.pageSize='10';
-
-    /*var numberOfYears = (new Date()).getYear() - 0;
-    var years = $.map($(Array(numberOfYears)), function (val, i) { return i + 1900; });
-    var months = $.map($(Array(12)), function (val, i) { return i + 1; });
-    var days = $.map($(Array(31)), function (val, i) { return i + 1; });
-
-    var isLeapYear = function () {
-        var year = $scope.SelectedYear || 0;
-        return ((year % 400 === 0 || year % 100 !== 0) && (year % 4 === 0)) ? 1 : 0;
-    }
-    var getNumberOfDaysInMonth = function () {
-        var selectedMonth = $scope.SelectedMonth || 0;
-        return 31 - ((selectedMonth === 2) ? (3 - isLeapYear()) : ((selectedMonth - 1) % 7 % 2));
-    }
-    $scope.UpdateNumberOfDays = function () {
-        $scope.NumberOfDays = getNumberOfDaysInMonth();
-    }
-    $scope.NumberOfDays = 31;
-    $scope.Years = years;
-    $scope.Days = days;
-    $scope.Months = months;*/
 
     $scope.calcDays = DOBService.getDays(); 
     $scope.calcMonths = DOBService.getMonths();
@@ -77,209 +52,137 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $rootScope.activeClass = ActiveClass;
         $scope.loading = false;
     };
-	
-  	// create enquiry
-	var requestID = angular.element('#requestID').val();
-  	var statusid = angular.element('#statusid').val();
-	if(statusid!=''){
-	  $scope.signup = {serviceRequestID:requestID,statusid:statusid};
-	}else{
-	  $scope.signup = {serviceRequestID:requestID}; 	
-	}
-  	$scope.signup.title = 'Mr';
-	$scope.signup.role = '3';
-  	$scope.signup.gender = 'Male';
-  	$scope.signup.support = 'Personal Care';
-  	$scope.signup.makeenq = 'self';
-	
+    
+    // create enquiry
+    var requestID = angular.element('#requestID').val();
+    var statusid = angular.element('#statusid').val();
+    if(statusid!=''){
+      $scope.signup = {serviceRequestID:requestID,statusid:statusid};
+    }else{
+      $scope.signup = {serviceRequestID:requestID};     
+    }
+    $scope.signup.title = 'Mr';
+    $scope.signup.role = '3';
+    $scope.signup.gender = 'Male';
+    $scope.signup.support = 'Personal Care';
+    $scope.signup.makeenq = 'self';
+    
     $scope.sendRequest = function (request,pathlink) {
-		  request = angular.toJson(request);
+        request = angular.toJson(request);
         $http({
             method: 'post',
             data: $.param({request: request}),
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){							  
+        .success(function(results){                           
             Data.toast(results);
-			$route.reload();
+            $route.reload();
             if (results.status == "1") {  
-			$route.reload();
-      				//$scope.signup = {};
-      				//$location.path(pathlink);
+                $route.reload();
             }
-        })
-        .error(function(results){
-
         });
     };
-	
-	
-	
-$scope.sendReq = function (request,pathlink) {
-		  request = angular.toJson(request);
+    
+    $scope.sendReq = function (request,pathlink) {
+        request = angular.toJson(request);
         $http({
             method: 'post',
             data: $.param({request: request}),
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){	
+        .success(function(results){ 
             Data.toast(results);
-			$scope.allStaff = results.responseData;
-        })
-        .error(function(results){
-
+            $scope.allStaff = results.responseData;
         });
-		  
-		  
-		  
-    };
-	
-	
-	$scope.sendReqAlpha = function (name) {
-		  var request = '[{"serviceRequestID":"18","name":"'+name+'"}]';
+    };  
+    
+    $scope.sendReqAlpha = function (name) {
+        var request = '{"serviceRequestID":"18","name":"'+name+'"}';
         $http({
             method: 'post',
             data: $.param({request: request}),
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){	
+        .success(function(results){ 
             Data.toast(results);
-			$scope.allStaff = results.responseData;
-			
-			if(results.status==0){
-			  $scope.responsemsg = results.message;
-			  $scope.showAlert = true;
-			}else{
-			  $scope.showAlert = false;
-			}
-			
-			
-        })
-        .error(function(results){
-
+            $scope.allStaff = results.responseData;
         });
-		  
-		  
-		  
     };
-	
-	//search staff by parameters
-	
-	$scope.searchUniversalParam = function (param) {
-		  var request = '[{"serviceRequestID":"19","param":"'+param+'"}]';
+    
+    //search staff by parameters    
+    $scope.searchUniversalParam = function (param) {
+        var request = '{"serviceRequestID":"19","param":"'+param+'"}';
         $http({
             method: 'post',
             data: $.param({request: request}),
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){	
+        .success(function(results){ 
             Data.toast(results);
-			$scope.allStaff = results.responseData;
-        })
-        .error(function(results){
-
-        });	  
-    };
-	
-	//search append
-	$scope.append_data=function (param) {
-	  angular.element('#append_response').html('<input  placeholder="Search" type="text"  id="searchTxt" ng-model="searchKeywordStaff.'+param+'">');
-	};
-	
-	//search staff by txt
-	
-	$scope.searchStaff = function (param) {
-		
-		 var searchTxt=angular.element('#searchTxt').val();
-		
-		  var request = '[{"serviceRequestID":"20","param":"'+param+'","searchTxt":"'+searchTxt+'"}]';
-        $http({
-            method: 'post',
-            data: $.param({request: request}),
-            url: serviceBase,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(results){	
-            Data.toast(results);
-			$scope.allStaff = results.responseData;
-			if(results.status==0){
-			  $scope.responsemsg = results.message;
-			  $scope.showAlert = true;
-			}else{
-			  $scope.showAlert = false;
-			}
-			
-			
-        })
-        .error(function(results){
-
-        });	  
-    };
-	
-	
-	
-	
-	//load staff
-	
-	$scope.loadAllStaff = function () {
-		  var request = '[{"serviceRequestID":"17"}]';
-        $http({
-            method: 'post',
-            data: $.param({request: request}),
-            url: serviceBase,
-            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-        })
-        .success(function(results){	
-            Data.toast(results);
-			$scope.allStaff = results.responseData;
-			if(results.status==0){
-			  $scope.responsemsg = results.message;
-			  $scope.showAlert = true;
-			}else{
-			  $scope.showAlert = false;
-			}
-        })
-        .error(function(results){
-
+            $scope.allStaff = results.responseData;
         });
-		  
-		  
-		  
     };
-	
-	
-	$scope.toggleShow = function(){
-		if($scope.showStartEvent==true){
-		  var statusid = angular.element('#statusid').val('1');	
-		}else{
-		  var statusid = angular.element('#statusid').val('2');		
-		}
+    
+    //search staff by txt   
+    $scope.searchStaff = function (param) {
+        var searchTxt=angular.element('#searchTxt').val();
+        var request = '{"serviceRequestID":"20","param":"'+param+'","searchTxt":"'+searchTxt+'"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            Data.toast(results);
+            $scope.allStaff = results.responseData;
+        });   
+    };
+    
+    //load staff    
+    $scope.loadAllStaff = function () {
+        var request = '{"serviceRequestID":"17"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            Data.toast(results);
+            $scope.allStaff = results.responseData;
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+            }
+        });
+    };
+    
+    $scope.toggleShow = function(){
+        if($scope.showStartEvent==true){
+          var statusid = angular.element('#statusid').val('1'); 
+        }else{
+          var statusid = angular.element('#statusid').val('2');     
+        }
        $scope.showStartEvent = !$scope.showStartEvent;
     }
-	
-	
 
-	/*$scope.myhtml = function () {
-        $scope.myhtml = '<div class="myclass">some content</div>';
-    };*/
-	
-
-	// Profile Photo
-	$scope.fileReaderSupported = window.FileReader != null;
+    // Profile Photo
+    $scope.fileReaderSupported = window.FileReader != null;
     $scope.profilePhotoChanged = function(files){
         if (files != null) {
             var file = files[0];
-			
+            
             if ($scope.fileReaderSupported && file.type.indexOf('image') > -1) {
                 $timeout(function() {
                     var fileReader = new FileReader();
                     fileReader.readAsDataURL(file);
                     fileReader.onload = function(e) {
-                        $timeout(function(){			  
+                        $timeout(function(){              
                         $scope.signup.ProfilePhoto = e.target.result;
                         });
                     }
@@ -448,7 +351,6 @@ $scope.sendReq = function (request,pathlink) {
         }, 1000);
         $scope.loading = false;
     }; 
-	
 
     // save form request
     $scope.saveForm = function(OrgID){
@@ -629,33 +531,6 @@ app.run([
         };
     }
 ]);
-
-//text trim
-angular.module('ng').filter('cut', function () {
-        return function (value, wordwise, max, tail) {
-            if (!value) return '';
-
-            max = parseInt(max, 10);
-            if (!max) return value;
-            if (value.length <= max) return value;
-
-            value = value.substr(0, max);
-            if (wordwise) {
-                var lastspace = value.lastIndexOf(' ');
-                if (lastspace !== -1) {
-                  //Also remove . and , so its gives a cleaner result.
-                  if (value.charAt(lastspace-1) === '.' || value.charAt(lastspace-1) === ',') {
-                    lastspace = lastspace - 1;
-                  }
-                  value = value.substr(0, lastspace);
-                }
-            }
-
-            return value + (tail || ' …');
-        };
-});
-
-
 
 app.$inject = ['$scope', 'DOBService'];
 
