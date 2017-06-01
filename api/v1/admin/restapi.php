@@ -460,7 +460,7 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
     $NOKMobile=$post['NOKMobile'];
     $NOKEmail=$post['NOKEmail'];
     $UserName=$post['UserName'];
-	$Password=$post['Password'];
+	$Password=md5($post['Password']);
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
     session_start();
@@ -692,7 +692,7 @@ function loadStaffAlpha($post,$deviceType,$appVersion,$OSVersion,$browserVersion
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "Request error";
+        $data['message'] = "No Staff Found";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }
@@ -787,7 +787,7 @@ function searchStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "Request error";
+        $data['message'] = "No Staff Found";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }

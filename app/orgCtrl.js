@@ -8,6 +8,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
         $rootScope.orgPageTitle = orgPageTitle;
     };
+	
+	$scope.BaseUrl = 'uploads/';
+	$scope.searchStaffKey = 'Name';
+	$scope.pageSize='10';
 
     /*var numberOfYears = (new Date()).getYear() - 0;
     var years = $.map($(Array(numberOfYears)), function (val, i) { return i + 1900; });
@@ -144,6 +148,15 @@ $scope.sendReq = function (request,pathlink) {
         .success(function(results){	
             Data.toast(results);
 			$scope.allStaff = results.responseData;
+			
+			if(results.status==0){
+			  $scope.responsemsg = results.message;
+			  $scope.showAlert = true;
+			}else{
+			  $scope.showAlert = false;
+			}
+			
+			
         })
         .error(function(results){
 
@@ -172,9 +185,15 @@ $scope.sendReq = function (request,pathlink) {
         });	  
     };
 	
+	//search append
+	$scope.append_data=function (param) {
+	  angular.element('#append_response').html('<input  placeholder="Search" type="text"  id="searchTxt" ng-model="searchKeywordStaff.'+param+'">');
+	};
+	
 	//search staff by txt
 	
 	$scope.searchStaff = function (param) {
+		
 		 var searchTxt=angular.element('#searchTxt').val();
 		
 		  var request = '[{"serviceRequestID":"20","param":"'+param+'","searchTxt":"'+searchTxt+'"}]';
@@ -187,11 +206,22 @@ $scope.sendReq = function (request,pathlink) {
         .success(function(results){	
             Data.toast(results);
 			$scope.allStaff = results.responseData;
+			if(results.status==0){
+			  $scope.responsemsg = results.message;
+			  $scope.showAlert = true;
+			}else{
+			  $scope.showAlert = false;
+			}
+			
+			
         })
         .error(function(results){
 
         });	  
     };
+	
+	
+	
 	
 	//load staff
 	
@@ -209,6 +239,8 @@ $scope.sendReq = function (request,pathlink) {
 			if(results.status==0){
 			  $scope.responsemsg = results.message;
 			  $scope.showAlert = true;
+			}else{
+			  $scope.showAlert = false;
 			}
         })
         .error(function(results){
@@ -416,6 +448,7 @@ $scope.sendReq = function (request,pathlink) {
         }, 1000);
         $scope.loading = false;
     }; 
+	
 
     // save form request
     $scope.saveForm = function(OrgID){
@@ -597,8 +630,30 @@ app.run([
     }
 ]);
 
+//text trim
+angular.module('ng').filter('cut', function () {
+        return function (value, wordwise, max, tail) {
+            if (!value) return '';
 
+            max = parseInt(max, 10);
+            if (!max) return value;
+            if (value.length <= max) return value;
 
+            value = value.substr(0, max);
+            if (wordwise) {
+                var lastspace = value.lastIndexOf(' ');
+                if (lastspace !== -1) {
+                  //Also remove . and , so its gives a cleaner result.
+                  if (value.charAt(lastspace-1) === '.' || value.charAt(lastspace-1) === ',') {
+                    lastspace = lastspace - 1;
+                  }
+                  value = value.substr(0, lastspace);
+                }
+            }
+
+            return value + (tail || ' …');
+        };
+});
 
 
 

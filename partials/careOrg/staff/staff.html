@@ -11,7 +11,7 @@
   <!--sidebar end-->
   <!--main content start-->
   <!-- container section start -->
-  <section id="container" class="">  
+  <section id="container" class="">
     <!--main content start-->
     <!---seach-->
     <section id="content">
@@ -25,33 +25,31 @@
                 <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
                   <div class="form-group-col_paading0">
                     <div class="gender ">
-                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="fname" checked ng-click="searchUniversalParam('Name')">
-                      <span> First Name </span> </label>
-    				 
-    				  
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="lname" ng-click="searchUniversalParam('Surname')">
+                      <input type="radio" name="search" value="fname" checked  ng-click="append_data('Name');">
+                      <span> First Name </span> </label>
+                      <label class="radio2 inline2">
+                      <input type="radio" name="search" value="lname" ng-click="append_data('Surname');" >
                       <span>Surname</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="dob" ng-click="searchUniversalParam('DateOfBirth')">
+                      <input type="radio" name="search" value="dob" ng-click="append_data('DateOfBirth');" >
                       <span>D.O.B</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="address" ng-click="searchUniversalParam('address')">
+                      <input type="radio" name="search" value="address" ng-click="append_data('Address1');" >
                       <span>Address</span> </label>
                       <div class="clearfix"></div>
                       <div class="searching">
-                        <div class="col-md-7 col-sm-7 col-xs-4 col_paading0">
-                          <input  placeholder="Search" type="text" ng-keyup="searchStaff('search')" id="searchTxt">
+                        <div class="col-md-7 col-sm-7 col-xs-4 col_paading0" id="append_response">
+                          <input  placeholder="Search" type="text"  id="searchTxt" ng-model="searchKeywordStaff.Name">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xs-4 col_paading0">
-                          <select name="employee">
+                          <select name="employee" >
                             <option>Current Employee</option>
                             <option>Latest Employee</option>
                           </select>
                           .</div>
                         <div class="col-md-2 col-lg-2 col-xs-1 col_paading0">
-                          <button><img src="img/Search Icon.png"  ></button>
+                          <button ng-click="searchStaff('search');"><img src="img/Search Icon.png"></button>
                         </div>
                       </div>
                       <label > </label>
@@ -60,14 +58,7 @@
                 </form>
               </div>
             </div>
-            <div class="col-md-6 col-xs-12 col-lg-6">
-              <a href="organisation/carers/create" class="btn add_employee">
-                Add Employee 
-                <i class="fa icon" aria-hidden="true">
-                  <img src="img/Plus_icon.png">
-                </i>
-              </a>
-            </div>
+            <div class="col-md-6 col-xs-12 col-lg-6"> <a href="organisation/carers/create" class="btn add_employee"> Add Employee <i class="fa icon" aria-hidden="true"> <img src="img/Plus_icon.png"> </i> </a> </div>
           </div>
         </section>
       </section>
@@ -77,7 +68,7 @@
         <div class="col-md-7  col-lg-6 col-xs-12 col-sm-8">
           <div class="alfa-pagination">
             <ul>
-			   <li><a href="javascript:void(0);" class="active" ng-click="sendReqAlpha('A')">A</a></li>
+              <li><a href="javascript:void(0);" class="active" ng-click="sendReqAlpha('A')">A</a></li>
               <li><a href="javascript:void(0);"  ng-click="sendReqAlpha('B')">B</a></li>
               <li><a href="javascript:void(0);"  ng-click="sendReqAlpha('C')">C</a></li>
               <li><a href="javascript:void(0);"  ng-click="sendReqAlpha('D')">D</a></li>
@@ -108,233 +99,31 @@
         </div>
       </div>
       <div class="clearfix"></div>
-      
-	  
-	  
-
-	  
-	  
+      <div class="space_divider"></div>
       <div class="row">
         <div class="wrapper top0" data-ng-init="loadAllStaff()">
-		
-		<div class="responsemsg" ng-bind="responsemsg"  ng-show="showAlert"></div>
-		
-		  <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 " ng-repeat="S in allStaff">
+          <div class="responsemsg" ng-bind="responsemsg"  ng-show="showAlert"></div>
+          <div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 " dir-paginate="S in allStaff | filter:searchKeywordStaff|itemsPerPage:pageSize">
             <div class="employee">
               <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="{{S.ProfilePhoto}}"></div>
+                <div class="emimage"> <img ng-if="S.ProfilePhoto != ''" src="{{S.ProfilePhoto}}"> <img ng-if="S.ProfilePhoto == ''" src="{{BaseUrl}}default_user.png"> </div>
               </div>
               <div class="col-md-8 col-xs-8">
-			    <!--<p>{{$index+1}}</p>-->
-                <h2>{{S.Title}} {{S.Name}} {{S.Surname}}</h2>
+                <!--<p>{{$index+1}}</p>-->
+                <h2>{{S.Title}} {{S.Name}} {{S.Surname | cut:true:2:' ...'}}</h2>
                 <p>{{S.Address1}}</p>
                 <p>{{S.Mobile}}</p>
-				
-				<div data-ng-if="S.StatusID !== '2'">
-        <span class="active_employee">Active</span>
-    </div>
-	
-	<div data-ng-if="S.StatusID !== '1'">
-        <span class="inactive_employee">Inactive</span>
-    </div>
-				
-				
-                
+                <div data-ng-if="S.StatusID !== '2'"> <span class="active_employee">Active</span> </div>
+                <div data-ng-if="S.StatusID !== '1'"> <span class="inactive_employee">Inactive</span> </div>
                 <p class="small1">last logged in {{ S.ModifyDateTime }}</p>
               </div>
             </div>
           </div>
-		
-		
-          <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4  col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-            
-          <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="inactive_employee">Inactive</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                 <span class="inactive_employee">Inactive</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                  <span class="inactive_employee">Inactive</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                  <span class="inactive_employee">Inactive</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-    	  
-    	  <!--<div class="col-md-3 col-xs-12 col-lg-3 col-sm-4 ">
-            <div class="employee">
-              <div class="col-md-4 col-xs-4 col_margin">
-                <div class="emimage"><img src="img/employee.jpg"></div>
-              </div>
-              <div class="col-md-8 col-xs-8">
-                <h2>Mr. Marchin</h2>
-                <p>15, Television road Menchester M13 4TY </p>
-                <p>0161 900 1234</p>
-                <span class="active_employee">Active</span>
-                <p class="small1">last logged in 12 Jan 11:30 pm</p>
-              </div>
-            </div>
-          </div>-->
-          
-          
-          
-          
-          
-          
-          
-          
-          
         </div>
+        <p class="pagination_staff">
+          <dir-pagination-controls max-size="10" direction-links="true" boundary-links="true">
+		  </dir-pagination-controls>
+        </p>
       </div>
     </section>
   </section>

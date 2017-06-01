@@ -857,3 +857,15 @@ a.button {
 .responsemsg{
 color: #888;font-size: 26px;margin-top: 168px;min-height: 104px;text-align: center;
 }
+.space_divider{
+ padding-bottom:19px;
+}
+.pagination_num{
+ margin-top: 5px;
+}
+.pagination_staff{
+ text-align:center;
+} 
+.pagination_staff .pagination{
+ float:none !important;
+}
