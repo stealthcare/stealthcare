@@ -8,6 +8,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
         $rootScope.orgPageTitle = orgPageTitle;
     };
+	
+	$scope.BaseUrl = 'uploads/';
+	$scope.searchStaffKey = 'Name';
+	$scope.pageSize='10';
 
     $scope.calcDays = DOBService.getDays(); 
     $scope.calcMonths = DOBService.getMonths();
@@ -126,6 +130,11 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             $scope.allStaff = results.responseData;
         });
     };
+	
+	//search append
+	$scope.append_data=function (param) {
+	  angular.element('#append_response').html('<input  placeholder="Search" type="text"  id="searchTxt" ng-model="searchKeywordStaff.'+param+'">');
+	};
     
     //search staff by txt   
     $scope.searchStaff = function (param) {
@@ -140,6 +149,12 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         .success(function(results){ 
             Data.toast(results);
             $scope.allStaff = results.responseData;
+			if(results.status==0){
+			  $scope.responsemsg = results.message;
+			  $scope.showAlert = true;
+			}else{
+			  $scope.showAlert = false;
+			}
         });   
     };
     
@@ -158,7 +173,9 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             if(results.status==0){
               $scope.responsemsg = results.message;
               $scope.showAlert = true;
-            }
+            }else{
+			  $scope.showAlert = false;
+			}
         });
     };
     
@@ -531,6 +548,36 @@ app.run([
         };
     }
 ]);
+
+
+
+//text trim
+angular.module('ng').filter('cut', function () {
+        return function (value, wordwise, max, tail) {
+            if (!value) return '';
+
+            max = parseInt(max, 10);
+            if (!max) return value;
+            if (value.length <= max) return value;
+
+            value = value.substr(0, max);
+            if (wordwise) {
+                var lastspace = value.lastIndexOf(' ');
+                if (lastspace !== -1) {
+                  //Also remove . and , so its gives a cleaner result.
+                  if (value.charAt(lastspace-1) === '.' || value.charAt(lastspace-1) === ',') {
+                    lastspace = lastspace - 1;
+                  }
+                  value = value.substr(0, lastspace);
+                }
+            }
+
+            return value + (tail || ' …');
+        };
+});
+
+
+
 
 app.$inject = ['$scope', 'DOBService'];
 
