@@ -1126,7 +1126,7 @@
             _this.groups.push(newComponent.group);
           }
         } else {
-          console.error("The component " + name + " was registered.");
+          //console.error("The component " + name + " was registered.");
         }
       };
     })(this);

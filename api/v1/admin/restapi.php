@@ -8,9 +8,9 @@ include '../../config.php';
 if(@$_POST['request']) {
     $post = json_decode($_POST['request']);
     ///print_r($post); die();
-	if(is_array($post)){
+	/*if(is_array($post)){
 	  $post = $post['0'];
-	}
+	}*/
     $postArray = array();
     foreach($post as $key => $field){
         $postArray[$key] = $field;
@@ -220,7 +220,18 @@ function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserV
     if (!$result) die('Invalid query: ' . mysql_error());
     $orgForms = array();
     while($row = mysql_fetch_assoc($result)) {
-        $orgForms[] = $row;
+        $array1['FormID'] = $row['FormID'];
+        $array1['FormDataID'] = $row['FormDataID'];
+        $array1['FormName'] = $row['FormName'];
+        $array1['FormDataJson'] = $row['FormDataJson'];
+        $array1['FormDataJsonValue'] = $row['FormDataJsonValue'];
+        $array1['UserID'] = $row['UserID'];
+        $array1['StatusID'] = $row['StatusID'];
+        $array1['FormType'] = $row['FromType'];;
+        $array1['FormStatus'] = '0';
+        $array1['FormCompletedDate'] = '';
+        $array1['UserTypeID'] = $row['UserTypeID'];
+        $orgForms[] = $array1;
     }
     mysql_close($con);   //close the connection
     $allForms = loadAllForms($UserTypeID);
@@ -235,10 +246,10 @@ function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserV
             $array['FormDataJsonValue'] = $value['FormDataJsonValue'];
             $array['UserID'] = $value['UserID'];
             $array['StatusID'] = $value['StatusID'];
-            $array['FromType'] = 2;
+            $array['FormType'] = 2;
+            $array['FormStatus'] = '0';
+            $array['FormCompletedDate'] = '';
             $array['UserTypeID'] = $value['UserTypeID'];
-            $array['CreatedDateTime'] = $value['CreatedDateTime'];
-            $array['ModifyDateTime'] = $value['ModifyDateTime'];
             $filterAllForms[] = $array;
         }
     }
@@ -284,6 +295,7 @@ function loadAllForms($UserTypeID)
 */
 function getFormWithdataByFormDataIDAndUserID($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
+    $CustomerID = $post['CustomerID'];
     $UserID = $post['UserID'];
     $FormDataID = $post['FormDataID'];
     //$OrgID = $post['OrgID'];
@@ -300,40 +312,39 @@ function getFormWithdataByFormDataIDAndUserID($post,$deviceType,$appVersion,$OSV
     $UserTypeID = $accessRow['UserTypeID'];
     /******************** userData end *******************/ 
     /******************** userformData start *******************/
-    $sql1 = "SELECT * FROM SCP_OrgFormBuilderDataAction WHERE UserID='$UserID' AND OrgID='$OrgID' AND FormDataID='$FormDataID'";
+    $sql1 = "SELECT * FROM SCP_OrgFormBuilderDataAction WHERE CustomerID='$CustomerID' AND FormDataID='$FormDataID'";
     $resultset1 = mysql_query($sql1);
     $rowData = mysql_fetch_assoc($resultset1); 
     /******************** userformData end *******************/ 
-    print_r(unserialize($rowData['FormValueData']));
-    //print_r($rowData); die();
+    //print_r($arrFormValueData); die();
     $result = mysql_query("call getFormWithdataByFormDataIDAndUserID('".$OrgID."','".$UserTypeID."','".$FormDataID."');");
     //CHECK FOR ERROR       
     if (!$result) die('Invalid query: ' . mysql_error());
     $row = mysql_fetch_assoc($result);
     mysql_close($con);   //close the connection
-    print_r(json_decode($row['FormDataJson'])); die();
-    $allForms = loadAllForms($UserTypeID);
-    $filterAllForms = array();
-    foreach ($allForms as $key => $value) {
-        if(!in_array_r($value['FormDataID'], $orgForms)) {
-            $array['FormID'] = $value['FormID'];
-            $array['FormDataID'] = $value['FormDataID'];
-            $array['FormName'] = $value['FormName'];
-            $array['FormDataJson'] = $value['FormDataJson'];
-            $array['FormDataJsonValue'] = $value['FormDataJsonValue'];
-            $array['UserID'] = $value['UserID'];
-            $array['StatusID'] = $value['StatusID'];
-            $array['FromType'] = 2;
-            $array['UserTypeID'] = $value['UserTypeID'];
-            $array['CreatedDateTime'] = $value['CreatedDateTime'];
-            $array['ModifyDateTime'] = $value['ModifyDateTime'];
+
+    if(!empty($rowData)) {
+        $arrFormValueData = unserialize($rowData['FormValueData']);
+        $jsonData = json_decode($row['FormDataJson']);
+        $filterAllForms = array();
+        foreach ($jsonData as $key => $value) {
+            $array['component'] = $value->component;
+            $array['editable'] = $value->editable;
+            $array['index'] = $value->index;
+            $array['label'] = $value->label;
+            $array['value'] = $arrFormValueData->$key;
+            $array['description'] = $value->description;
+            $array['placeholder'] = $value->placeholder;
+            $array['options'] = $value->options;
+            $array['required'] = $value->required;
             $filterAllForms[] = $array;
         }
+        $row['FormDataJson'] = json_encode($filterAllForms);
     }
-    //print_r($newArray2); die();
-    $rows = array_merge($orgForms,$filterAllForms);
-    if($rows) {
-        $data['ResponseData'] = $row;
+    $filterFormWithData = $row;
+    //print_r($filterFormWithData); die();    
+    if($filterFormWithData) {
+        $data['ResponseData'] = $filterFormWithData;
         $data['Message'] = "Get form data successfully.";
         $data['ResponseCode'] = "200";
         $data['Status'] = "Success";
