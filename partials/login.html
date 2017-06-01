@@ -27,14 +27,14 @@
                         <input type="password" class="form-control" placeholder="Password" ng-model="login.password" required/>
                     </div>
                     <div>
-                        <button type="submit" class="btn btn-default submit" ng-click="doLogin(login)" data-ng-disabled="loginForm.$invalid">
+                        <button type="submit" class="btn btn-default login-button" ng-click="doLogin(login)" data-ng-disabled="loginForm.$invalid">
                             LOGIN
                         </button>
                     </div>
                     <div class="clearfix"></div>
 
                     <p class="change_link">
-                        <a href="#" class="white_color">Reset Password</a>            
+                        <a href="#" class="white_color" data-toggle="modal" data-target="#myModal">Reset Password</a>            
                     </p>
                     <ul class="phone_nav">
                         <li class="phone_text">For Support Issues</li>
@@ -47,3 +47,46 @@
     </div>
 </div>
 
+
+
+<div class="modal fade " id="myModal" role="dialog">
+    <div class="modal-dialog">
+      <!-- Modal content-->
+      <div class="modal-content rest-password padding-bottom20">
+        <div class="modal-header header-border">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <br>
+
+        </div>
+        <div class="modal-body">
+          <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
+          
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                 <div class="col-md-2"></div>
+                  <label for="cname" class="control-label col-md-8 ">
+                  <input class="form-control rest-password-textfield usename" id="username" name="username"  type="text" placeholder="User Name">
+                  </label>
+                    <div class="col-md-2"></div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-3"></div>
+                    <div class="col-md-6">
+                        <div id="button_float">
+                            <button class="btn rest-button font-bold" type="submit">Reset Password</button>
+                        </div>
+                    </div>
+                    <div class="col-md-3"></div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+</div>

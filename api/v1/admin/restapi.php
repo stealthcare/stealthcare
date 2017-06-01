@@ -49,8 +49,8 @@ $baseUrl = base_url;
 */
 function loginWithUsername($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-    $username = $post['UserName'];
-    $password = $post['Password'];
+    $username = is_require($post, 'UserName'); 
+    $password = is_require($post, 'Password'); 
     if ($deviceType == '1' || $deviceType == '2') {
         $UserTypeID = 5;
     } elseif ($deviceType == '4' || $deviceType == '5') {
@@ -200,8 +200,8 @@ function loadAllCountry($post,$deviceType,$appVersion,$OSVersion,$browserVersion
 */
 function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-    $UserID = $post['UserID'];
-    //$OrgID = $post['OrgID'];
+    $UserID = is_require($post, 'UserID');
+    $CustomerID = is_require($post, 'CustomerID');
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
     $sql = "SELECT S.OrgID, UA.UserTypeID FROM 
@@ -220,35 +220,106 @@ function loadAllOrgniserForms($post,$deviceType,$appVersion,$OSVersion,$browserV
     if (!$result) die('Invalid query: ' . mysql_error());
     $orgForms = array();
     while($row = mysql_fetch_assoc($result)) {
+        $nrow[] = $row;
+    }
+    mysql_close($con);   //close the connection
+    //print_r($nrow); die();
+    //while($row = mysql_fetch_assoc($result)) {
+    foreach($nrow as $row) {
         $array1['FormID'] = $row['FormID'];
         $array1['FormDataID'] = $row['FormDataID'];
         $array1['FormName'] = $row['FormName'];
-        $array1['FormDataJson'] = $row['FormDataJson'];
-        $array1['FormDataJsonValue'] = $row['FormDataJsonValue'];
+        /******************** userformData start *******************/
+        $FormDataID = $row['FormDataID'];
+        $rowData = callFormValue($CustomerID,$FormDataID);
+        $filterFormWithData = $row['FormDataJson'];
+        $FormStatus = '0';
+        if(!empty($rowData)) {
+            $arrFormValueData = unserialize($rowData['FormValueData']);
+            $jsonData = json_decode($row['FormDataJson']);
+            $filterAllForms = array();
+            foreach ($jsonData as $key => $value) {
+                $array['component'] = $value->component;
+                $array['editable'] = $value->editable;
+                $array['index'] = $value->index;
+                $array['label'] = $value->label;
+                if($value->component == 'signature' || $value->component == 'file') {
+                    $baseUrlUpload = base_url."uploads";
+                    $array['value'] = $baseUrlUpload.'/'.$arrFormValueData->$key;
+                } else {
+                    $array['value'] = $arrFormValueData->$key;
+                }
+                $array['description'] = $value->description;
+                $array['placeholder'] = $value->placeholder;
+                $array['options'] = $value->options;
+                $array['required'] = $value->required;
+                $filterAllForms[] = $array;
+            }
+            $filterFormWithData = json_encode($filterAllForms);
+            $FormStatus = '1';
+        }
+        $array1['FormDataJson'] = $filterFormWithData;
+        $array1['FormStatus'] = $FormStatus;
+        $array1['FormCompletedDate'] = '';
+        /******************** userformData end *******************/ 
         $array1['UserID'] = $row['UserID'];
         $array1['StatusID'] = $row['StatusID'];
-        $array1['FormType'] = $row['FromType'];;
-        $array1['FormStatus'] = '0';
-        $array1['FormCompletedDate'] = '';
+        $array1['FormType'] = $row['FromType'];
         $array1['UserTypeID'] = $row['UserTypeID'];
         $orgForms[] = $array1;
     }
+    //$allForms = loadAllForms($UserTypeID);
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    $result = mysql_query("call loadAllForms('".$UserTypeID."');");
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $allForms[] = $row;
+    }
     mysql_close($con);   //close the connection
-    $allForms = loadAllForms($UserTypeID);
     //print_r($allForms); 
     $filterAllForms = array();
     foreach ($allForms as $key => $value) {
         if(!in_array_r($value['FormDataID'], $orgForms)) {
             $array['FormID'] = $value['FormID'];
             $array['FormDataID'] = $value['FormDataID'];
-            $array['FormName'] = $value['FormName'];
-            $array['FormDataJson'] = $value['FormDataJson'];
-            $array['FormDataJsonValue'] = $value['FormDataJsonValue'];
+            $array['FormName'] = $value['FormName'];/******************** userformData start *******************/
+            $FormDataID = $value['FormDataID'];
+            $rowData = callFormValue($CustomerID,$FormDataID);
+            $filterFormWithData = $value['FormDataJson'];
+            $FormStatus = '0';
+            if(!empty($rowData)) {
+                $arrFormValueData = unserialize($rowData['FormValueData']);
+                $jsonData = json_decode($value['FormDataJson']);
+                $filterAllForms = array();
+                foreach ($jsonData as $key => $value2) {
+                    $array2['component'] = $value2->component;
+                    $array2['editable'] = $value2->editable;
+                    $array2['index'] = $value2->index;
+                    $array2['label'] = $value2->label;
+                    if($value2->component == 'signature' || $value2->component == 'file') {
+                        $baseUrlUpload = base_url."uploads";
+                        $array2['value'] = $baseUrlUpload.'/'.$arrFormValueData->$key;
+                    } else {
+                        $array2['value'] = $arrFormValueData->$key;
+                    }
+                    $array2['description'] = $value2->description;
+                    $array2['placeholder'] = $value2->placeholder;
+                    $array2['options'] = $value2->options;
+                    $array2['required'] = $value2->required;
+                    $filterAllForms[] = $array2;
+                }
+                $filterFormWithData = json_encode($filterAllForms);
+                $FormStatus = '1';
+            }
+            $array['FormDataJson'] = $filterFormWithData;
+            $array['FormStatus'] = $FormStatus;
+            $array['FormCompletedDate'] = '';
+            /******************** userformData end *******************/ 
             $array['UserID'] = $value['UserID'];
             $array['StatusID'] = $value['StatusID'];
             $array['FormType'] = 2;
-            $array['FormStatus'] = '0';
-            $array['FormCompletedDate'] = '';
             $array['UserTypeID'] = $value['UserTypeID'];
             $filterAllForms[] = $array;
         }
@@ -285,6 +356,15 @@ function loadAllForms($UserTypeID)
     mysql_close($con);   //close the connection
 }
 
+function callFormValue($CustomerID,$FormDataID) {    
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    $sql1 = "SELECT * FROM SCP_OrgFormBuilderDataAction WHERE CustomerID='$CustomerID' AND FormDataID='$FormDataID'";
+    $resultset1 = mysql_query($sql1);
+    return $rowData = mysql_fetch_array($resultset1); 
+    mysql_close($con);   //close the connection
+}
+
 /******************************************************************************************************************/
 /* 
 *   ID=11
@@ -295,9 +375,9 @@ function loadAllForms($UserTypeID)
 */
 function getFormWithdataByFormDataIDAndUserID($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-    $CustomerID = $post['CustomerID'];
-    $UserID = $post['UserID'];
-    $FormDataID = $post['FormDataID'];
+    $CustomerID = is_require($post, 'CustomerID');
+    $UserID = is_require($post, 'UserID');
+    $FormDataID = is_require($post, 'FormDataID');
     //$OrgID = $post['OrgID'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
@@ -371,23 +451,21 @@ function insertDynamicFormData($post,$deviceType,$appVersion,$OSVersion,$browser
 {
     $FormValueData = serialize(json_decode($post['data']));
     //print_r(unserialize($imagesIndex)); die;
-    $explode = explode(',', $_POST['imagesIndex']);
+    $explode = explode(',', @$_POST['imagesIndex']);
     //print_r($explode); die();
-    $UserID = $post['UserID'];
-    $FormDataID = $post['FormDataID'];
+    $UserID = is_require($post, 'UserID');
+    $CustomerID = is_require($post, 'CustomerID');
+    $FormDataID = is_require($post, 'FormDataID');
     $StatusID='1';
     $success = false;
     $CreatedDateTime = date('Y-m-d H:i:s');
     $ModifyDateTime = date('Y-m-d H:i:s');
     $con=connectToDB(); //connect to the DB
     $StatusID='1';
-    $result = mysql_query("call insertDynamicFormData('".$FormValueData."','".$UserID."','".$FormDataID."','".$StatusID."','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
-    $formsData = array();
-    while($row = mysql_fetch_assoc($result)) {
-        $rows['FormValueData'] = unserialize($row['FormValueData']);
-        $rows['UserID'] = $row['UserID'];
-        $rows['FormDataID'] = $row['FormDataID'];
-        $formsData[] = $rows;
+    $result = mysql_query("call insertDynamicFormData('".$FormValueData."','".$UserID."','".$CustomerID."','".$FormDataID."','".$StatusID."','".$CreatedDateTime."','".$ModifyDateTime."')")or die(mysql_error());
+    $row = mysql_fetch_assoc($result);
+    if(!empty($row)) {
+        $row['FormValueData'] = unserialize($row['FormValueData']);
         $success = true;
     }
     if(!empty($_POST['imagesIndex'])) {
@@ -404,7 +482,7 @@ function insertDynamicFormData($post,$deviceType,$appVersion,$OSVersion,$browser
         }
     }
     if($success) {
-        $data['ResponseData'] = $formsData;
+        $data['ResponseData'] = $row;
         $data['Message'] = "Form data inserted successfully.";
         $data['ResponseCode'] = "200";
         $data['Status'] = "Success";
@@ -793,6 +871,17 @@ function searchStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     }
     print json_encode($data);
     mysql_close($con);   //close the connection
+}
+
+
+
+function is_require($a, $i) {
+    if (!isset($a[$i]) || $a[$i] == '') {
+        echo $i.' parameter missing or it should not null';
+        die();
+    } else {
+        return $a[$i];
+    }
 }
 
 function checkRequest() {

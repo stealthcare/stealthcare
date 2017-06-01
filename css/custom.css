@@ -696,14 +696,12 @@ ul.nav.nav-pills li {
     src: url(../fonts/Kozuka Gothic Pro B.otf);
   
 }
- .login_content {font-family:'Kozuka_GothicM'; font-weight:100; letter-spacing:1px;}
  
 .login_content form input[type="text"], .login_content form input[type="email"], .login_content form input[type="password"] {
   background-color: hsla(0, 0%, 0%, 0) !important;
   border: 1px solid #fff !important;
   border-radius: 5px;
   color: hsl(0, 0%, 100%) !important;
-  font-family: "Kozuka_GothicM";
   height: 45px;
   margin: 0 0 15px;
   padding: 10px;
@@ -715,16 +713,14 @@ color:#fff !important;
 }
 
 .change_link {
-  font-size: 12px;
   margin-top: 12px;
 }
 ul.phone_nav {
   margin-bottom: 0;
-  margin-top: 30px;
+  margin-top: 25px;
   padding: 0;
 }
 li.phone_text {
-  font-size: 12px;
   line-height: 1;
 }
 li.phone_no {

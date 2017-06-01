@@ -25,8 +25,6 @@ insert into SCP_Enquiry (OrgID,CustomerID,StatusID,CreatedDateTime,ModifyDateTim
 END//
 DELIMITER ;
 
-
-
 // For Load all forms of organisaers
 DROP PROCEDURE IF EXISTS `loadAllOrgniserForms`;
 DELIMITER //
@@ -67,16 +65,16 @@ DELIMITER ;
 // For insert data in to form api
 DROP PROCEDURE IF EXISTS `insertDynamicFormData`;
 DELIMITER //
-CREATE  PROCEDURE `insertDynamicFormData`(in iFormValueData longtext,in iUserID int(11),in iFormDataID varchar(156),in iStatusID int(11),in iCreatedDateTime datetime, in iModifyDateTime datetime)
+CREATE  PROCEDURE `insertDynamicFormData`(in iFormValueData longtext,in iUserID int(11),in iCustomerID int(11),in iFormDataID varchar(156),in iStatusID int(11),in iCreatedDateTime datetime, in iModifyDateTime datetime)
 BEGIN
-    IF EXISTS(select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID) then 
+    IF EXISTS(select * from `SCP_OrgFormBuilderDataAction` where CustomerID = iCustomerID and FormDataID = iFormDataID) then 
         update SCP_OrgFormBuilderDataAction
-        set  FormValueData= iFormValueData, ModifyDateTime=iModifyDateTime
-        where  UserID = iUserID and FormDataID = iFormDataID;
+        set  FormValueData= iFormValueData, UserID=iUserID, ModifyDateTime=iModifyDateTime
+        where  CustomerID = iCustomerID and FormDataID = iFormDataID;
     ELSE 
-        insert into `SCP_OrgFormBuilderDataAction`(FormValueData,UserID,FormDataID,StatusID,CreatedDateTime,ModifyDateTime)         values(iFormValueData,iUserID,iFormDataID,iStatusID,iCreatedDateTime,iModifyDateTime);
+        insert into `SCP_OrgFormBuilderDataAction`(FormValueData,UserID,CustomerID,FormDataID,StatusID,CreatedDateTime,ModifyDateTime)         values(iFormValueData,iUserID,iCustomerID,iFormDataID,iStatusID,iCreatedDateTime,iModifyDateTime);
     END IF;
-    select * from `SCP_OrgFormBuilderDataAction` where UserID = iUserID and FormDataID = iFormDataID;
+    select * from `SCP_OrgFormBuilderDataAction` where CustomerID = iCustomerID and FormDataID = iFormDataID;
 END //
 DELIMITER ;
 
