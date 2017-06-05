@@ -513,7 +513,7 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
 
     $( "#showModal" ).hide();
     // create Document request
-    $scope.createDocument = function (index='') {
+    $scope.createDocument = function (index) {
         if(index === 'new') {
             $window.location.href = 'form-builder';
         }

@@ -336,6 +336,7 @@ app.directive('stringNumber', function() {
 ]);*/
 
 
+
 app.directive('ngNicescroll', ngNicescroll);
 ngNicescroll.$inject = ['$rootScope'];
 

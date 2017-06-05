@@ -260,7 +260,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 
     // Load All Country
     $scope.loadAllCountry = function () {
-        var request = '[{"serviceRequestID":"3"}]';
+        var request = '{"serviceRequestID":"3"}';
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -286,7 +286,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 
     $( "#showModal" ).hide();
     // create Document request
-    $scope.createDocument = function (index='') {
+    $scope.createDocument = function (index) {
         if(index === 'new') {
             $window.location.href = 'organisation/form-builder';
         }
@@ -466,7 +466,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         var timestamp = Math.floor(date / 1000);
         $('#timestamp').val(timestamp);
         var OrgID = 9;
-        var request = '[{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+        var request = '{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}';
         $scope.loading = true;
         $http({
             method: 'post',
@@ -477,7 +477,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         .success(function(results){
             $rootScope.clientVisits = results.response_data;
         });
-        var request1 = '[{"serviceRequestID":"22","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+        var request1 = '{"serviceRequestID":"22","date":"'+timestamp+'","OrgID":"'+OrgID+'"}';
         $http({
             method: 'post',
             data: $.param({request: request1}),
@@ -500,7 +500,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             var format = $scope.getCurrentDayWithFormat(date);
             $('h3.page-header').text(format);
             $('#timestamp').val(timestamp);
-            var request = '[{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+            var request = '{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}';
             $scope.loading = true;
             $http({
                 method: 'post',
@@ -511,7 +511,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             .success(function(results){
                 $rootScope.clientVisits = results.response_data;
             });
-            var request1 = '[{"serviceRequestID":"22","date":"'+timestamp+'","OrgID":"'+OrgID+'"}]';
+            var request1 = '{"serviceRequestID":"22","date":"'+timestamp+'","OrgID":"'+OrgID+'"}';
             $http({
                 method: 'post',
                 data: $.param({request: request1}),
