@@ -565,8 +565,6 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
     if(!empty($ProfilePhoto)){
     $ProfilePhotoData = explode('//', $ProfilePhoto);
             if ($ProfilePhotoData[0] != 'http:') {
-                
-                
                 $photoData=$ProfilePhoto;
                 $fileName='user'.$UserID;
                 $imageData = explode(';', $photoData);
@@ -605,13 +603,18 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
                 }
                 
                 
+
             }
-    
     }
     
     
     $StatusID=!empty($post['statusid'])?$post['statusid']:'1';
+	
+	if(!empty($LicenseID)){
     $result = mysql_query("call createStaff('".$EmailID."','".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
+	}else{
+	$result = '';
+	}
    
     if($result) {
         $data['responseData'] = '';
@@ -878,6 +881,161 @@ function searchStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
+/******************************************************************************************************************/
+/* 
+*   ID=23
+*   A function used as a response to ID=23
+*   It is used to editStaffload
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function editStaffload($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+
+     
+			
+	 $sql="SELECT st.*,ulogin.UserName,ulogin.EmailID,ulogin.Password,uaccess.UserTypeID
+FROM SCP_Staff as st 
+INNER JOIN SCP_UserLogin as ulogin ON ulogin.UserID=st.UserID 
+INNER JOIN SCP_UserAccess as uaccess ON uaccess.UserAccessID=st.UserAccessID 
+where st.StaffID='".$post['StaffID']."'";		
+			
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+		$postcode = explode(' ', $row['PostCode']);
+		@$row['postcode1'] = $postcode[0];
+		@$row['postcode2'] = $postcode[1]; 
+		@$row['serviceRequestID']='24';
+        $rows[] = $row;		
+    }
+	
+	/*$row = mysql_fetch_array($result, MYSQL_ASSOC);
+	$postcode = explode(' ', $row['PostCode']);
+	@$row['postcode1'] = $postcode[0];
+	@$row['postcode2'] = $postcode[1]; 
+	$rows = $row;*/		
+	
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "Staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No Staff Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=24
+*   A function used as a response to ID=24
+*   It is used to updateStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $Title = $post['Title'];
+    $Name = $post['Name'];
+    $Surname = $post['Surname'];
+    $MiddleName = $post['MiddleName'];
+    $DateOfBirth = $post['DateOfBirth'];
+    $Gender = $post['Gender'];
+    $Ethnicity = $post['Ethnicity'];
+    $HouseNumber=$post['HouseNumber'];
+    $Address1=$post['Address1'];
+    $Address2=$post['Address2'];
+    $City=$post['City'];
+    $Country=$post['Country'];
+    $PostCode=strtoupper($post['postcode1'].' '.$post['postcode2']);
+    $Mobile=$post['Mobile'];
+    $ProfilePhoto=!empty ($post['ProfilePhoto'])?$post['ProfilePhoto']:'';   
+    $NOKName=$post['NOKName'];
+    $NOKMobile=$post['NOKMobile'];
+    $NOKEmail=$post['NOKEmail'];
+    $UserName=$post['UserName'];
+    $ModifyDateTime = date('Y-m-d H:i:s');
+    $EmailID=$post['EmailID'];
+	$ArchiveUser=$post['ArchiveUser'];
+    $con=connectToDB(); //connect to the DB
+    $UserID = $post['UserName'];
+    if(!empty($ProfilePhoto)){
+    $ProfilePhotoData = explode('//', $ProfilePhoto);
+            if ($ProfilePhotoData[0] != 'http:') {
+                
+                
+                $photoData=$ProfilePhoto;
+                $fileName='user'.$UserID;
+                $imageData = explode(';', $photoData);
+                $imageData = explode(':', $imageData[0]);
+                if($imageData[0] == 'data') {
+                    if($imageData[1] == 'image/png') {
+                        $data = str_replace('data:image/png;base64,', '', $photoData);
+                        $data = str_replace(' ', '+', $data);
+                        $data = base64_decode($data);
+                        $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.png';
+                        $Photo = img.$fileName . '.png';
+                    } elseif($imageData[1] == 'image/jpg') {
+                        $data = str_replace('data:image/jpg;base64,', '', $photoData);
+                        $data = str_replace(' ', '+', $data);
+                        $data = base64_decode($data);
+                        $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpg';
+                        $Photo = img.$fileName . '.jpg';
+                    } elseif($imageData[1] == 'image/jpeg') {
+                        $data = str_replace('data:image/jpeg;base64,', '', $photoData);
+                        $data = str_replace(' ', '+', $data);
+                        $data = base64_decode($data);
+                        $file = $_SERVER['DOCUMENT_ROOT'].'/stealthcare/uploads/'.$fileName . '.jpeg';
+                        $Photo = img.$fileName . '.jpeg';
+                    } else {
+                        $successdata = array('status_code' => "1", 'status' => "error", 'message' => 'Image format is wrong', 'response_code' => "200");
+                        $this->response($this->json($successdata), 200); 
+                        die();
+                    }
+                    $success = file_put_contents($file, $data);
+                    $data = base64_decode($data); 
+                    $source_img = @imagecreatefromstring($data);
+                    $rotated_img = @imagerotate($source_img, 90, 0);
+                    $imageSave = @imagejpeg($rotated_img, $file, 10);
+                    @imagedestroy($source_img);
+                    $ProfilePhoto=$Photo;
+                }
+                
+                
+            }
+    
+    }
+    $StaffID = $post['StaffID'];
+	$UserID  = $post['UserID'];
+
+	
+	$sql2="UPDATE `SCP_Staff` SET `Title` = '".$Title."',`Name` = '".$Name."',`Surname` = '".$Surname."',`MiddleName` = '".$MiddleName."',`DateOfBirth` = '".$DateOfBirth."',`Gender` = '".$Gender."',`Ethnicity` = '".$Ethnicity."',`HouseNumber` = '".$HouseNumber."',`Address1` = '".$Address1."',`Address2` = '".$Address2."',`City` = '".$City."',`Country` = '".$Country."',`PostCode` = '".$PostCode."',`Mobile` = '".$Mobile."',`NOKName` = '".$NOKName."',`NOKMobile` = '".$NOKMobile."',`NOKEmail` = '".$NOKEmail."',`ModifyDateTime` = '".$ModifyDateTime."',`ArchiveUser` = '".$ArchiveUser."' WHERE `StaffID` = '".$StaffID."'";	 
+    $result = mysql_query($sql2) or die(mysql_error());
+  
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Updated successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Creation";
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
 
 
 
@@ -927,7 +1085,11 @@ switch($ID) {
     case 21: getRosterClientDataByDate($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
          break;  
     case 22: getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
-	     break;     	                  	       	  	             
+	     break;   
+	case 23: editStaffload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	     break; 
+	case 24: updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	     break;   	                  	       	  	             
     default: myError(); 
 }
 

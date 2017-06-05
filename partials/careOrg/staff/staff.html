@@ -110,7 +110,7 @@
               </div>
               <div class="col-md-8 col-xs-8">
                 <!--<p>{{$index+1}}</p>-->
-                <h2>{{S.Title}} {{S.Name}} {{S.Surname | cut:true:2:' ...'}}</h2>
+                <h2><a href="#/organisation/carers/edit/{{S.StaffID}}">{{S.Title}} {{S.Name}} {{S.Surname | cut:true:2:' ...'}}</a></h2>
                 <p>{{S.Address1}}</p>
                 <p>{{S.Mobile}}</p>
                 <div data-ng-if="S.StatusID !== '2'"> <span class="active_employee">Active</span> </div>

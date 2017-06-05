@@ -125,6 +125,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/staff/add-staff-Member.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/carers/edit/:id', {
+                title: 'Update Staff',
+                templateUrl: 'partials/careOrg/staff/edit-staff-Member.html',
+                controller: 'orgCtrl'
+            })
 
             // FOR ADMIN PORTAL FORM BUILDER START
             .when('/organisation/form-builder', {

@@ -1,7 +1,7 @@
 <!-- container section start -->
 <section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
     <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Add Staff')"></div>
+    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Staff')"></div>
     <div ng-include="'partials/careOrg/includes/header.html'"></div>
     <!------------ End Header ---------------->
     <!--sidebar start-->
@@ -16,31 +16,34 @@
             <section class="wrapper">
                 <!-- Form validations -->
                 <div class="row">
+				
+
+				
 
                     <section class="panel" data-ng-init="editStaffload()">
                         <div class="panel-body">
 
-                            <div class="form">
-                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="sendRequest(signup)" enctype="multipart/form-data" ng-repeat="signup in allStaff">
+                            <div class="form" ng-repeat="signup in allStaff">
+                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate ng-submit="updateStaff(signup,'organisation/carers')" enctype="multipart/form-data" >
                                     <div class="row">
                                         <div class="col-md-5">
                                             <h3 class="page-header">Enter Employee Details</h3>
                                             <div class="form-group required">
                                                 <label for="cname" class="control-label col-md-4">Staff Role </label>
                                                 <div class="col-md-8">
-                                                    <select name="role" class="droupdown1" ng-model="signup.role">
-                                                        <option value="3">Frontend User</option>
-                                                        <option value="4">Supervisor</option>
-                                                        <option value="5">Care Worker</option>
+                                                    <select name="UserTypeID" class="droupdown1" ng-model="signup.UserTypeID" disabled="disabled">
+                                                        <option value="3" ng-selected="{{signup.UserTypeID === 3 }}">Frontend User</option>
+                                                        <option value="4" ng-selected="{{signup.UserTypeID === 4 }}">Supervisor</option>
+                                                        <option value="5" ng-selected="{{signup.UserTypeID === 5 }}">Care Worker</option>
                                                     </select>
                                                 </div>
                                             </div>
                                             <div class="form-group required">
                                                 <label for="cname" class="control-label col-md-4">Title </label>
                                                 <div class="col-md-8">
-                                                    <select name="title" class="droupdown1" ng-model="signup.title">
-                                                        <option value="Mr">Mr.</option>
-                                                        <option value="Mrs">Mrs.</option>
+                                                    <select name="Title" class="droupdown1" ng-model="signup.Title">
+                                                        <option value="Mr" ng-selected="{{signup.Title === 'Mr' }}">Mr.</option>
+                                                        <option value="Mrs" ng-selected="{{signup.Title === 'Mrs' }}">Mrs.</option>
                                                     </select>
                                                 </div>
                                             </div>
@@ -86,12 +89,12 @@
 
                                                         <div class="maxl">
                                                             <label class="radio3 inline3">
-                                                                <input type="radio" name="gender" value="Male" ng-model="signup.gender">
+                                                                <input type="radio" name="Gender" value="Male" ng-model="signup.Gender" ng-checked="{{'Male' === signup.Gender}}">
                                                                 <span>Male </span>
                                                             </label>
                                                             <label class="radio3 inline3">
                                                                 &nbsp;    &nbsp; 
-                                                            <input type="radio" name="gender" value="Female" ng-model="signup.gender">
+                                                            <input type="radio" name="Gender" value="Female" ng-model="signup.Gender" ng-checked="{{'Female' === signup.Gender}}">
                                                                 <span>Female </span>
                                                             </label>
                                                         </div>
@@ -142,7 +145,7 @@
                                                 <label for="cname" class="control-label col-md-4">Country </label>
                                                 <div class="col-md-8">
                                                     <select name="Country" data-ng-init="loadAllCountry()" class="droupdown1" ng-model="signup.Country">
-                                                        <option value="{{C.id}}" ng-repeat="C in allCountry">
+                                                        <option value="{{C.id}}" ng-repeat="C in allCountry" ng-selected="{{C.id === signup.Country}}">
                                                             {{C.country}}
                                                         </option>
                                                     </select>
@@ -195,7 +198,7 @@
 											<div class="form-group required">
                                                 <label for="Email" class="control-label col-md-4">Email </label>
                                                 <div class="col-md-8">
-                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="EmailID" ng-model="signup.EmailID" required/>
+                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="EmailID" ng-model="signup.EmailID" required readonly=""/>
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.EmailID.$error.required">
                                                         This field is required.
                                                     </small>
@@ -263,7 +266,7 @@
                                             <div class="form-group required">
                                                 <label for="UserName" class="control-label col-md-4">User Name </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName" username-availableorg  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }"/>
+                                                    <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName" username-availableorg  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }" readonly=""/>
                                                     <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
                                                     <small class="errorMessage" ng-if="addStaffForm.$error.usernameExists">Username already exists in our database</small>
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.UserName.$error.required">
@@ -271,13 +274,26 @@
                                                     </small>
                                                 </div>
                                             </div>
-                                            <div class="form-group required">
-                                                <label for="Password" class="control-label col-md-4">Password </label>
+                                            <div class="form-group">
+                                                <label for="Password" class="control-label col-md-4">Archive User </label>
                                                 <div class="col-md-8">
-                                                    <input class="form-control" id="Password" ng-model="signup.Password" placeholder="Password" name="Password" required type="password">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.Password.$error.required">
-                                                        This field is required.
-                                                    </small>
+                                                    <div class="ArchiveUser ">
+
+                                                        <div class="maxl">
+                                                            <label class="radio3 inline3">
+                                                                <input type="radio" name="ArchiveUser" value="1" ng-model="signup.ArchiveUser" ng-checked="{{'1' === signup.ArchiveUser}}">
+                                                                <span>Yes </span>
+                                                            </label>
+                                                            <label class="radio3 inline3">
+                                                                &nbsp;    &nbsp; 
+                                                            <input type="radio" name="ArchiveUser" value="0" ng-model="signup.ArchiveUser" ng-checked="{{'0' === signup.ArchiveUser}}">
+                                                                <span>No </span>
+                                                            </label>
+                                                        </div>
+
+
+
+                                                    </div>
                                                 </div>
                                             </div>
                                             <div class="form-group ">
@@ -300,18 +316,21 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <input type="hidden" name="id" id="requestID" value="15" ng-model="signup.serviceRequestID"/>
-									<input type="hidden" name="statusid"  value="1" ng-model="signup.statusid" id="statusid"/>
+                                    <input type="hidden" name="StaffID" id="StaffID" ng-model="signup.StaffID" value="{{signup.StaffID}}"/>
+									<input type="hidden" name="UserID" id="UserID" ng-model="signup.UserID" value="{{signup.UserID}}"/>
+									 <input type="hidden" name="serviceRequestID" id="serviceRequestID" ng-model="signup.serviceRequestID" value="{{signup.serviceRequestID}}"/>
+									
                                     <div class="row margin-top30">
                                         <div class="col-md-4 col-md-offset-7">
                                             <div id="button_float">
                                                 <div class="form-group">
                                                     <div class="row">
                                                         <div class="col-md-6 col-lg-6 col-xs-6">
-                                                            <button ng-click="submitted=true" class="btn button2" type="submit">SAVE</button>
+                                                            <button ng-click="submitted=true" class="btn button2 submit_btn" type="submit">SAVE</button>
                                                         </div>
                                                         <div class="col-md-6 col-lg-6 col-xs-6">
-                                                            <button class="btn button2" type="button">CANCEL</button>
+                                                            
+															<a href="#/organisation/carers/" class="btn button2">CANCEL</a>
                                                         </div>
                                                     </div>
                                                 </div>

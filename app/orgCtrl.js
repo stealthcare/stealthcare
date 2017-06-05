@@ -77,6 +77,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.signup.makeenq = 'self';
     
     $scope.sendRequest = function (request,pathlink) {
+		$(".submit_btn").prop("disabled",true);
         request = angular.toJson(request);
         $http({
             method: 'post',
@@ -84,7 +85,8 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){                           
+        .success(function(results){ 
+			$(".submit_btn").prop("disabled",false);				  
             Data.toast(results);
             $route.reload();
             if (results.status == "1") {  
@@ -205,6 +207,41 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
               $scope.showAlert = false;
               $scope.showPaging = true;
             }
+        });
+    };
+	
+	//edit staff
+	$scope.editStaffload = function () {
+		
+        var StaffID = $routeParams.id;
+        var request = '{"serviceRequestID":"23","StaffID":"'+StaffID+'"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+            $rootScope.allStaff = results.responseData;
+        });
+    };
+	
+	//update staff 
+	$scope.updateStaff = function (request,pathlink) {
+		$(".submit_btn").prop("disabled",true);
+		request = angular.toJson(request);
+        //var request = '{"serviceRequestID":"24"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	  
+            Data.toast(results);
+			$(".submit_btn").prop("disabled",false);		
+			setTimeout(function(){ $location.path(pathlink) }, 1000);
         });
     };
     
