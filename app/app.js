@@ -1,5 +1,5 @@
 'use strict';
-var app = angular.module('myApp', ['ngRoute', 'ui.bootstrap', 'ngAnimate', 'toaster', 'datatables', 'angularUtils.directives.dirPagination', 'builder', 'builder.components', 'validator.rules']);
+var app = angular.module('myApp', ['ngRoute', 'dx', 'ui.bootstrap', 'ngAnimate', 'toaster', 'datatables', 'angularUtils.directives.dirPagination', 'builder', 'builder.components', 'validator.rules']);
 
 app.config(['$locationProvider','$routeProvider', function($locationProvider, $routeProvider) {
         $locationProvider.html5Mode(true);
@@ -379,3 +379,364 @@ function ngNicescroll($rootScope) {
     }
 }
 
+app.controller('ClientSchedulerControllers', function ClientSchedulerControllers($scope) {
+    var resourcesData = [
+        {
+            text: "John",
+            id: 1,
+            color: "#cb6bb2"
+        },{
+            text: "John Smith",
+            id: 2,
+            color: "#cb6bb2"
+        }
+    ];
+
+    var clientData = [
+        {
+            text: "Martin",
+            id: 1,
+            color: "#1e90ff"
+        }, {
+            text: "Martin",
+            id: 2,
+            color: "#ff9747"
+        }, {
+            text: "Martin",
+            id: 3,
+            color: "#ff9747"
+        }, {
+            text: "Martin",
+            id: 4,
+            color: "#ff9747"
+        }, {
+            text: "Martin",
+            id: 5,
+            color: "#ff9747"
+        }
+    ];
+
+    var data = [{
+        "text": "Google AdWords Strategy",
+        "ownerId": [2],
+        "startDate": new Date(2016, 1, 1, 9, 0),
+        "endDate": new Date(2016, 1, 1, 12, 30),
+        "priority": 5
+    }];
+
+    $scope.schedulerOptions = {
+        dataSource: data,
+        allDayExpr: "Test",
+        //views: ["timelineDay", "timelineWeek", "timelineWorkWeek", "timelineMonth"],
+        currentView: "timelineDay",
+        currentDate: new Date(2016, 1, 1),
+        firstDayOfWeek: 0,
+        startDayHour: 7,
+        endDayHour: 31,
+        cellDuration: 60,
+        editing: { 
+            allowAdding: true
+        },
+        groups: ["priority"],
+        resources: [{
+            fieldExpr: "ownerId",
+            allowMultiple: false,
+            dataSource: resourcesData,
+            label: "Care Worker",
+            useColorAsDefault: true
+        }, { 
+            fieldExpr: "priority",
+            allowMultiple: false,
+            dataSource: clientData
+        }],
+        width: "100%",
+        height: 280
+    };
+});
+
+
+app.controller('CareWorkerSchedulerController', function CareWorkerSchedulerController($scope) {
+    
+    var resourcesData = [
+        {
+            text: "Martin",
+            id: 1,
+            color: "#cb6bb2"
+        }
+    ];
+
+    var careworkerData = [
+        {
+            text: "John",
+            id: 1,
+            color: "#1e90ff"
+        }, {
+            text: "John Smith",
+            id: 2,
+            color: "#ff9747"
+        }, {
+            text: "John Smith New",
+            id: 3,
+            color: "#ff9747"
+        }
+    ];
+
+    var data = [{
+        "text": "Google AdWords Strategy",
+        "ownerId": [1],
+        "startDate": new Date(2016, 1, 1, 9, 0),
+        "endDate": new Date(2016, 1, 1, 10, 30),
+        "priority": 1
+    }];
+
+    $scope.schedulerOptions = {
+        dataSource: data,
+        //views: ["timelineDay", "timelineWeek", "timelineWorkWeek", "timelineMonth"],
+        currentView: "timelineDay",
+        currentDate: new Date(2016, 1, 1),
+        firstDayOfWeek: 0,
+        startDayHour: 7,
+        endDayHour: 31,
+        cellDuration: 60,
+        groups: ["priority"],
+        resources: [{
+            fieldExpr: "ownerId",
+            allowMultiple: false,
+            dataSource: resourcesData,
+            label: "Client",
+            useColorAsDefault: true
+        }, { 
+            fieldExpr: "priority",
+            allowMultiple: false,
+            dataSource: careworkerData
+        }],
+        width: "100%",
+        height: 280
+    };
+});
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+app.controller('ClientSchedulerController', function ClientSchedulerController($scope) {
+    var visitData = [{
+        id: 1,
+        text: "Test 1",
+        director: "Howard Hawks",
+        year: "1940",
+        image: "images/movies/HisGirlFriday.jpg",
+        duration: 92,
+        color: "#cb6bb2"
+    }, {
+        id: 2,
+        text: "Test 2",
+        director: "Stanley Donen",
+        year: "1951",
+        image: "images/movies/RoyalWedding.jpg",
+        duration: 93,
+        color: "#56ca85"
+    }, {
+        id: 3,
+        text: "Test 3",
+        director: "William A. Wellman",
+        year: "1937",
+        image: "images/movies/AStartIsBorn.jpg",
+        duration: 111,
+        color: "#1e90ff"
+    }, {
+        id: 4,
+        text: "Test 4",
+        director: "Alex Nicol",
+        year: "1958",
+        image: "images/movies/ScreamingSkull.jpg",
+        duration: 68,
+        color: "#ff9747"
+    }, {
+        id: 5,
+        text: "Test 5",
+        director: "Frank Capra",
+        year: "1946",
+        image: "images/movies/ItsAWonderfulLife.jpg",
+        duration: 130,
+        color: "#f05797"
+    }, {
+        id: 6,
+        text: "Test 6",
+        director: "Charlie Chaplin",
+        year: "1931",
+        image: "images/movies/CityLights.jpg",
+        duration: 87,
+        color: "#2a9010"
+    }];
+
+    var clientData = [{
+            text: "Martin 1",
+            id: 0
+        }, {
+            text: "Martin 2",
+            id: 1
+        }, {
+            text: "Martin 3",
+            id: 2
+        }, {
+            text: "Martin 4",
+            id: 3
+        }, {
+            text: "Martin 5",
+            id: 4
+        }
+    ];
+
+    var careworkerData = [
+        {
+            text: "John",
+            id: 1,
+            color: "#1e90ff"
+        }, {
+            text: "John Smith",
+            id: 2,
+            color: "#ff9747"
+        }, {
+            text: "John Smith New",
+            id: 3,
+            color: "#ff9747"
+        }
+    ];
+
+    var visitTimeData = [{
+            theatreId: 0,
+            movieId: 3,
+            price: 10,
+            startDate: new Date(2015, 4, 24, 9, 10),
+            endDate: new Date(2015, 4, 24, 11, 1)
+        }, {
+            theatreId: 0,
+            movieId: 1,
+            price: 5,
+            startDate: new Date(2015, 4, 24, 11, 30),
+            endDate: new Date(2015, 4, 24, 13, 2)
+        }
+    ];
+
+    $scope.options = {
+        dataSource: visitTimeData,
+        currentView: "timelineDay",
+        currentDate: new Date(2015, 4, 24),
+        firstDayOfWeek: 0,
+        startDayHour: 7,
+        endDayHour: 31,
+        showAllDayPanel: false,
+        width: "100%",
+        height: 250,
+        groups: ["theatreId"],
+        crossScrollingEnabled: true,
+        cellDuration: 60,
+        editing: { 
+            allowAdding: true
+        },
+        resources: [{ 
+            fieldExpr: "movieId",
+            dataSource: visitData,
+            useColorAsDefault: true
+        }, { 
+            fieldExpr: "theatreId", 
+            dataSource: clientData
+        }],
+        appointmentTooltipTemplate: "tooltip-template",
+        appointmentTemplate: "appointment-template",
+        onAppointmentFormCreated: function(data) {
+            var form = data.form,
+                movieInfo = getMovieById(data.appointmentData.movieId) || {},
+                startDate = data.appointmentData.startDate;
+    
+                form.option("items", [{
+                    label: {
+                        text: "Title"
+                    },
+                    name: "visitname",
+                    editorType: "dxTextBox"
+                }, {
+                    label: {
+                        text: "Care Worker"
+                    },
+                    editorType: "dxSelectBox",
+                    editorOptions: {
+                        items: careworkerData,
+                        displayExpr: "text",
+                        valueExpr: "id",
+                        onValueChanged: function(args) {
+                            movieInfo = getMovieById(args.value);
+                            form.getEditor("director")
+                                .option("value", movieInfo.director);
+                            form.getEditor("endDate")
+                                .option("value", new Date (startDate.getTime() +
+                                    60 * 1000 * movieInfo.duration));
+                        }
+                    }
+                }, {
+                    dataField: "startDate",
+                    editorType: "dxDateBox",
+                    editorOptions: {
+                        type: "datetime",
+                        onValueChanged: function(args) {
+                            startDate = args.value;
+                            form.getEditor("endDate")
+                                .option("value", new Date (startDate.getTime() +
+                                    60 * 1000 * movieInfo.duration));
+                        }
+                    }
+                }, {
+                    name: "endDate",
+                    dataField: "endDate",
+                    editorType: "dxDateBox",
+                    editorOptions: {
+                        type: "datetime",
+                        readOnly: true
+                    }
+                }
+            ]);
+        }
+    };
+    
+    $scope.getMovieById = getMovieById; 
+    $scope.editDetails = function (showtime) {
+        $('#scheduler').dxScheduler('instance').showAppointmentPopup(getDataObj(showtime), false);
+    };
+    
+    function getDataObj(objData) {
+        var result;
+        for(var i = 0; i < data.length; i++) {
+            if(data[i].startDate.getTime() === objData.startDate.getTime() && data[i].theatreId === objData.theatreId) {
+                result = data[i];
+                break;
+            }
+        }
+        return result;
+    }
+    
+    function getMovieById(id) {
+        return DevExpress.data.query(visitData)
+                .filter("id", id)
+                .toArray()[0];
+    }
+});

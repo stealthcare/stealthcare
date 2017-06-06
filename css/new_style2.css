@@ -1103,7 +1103,6 @@ a:hover#menu-icon {
     overflow-x: scroll;
     overflow-y: visible;
     padding: 0;
-    margin-left: 148px;
 }
 .table-height-scroll {
     max-width: 100%;
@@ -2006,4 +2005,11 @@ ul.gray_dot ul li {
 	    display: inline-flex; width:100%;}
 		
 .color-dark-blue{color:#87A2B7;}
+.dx-scheduler-header.dx-widget {
+  display: none;
+}
+body .dx-scheduler-work-space {
+  margin-top: 0;
+  padding-top: 0;
+}
 

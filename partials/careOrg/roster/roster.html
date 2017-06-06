@@ -194,8 +194,8 @@
                                     </div>
                                     <div class="col-lg-6"></div>
                                  </div>
-                                 <div  class="table-width-scroll">
-                                    <table class="table table-bordered table-schedular table_radius2 margin-bottom20 ">
+                                 <div class="client-table-view">
+                                    <!--table class="table table-bordered table-schedular table_radius2 margin-bottom20 ">
                                        <tbody>
                                           <tr >
                                              <th class="roster-client-heading_leftt headcol "  >Client</th>
@@ -326,7 +326,56 @@
                                              <td></td>
                                           </tr>
                                        </tbody>
-                                    </table>
+                                    </table-->
+                                    <!--div roster-system>
+                                       <div class="dx-viewport demo-container">
+                                          <div class="scheduler"></div>
+                                       </div>
+                                    </div-->
+
+                                    <div class="dx-viewport">
+                                       <div class="client-roster-container" ng-controller="ClientSchedulerController">
+                                            <div id="scheduler" dx-scheduler="options" dx-item-alias="showtime">
+                                                <div data-options="dxTemplate: {name: 'appointment-template'}">
+                                                    <div class='showtime-preview'>
+                                                        <div>{{getMovieById(showtime.movieId).text}}</div>
+                                                        <div>
+                                                            {{(showtime.startDate | date:'h:mm a') + ' - ' + (showtime.endDate | date:'h:mm a')}}
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div data-options="dxTemplate: {name: 'tooltip-template'}">
+                                                    <div class='movie-tooltip' ng-init="visitData = getMovieById(showtime.movieId)">
+                                                        <img ng-src="{{visitData.image}}" />
+                                                        <div class='movie-info'>
+                                                            <div class='movie-title'>
+                                                                {{visitData.text + ' (' + visitData.year + ')'}}
+                                                            </div> 
+                                                            <div>
+                                                                {{'Director: ' + visitData.director}}
+                                                            </div>
+                                                            <div>
+                                                                {{'Duration: ' + visitData.duration + ' minutes'}}
+                                                            </div>
+                                                        </div><br />
+                                                        <div dx-button = "{
+                                                            text: 'Edit details',
+                                                            onClick: 'editDetails(showtime)'
+                                                        }"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                    <!--div class="dx-viewport">
+                                       <div class="client-roster-container" ng-controller="ClientSchedulerController">
+                                          <div dx-scheduler="schedulerOptions"></div>
+                                       </div>
+                                    </div-->
                                  </div>
                               </div>
                               <div class="col-lg-3 col-md-3 ">
@@ -356,8 +405,8 @@
                                     </div>
                                     <div class="col-lg-6"></div>
                                  </div>
-                                 <div  class="table-width-scroll ">
-                                    <table class="table table-bordered table-schedular table_radius2" >
+                                 <div  class="care-worker-table-view">
+                                    <!--table class="table table-bordered table-schedular table_radius2" >
                                        <tbody>
                                           <tr>
                                              <th class="roster-client-heading_leftt headcol" >Care Worker</th>
@@ -412,7 +461,12 @@
                                              <td></td>
                                           </tr>
                                        </tbody>
-                                    </table>
+                                    </table-->
+                                    <div class="dx-viewport">
+                                       <div class="care-worker-roster-container" ng-controller="CareWorkerSchedulerController">
+                                          <div dx-scheduler="schedulerOptions"></div>
+                                       </div>
+                                    </div>
                                  </div>
                               </div>
                               <div class="col-lg-3 col-md-3 "> </div>
