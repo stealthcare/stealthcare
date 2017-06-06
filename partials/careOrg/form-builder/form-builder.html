@@ -26,7 +26,7 @@
               <ul class="form-builder-sidebar-menu">
                 <li ng-repeat="F in assessorFroms"> 
                   <a ng-click="callOrgForm(F.FormDataID,F.FromType,F.UserTypeID)" href="javascript:;">
-                    <span>{{ F.FormName }}</span>
+                    <span>{{ F.FormName | cut:true:25:' ...' }}</span>
                     <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
                   </a>
                 </li>
@@ -36,7 +36,7 @@
               <ul class="form-builder-sidebar-menu">
                 <li ng-repeat="F in careworkerFroms"> 
                   <a ng-click="callOrgForm(F.FormDataID,F.FromType,F.UserTypeID)" href="javascript:;">
-                    <span>{{ F.FormName }}</span>
+                    <span>{{ F.FormName | cut:true:25:' ...' }}</span>
                     <i class="fa fa-arrow-right pull-right" aria-hidden="true"></i>
                   </a>
                 </li>

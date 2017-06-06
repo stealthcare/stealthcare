@@ -32,9 +32,9 @@
     <!-- Form Builder Style -->
     <link href="<?php echo URL; ?>assets/form-builder/site.css" rel="stylesheet">
     <link rel="stylesheet" href="<?php echo URL; ?>assets/form-builder/angular-form-builder.css">
-    <link rel='stylesheet prefetch' href='<?php echo URL; ?>assets/scheduler/dx.spa.css'>
-    <link rel='stylesheet prefetch' href='<?php echo URL; ?>assets/scheduler/dx.common.css'>
-    <link rel='stylesheet prefetch' href='<?php echo URL; ?>assets/scheduler/dx.light.css'>
+    <link rel='stylesheet prefetch' href='<?php echo URL; ?>css/dx.spa.css'>
+    <link rel='stylesheet prefetch' href='<?php echo URL; ?>css/dx.common.css'>
+    <link rel='stylesheet prefetch' href='<?php echo URL; ?>css/dx.light.css'>
   </head>
 
   <body ng-cloak="">
@@ -54,7 +54,7 @@
   <toaster-container toaster-options="{'time-out': 3000}"></toaster-container>
   <!-- javascripts -->
   
-  <script src="<?php echo URL; ?>js/jquery-1.9.1.min.js"></script>
+  <script src="<?php echo URL; ?>js/jquery.js"></script>
   <script src="<?php echo URL; ?>js/angular.min.js"></script>
   <script src="<?php echo URL; ?>js/angular-route.min.js"></script>
   <script src="<?php echo URL; ?>js/angular-animate.min.js" ></script>
@@ -90,6 +90,5 @@
   <script type="text/javascript" src="<?php echo URL; ?>js/angular-validator-rules.min.js"></script>
   <script src="<?php echo URL; ?>js/ui-bootstrap-tpls.js"></script>
   <script src="<?php echo URL; ?>js/angular-ui-bootstrap-modal.js"></script>
-  <script src='<?php echo URL; ?>assets/scheduler/jquery-3.1.0.min.js'></script>
-  <script src='<?php echo URL; ?>assets/scheduler/dx.all.js'></script>
+  <script src='<?php echo URL; ?>js/dx.all.js'></script>
 </html>

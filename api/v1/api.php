@@ -1171,7 +1171,7 @@ class API extends REST {
             $sql_insert = mysql_query("INSERT INTO `SCP_FormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `UserTypeID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$UserTypeID', '1', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
             $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
         } else {
-            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
         }
         $this->response($this->json($error), 200);
     }
@@ -1220,7 +1220,7 @@ class API extends REST {
             $sql = mysql_query("UPDATE `SCP_FormBuilder` SET `FormName`='$FormName', `FormDataJson`='$FormDataJson', `ModifyDateTime`='$ModifyDateTime' WHERE `FormID` = '$FormID'", $this->db);
             $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
         } else {
-            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
         }
         $this->response($this->json($error), 200);
     }
@@ -1383,7 +1383,7 @@ class API extends REST {
             $sql_insert = mysql_query("INSERT INTO `SCP_OrgFormBuilder` (`FormDataID`, `FormName`, `FormDataJson`, `FormDataJsonValue`, `UserID`, `OrgID`, `StatusID`, `FromType`, `UserTypeID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$FormDataID', '$FormName', '$FormDataJson', '$FormDataJsonValue', '1', '$OrgID', '1', '0', '$UserTypeID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
             $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Created Successfully", 'response_code' => "200", 'response_data' => '');
         } else {
-            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
         }
         $this->response($this->json($error), 200);
     }
@@ -1487,7 +1487,7 @@ class API extends REST {
             }
             $error = array('status_code' => "1", 'status' => "success", 'message' => "Form Updated Successfully", 'response_code' => "200", 'response_data' => '');
         } else {
-            $error = array('status_code' => "0", 'status' => "success", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Form heading is not blank.", 'response_code' => "200", 'response_data' => '');
         }
         $this->response($this->json($error), 200);
     }

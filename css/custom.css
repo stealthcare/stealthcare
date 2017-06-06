@@ -453,6 +453,7 @@ div.fb-component label {
 .fb-form-object-editable.fb-draggable label > span {
   float: left;
   width: 80%;
+  overflow-wrap: break-word;
 }
 .fb-form-object-editable {
   left: -24px;
@@ -495,9 +496,15 @@ div.popover .element {
   font-size: 16px;
   font-weight: bold;
   padding-top: 0;
+  min-height: 30px;
 }
 div.popover form.ng-pristine {
   margin: 10px 0 10px;
+}
+.form-type-heading {
+  color: hsl(207, 44%, 58%);
+  font-weight: bold;
+  margin-bottom: 10px;
 }
 .radio input[type="radio"], .radio-inline input[type="radio"], .checkbox input[type="checkbox"], .checkbox-inline input[type="checkbox"] {
   float: none;
@@ -527,6 +534,7 @@ ul.sub {
   font-size: 16px;
   width: 100%;
   display: inline-block;
+  overflow-wrap: break-word;
 }
 #showModal {
   position: fixed;

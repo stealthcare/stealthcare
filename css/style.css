@@ -938,7 +938,16 @@ div[data-role="editor-toolbar"] {
 
 /*
 .top-nav ul.top-menu > li > a:hover,.top-nav ul.top-menu > li > a:focus,.top-nav ul.top-menu > li > a.active {background-color: #192b37;}*/
-@keyframes dropHeader {0% {transform: translateX(100%);}100% {transform: translateX(0);}}#content, #main-content {animation: 1s ease-out 0s 1 dropHeader;}
+/*@keyframes dropHeader {0% {transform: translateX(100%);}100% {transform: translateX(0);}}#content, #main-content {animation: 1s ease-out 0s 1 dropHeader;}*/
+body .fb-builder input::-moz-placeholder {
+  color: gray !important;
+}
+body .fb-builder input::-webkit-input-placeholder {
+  color: gray !important;
+}
+body .fb-builder input:-ms-input-placeholder {
+  color: gray !important;
+}
 .top-nav .dropdown-menu.extended.logout {
     top: 50px;
 }
