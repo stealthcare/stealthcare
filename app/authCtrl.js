@@ -655,6 +655,88 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
         });
     };
 	
+	// create qualification
+    $scope.createQualification = function (reqparams) {
+		$(".button2").prop("disabled",true);
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'createQualification',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status_code == "1") {
+                $location.path('qualification');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	// change status of qualification
+	$scope.changeStatusQualification = function(QualificationID,StatusID){
+        if(confirm("Are you sure to want to change qualification status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({QualificationID: QualificationID,StatusID: StatusID}),
+                url: serviceBase+'changeStatusQualification',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status_code == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    }; 
+   // Edit qualification	
+   $scope.editQualificationload = function () {
+        var QualificationID = $routeParams.id;
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({QualificationID: QualificationID}),
+            url: serviceBase+'getUpdateQualificationID',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status_code == "1") {
+                $rootScope.resultData = results.response_data;
+                $scope.loading = false;
+            }
+        });
+    };
+	
+   // Update qualification	
+	$scope.updateQualification = function (reqparams) {
+		$(".button2").prop("disabled",true);
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'updateQualification',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status_code == "1") {
+                $location.path('qualification');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
 
     // logout request
     $scope.logout = function () {

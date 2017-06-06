@@ -85,6 +85,21 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/edit-form-builder.html',
                 controller: 'authCtrl'
             })
+			.when('/qualification/create', {
+                title: 'Create Qualification',
+                templateUrl: 'partials/create_qualification.html',
+                controller: 'authCtrl'
+            })
+			.when('/qualification', {
+                title: 'Qualification',
+                templateUrl: 'partials/qualification.html',
+                controller: 'authCtrl'
+            })
+			.when('/qualification/edit/:id', {
+                title: 'Edit Qualification',
+                templateUrl: 'partials/edit-qualification.html',
+                controller: 'authCtrl'
+            })
             /*.when('/', {
                 title: 'blank',
                 templateUrl: 'partials/blank.html',
@@ -209,7 +224,13 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                         $rootScope.Licenses = results.response_data;
                         $rootScope.loading = false;
                     });
-                } else {
+                } else if (nextUrl == '/qualification') {
+                    Data.get('Qualification').then(function (results) {
+                        //Data.toast(results);
+                        $rootScope.Qualification = results.response_data;
+                        $rootScope.loading = false;
+                    });
+                }else {
                     $rootScope.loading = false;
                 }
                 //alert(nextUrl);

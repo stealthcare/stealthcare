@@ -1491,6 +1491,215 @@ class API extends REST {
         }
         $this->response($this->json($error), 200);
     }
+	
+	
+	private function Qualification(){
+
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        
+        $success = true;
+
+        if ($success) {
+            // LOGIN
+            $sql = mysql_query("SELECT * FROM SCP_Qualification", $this->db);            
+
+            while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+                $row['QualificationID'] = $rlt['QualificationID'];
+                $row['Qualification'] = $rlt['Qualification'];
+				$row['StatusID'] = $rlt['StatusID'];
+
+                if($rlt['StatusID'] == 1) {
+                    $row['Status'] = 'Active';
+                } else {
+                    $row['Status'] = 'Deactive';
+                }
+                $arr[] = $row;
+            }
+            //print_r($arr);
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Qualification Get Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    	
+	}
+	
+	private function createQualification(){
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $Qualification = $post['Qualification'];
+			$Slug=$this->create_slug($Qualification);
+        }else{
+            $Qualification = $_POST['Qualification'];
+			$Slug=$this->create_slug($Qualification);			
+		} 	
+		$StatusID='1';
+		$CreatedDateTime = date('Y-m-d H:i:s');
+		$ModifyDateTime = date('Y-m-d H:i:s');
+
+
+        $success = true;
+       
+        if ($success) {
+            // LOGIN
+            $sql_insert = mysql_query("INSERT INTO `SCP_Qualification` (`Qualification`, `Slug`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$Qualification', '$Slug', '$StatusID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+
+            $last_insert_id = mysql_insert_id();
+
+           
+            //if no user found
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Qualification Created Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+	}
+	
+	
+	private function getUpdateQualificationID() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $QualificationID = $_POST['QualificationID'];
+            $sql = mysql_query("SELECT * FROM SCP_Qualification WHERE `QualificationID` = '$QualificationID'", $this->db); 
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+			if(!empty($arr)){
+			   $success = true;
+			   $msg = "Get Qualification Successfully";
+			   $status = 'success';
+			}else{
+			   $success = false;
+			   $status = 'error';
+			}
+        } else {
+            $QualificationID = $_POST['QualificationID'];
+            $sql = mysql_query("SELECT * FROM SCP_Qualification WHERE `QualificationID` = '$QualificationID'", $this->db); 
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+			if(!empty($arr)){
+			   $success = true;
+			   $msg = "Get Qualification Successfully";
+			   $status = 'success';
+			}else{
+			   $success = false;
+			   $status = 'error';
+			}
+        }
+
+        if ($success) {  
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	private function updateQualification() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $QualificationID = $post['QualificationID'];
+			$Qualification = $post['Qualification'];
+        } else {
+            $QualificationID = $_POST['QualificationID'];
+			$Qualification = $_POST['Qualification'];
+
+        }
+		
+			$Slug=$this->create_slug($Qualification);
+            $ModifyDateTime = date('Y-m-d H:i:s');
+
+            mysql_query("UPDATE `SCP_Qualification` SET `Qualification`='$Qualification' WHERE `QualificationID` = '$QualificationID'", $this->db);
+
+            $success = true;
+            $msg = "Update Qualification Successfully";
+			$status = 'success';
+
+        if ($success) {
+            
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	
+	
+	
+	private function changeStatusQualification() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $QualificationID = $post['QualificationID'];
+            $StatusID = $post['StatusID'];
+        } else {
+            $QualificationID = $_POST['QualificationID'];
+            $StatusID = $_POST['StatusID'];
+        }
+
+        mysql_query("UPDATE `SCP_Qualification` SET `StatusID`='$StatusID' WHERE `QualificationID` = '$QualificationID'", $this->db);
+
+
+        $success = true;
+
+        if ($success) {
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Changed Qualification Status Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	static public function create_slug($text){
+	  // replace non letter or digits by -
+	  $text = preg_replace('~[^\pL\d]+~u', '-', $text);
+	  // transliterate
+	  $text = iconv('utf-8', 'us-ascii//TRANSLIT', $text);
+	  // remove unwanted characters
+	  $text = preg_replace('~[^-\w]+~', '', $text);
+	  // trim
+	  $text = trim($text, '-');
+	  // remove duplicate -
+	  $text = preg_replace('~-+~', '-', $text);
+	  // lowercase
+	  $text = strtolower($text);
+	  if (empty($text)) {
+		return 'n-a';
+	  }
+	  return $text;
+	}
 
     private function in_array_r($needle, $haystack, $strict = false) {
         foreach ($haystack as $item) {
