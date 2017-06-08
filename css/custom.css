@@ -34,6 +34,10 @@ a{
 .margin-top50 {
   margin-top: 50px;
 }
+#feedback_form #button_float {
+  margin-top: 20px;
+  text-align: center;
+}
 .menu-arrow-close::before {
   content: "\f105";
   font-family: FontAwesome;
@@ -341,6 +345,8 @@ ul.form-builder-sidebar-menu li a.active {
 h4.field-title {
   color: hsl(0, 0%, 100%);
   display: inline-block;
+  font-weight: bold;
+  margin: 10px 0 8px;
   width: 100%;
 }
 div.fb-component::after {
@@ -384,15 +390,14 @@ body .logo img {
   display: none;
 }
 .form-group.formBuilderActionBtn {
-  background: hsl(0, 0%, 94%) none repeat scroll 0 0;
+  background: hsl(0, 0%, 89%) none repeat scroll 0 0;
   bottom: 0;
   height: 70px;
   margin-bottom: 0;
-  margin-left: -10px;
-  padding-left: 50px;
+  margin-left: -25px;
+  padding-left: 30px;
   padding-top: 15px;
   position: fixed;
-  width: 40%;
 }
 .fb-components-section {
   min-height: 500px;
@@ -438,8 +443,10 @@ div.fb-component label {
   font-size: 22px;
   pointer-events: auto;
   position: absolute;
-  right: 90px;
+  right: 70px;
   top: 5px;
+  display: none;
+  background: hsl(207, 44%, 58%) none repeat scroll 0 0 !important;
 }
 .delete-component-field {
   color: hsl(207, 44%, 58%);
@@ -447,8 +454,10 @@ div.fb-component label {
   font-size: 22px;
   pointer-events: auto;
   position: absolute;
-  right: 55px;
+  right: 20px;
   top: 5px;
+  display: none;
+  background: hsl(207, 44%, 58%) none repeat scroll 0 0 !important;
 }
 .fb-form-object-editable.fb-draggable label > span {
   float: left;
@@ -491,12 +500,15 @@ h3.popover-title {
 div.popover .element {
   margin: 0 15px;
 }
-.fb-form-object-editable label.document-name {
+.fb-form-object-editable label {
   color: hsl(209, 30%, 67%);
   font-size: 16px;
   font-weight: bold;
   padding-top: 0;
   min-height: 30px;
+}
+i.fa::after {
+  content: "";
 }
 div.popover form.ng-pristine {
   margin: 10px 0 10px;
@@ -542,8 +554,9 @@ ul.sub {
   width: 100%;
 }
 .modal-bodys {
-  background: hsl(0, 0%, 100%) none repeat scroll 0 0;
-  border-radius: 15px;
+  background: hsl(209, 48%, 67%) none repeat scroll 0 0;
+  border: 1px solid hsla(0, 0%, 100%, 0.48);
+  border-radius: 10px;
   box-shadow: 0 2px 5px hsla(0, 0%, 0%, 0.176) !important;
   margin: 0 auto;
   padding: 30px;
@@ -553,13 +566,47 @@ ul.sub {
   z-index: 2147483647;
 }
 .modal-bodys-bg {
-  background: hsl(0, 0%, 80%) none repeat scroll 0 0;
+  background: #000;
   height: 100%;
   opacity: 0.5;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 999;
+}
+#showModal .modal-footer {
+  background: hsl(209, 48%, 67%) none repeat scroll 0 0;
+  border: medium none;
+  color: hsl(0, 0%, 33%);
+  font-size: 12px;
+  padding: 8px 15px;
+}
+#showModal button {
+  background: hsl(0, 0%, 100%) none repeat scroll 0 0;
+  color: hsl(209, 48%, 67%) !important;
+}
+#showModal .modal-footer {
+  display: inline-block;
+  margin: 0 auto;
+  text-align: center;
+  width: 100%;
+  border: none;
+  box-shadow: none;
+}
+#showModal select {
+  background: hsla(0, 0%, 0%, 0) url("../images/dropdownwhite.png") no-repeat scroll 96% center;
+  border: 1px solid hsl(0, 0%, 100%);
+  color: hsl(0, 0%, 100%);
+  height: 45px;
+  padding: 10px;
+}
+#showModal .modal-header {
+  border: none;
+}
+.modal-header > h4 {
+  color: hsl(0, 0%, 100%);
+  font-size: 20px;
+  font-weight: bold;
 }
 
 /* button recolor */
@@ -591,6 +638,7 @@ ul.nav.nav-pills li {
 .viewForm label span {
   float: left;
   width: 75% !important;
+  overflow-wrap: break-word;
 }
 .viewForm label.document-name {
   color: hsl(209, 30%, 67%);
@@ -601,12 +649,39 @@ ul.nav.nav-pills li {
 body input::-moz-placeholder {
   color: #fff !important;
 }
+.showfaicon .edit-component-field, .showfaicon .delete-component-field {
+  background: hsl(207, 44%, 58%) none repeat scroll 0 0;
+  border-radius: 50%;
+  color: hsl(0, 0%, 100%);
+  display: inline-block !important;
+  height: 35px;
+  margin-right: 10px;
+  padding: 5px;
+  text-align: center;
+  width: 35px;
+}
+.viewForm h2 {
+  color: hsl(207, 31%, 24%);
+  font-size: 22px;
+  font-weight: bold;
+  margin-bottom: 10px;
+}
 body input::-webkit-input-placeholder {
   color: #fff !important;
 }
 body input:-ms-input-placeholder {
   color: #fff !important;
 }
+body .fb-builder input::-moz-placeholder {
+  color: hsl(0, 0%, 50%) !important;
+}
+body .fb-builder input::-webkit-input-placeholder {
+  color: hsl(0, 0%, 50%) !important;
+}
+body .fb-builder input:-ms-input-placeholder {
+  color: hsl(0, 0%, 50%) !important;
+}
+
 
 
 

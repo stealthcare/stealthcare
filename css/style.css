@@ -934,7 +934,9 @@ div[data-role="editor-toolbar"] {
 {
     background-color: #192b37;
 }
-
+select option { /* value not val */
+    background: #84AED4;
+}
 
 /*
 .top-nav ul.top-menu > li > a:hover,.top-nav ul.top-menu > li > a:focus,.top-nav ul.top-menu > li > a.active {background-color: #192b37;}*/

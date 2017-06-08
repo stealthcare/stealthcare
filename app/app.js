@@ -669,6 +669,15 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         showAllDayPanel: false,
         width: "100%",
         height: 250,
+        onAppointmentAdded: function(e) {
+            alert('sadasdasd');
+        },
+        onAppointmentUpdated: function(e) {
+            showToast("Updated", e.appointmentData.text, "info");
+        },
+        onAppointmentDeleted: function(e) {
+            showToast("Deleted", e.appointmentData.text, "warning");
+        },
         groups: ["theatreId"],
         crossScrollingEnabled: true,
         cellDuration: 60,
@@ -683,7 +692,7 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
             fieldExpr: "theatreId", 
             dataSource: clientData
         }],
-        appointmentTooltipTemplate: "tooltip-template",
+        //appointmentTooltipTemplate: "tooltip-template",
         appointmentTemplate: "appointment-template",
         onAppointmentFormCreated: function(data) {
             var form = data.form,

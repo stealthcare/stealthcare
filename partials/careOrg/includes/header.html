@@ -23,37 +23,37 @@
          <!-- notificatoin dropdown start-->
          <ul class="nav pull-right top-menu" >
             <li>
-              <a ng-class="activeClass == 'dashboard' ? 'active' : ''" href="organisation">
+              <a ng-class="activeClass == 'dashboard' ? 'active' : ''" href="organisation" ng-click="removePopover()">
                 Dashboard
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'registration' ? 'active' : ''" href="organisation/client/registration">
+              <a ng-class="activeClass == 'registration' ? 'active' : ''" href="organisation/client/registration" ng-click="removePopover()">
                 Enquiry
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'clients' ? 'active' : ''" href="organisation/clients">
+              <a ng-class="activeClass == 'clients' ? 'active' : ''" href="organisation/clients" ng-click="removePopover()">
                 Clients
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'carers' ? 'active' : ''" href="organisation/carers">
+              <a ng-class="activeClass == 'carers' ? 'active' : ''" href="organisation/carers" ng-click="removePopover()">
                 Carers
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'maps' ? 'active' : ''" href="javascript:;">
+              <a ng-class="activeClass == 'maps' ? 'active' : ''" href="javascript:;" ng-click="removePopover()">
                 Maps & ECM
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'roster' ? 'active' : ''" href="organisation/roster">
+              <a ng-class="activeClass == 'roster' ? 'active' : ''" href="organisation/roster" ng-click="removePopover()">
                 Roster
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'report' ? 'active' : ''" href="javascript:;">
+              <a ng-class="activeClass == 'report' ? 'active' : ''" href="javascript:;" ng-click="removePopover()">
                 Report
               </a>
             </li>
@@ -63,18 +63,18 @@
               </a>
             </li>
             <li>
-              <a ng-class="activeClass == 'system' ? 'active' : ''" href="javascript:;">
+              <a ng-class="activeClass == 'system' ? 'active' : ''" href="javascript:;" ng-click="removePopover()">
                 System
               </a>
             </li>
             <li>
-              <a href="{{baseUrl}}" ng-if="UserAccess === 'SUPERADMIN'" class="super_adminS">
+              <a href="{{baseUrl}}" ng-if="UserAccess === 'SUPERADMIN'" class="super_adminS" ng-click="removePopover()">
                 <strong>Super Admin</strong>
               </a>
             </li>
             <!-- task notificatoin start -->
             <li id="task_notificatoin_bar" class="listbg" > 
-              <a ng-click="logout();"> 
+              <a ng-click="logout();" ng-click="removePopover()"> 
                 <i class="fa fa-sign-out" aria-hidden="true"></i>
               </a> 
             </li>

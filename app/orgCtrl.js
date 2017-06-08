@@ -322,6 +322,9 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     //************************* For form builder module ****************************//
 
     $( "#showModal" ).hide();
+    $scope.removePopover = function () {
+        jQuery('.popover.fade.left.in').remove();
+    };
     // create Document request
     $scope.createDocument = function (index) {
         if(index === 'new') {
@@ -338,6 +341,9 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $('#fb-builder').css('border-top','1px dashed');
         $('#fb-builder').css('border-bottom','1px dashed');
         $('.formBuilderActionBtn').css('display','block');
+        $('.fb-components-section').css('display','block');
+        //$('#fb-builder .fb-form-object-editable').addClass('dragging');
+        $('#fb-builder').addClass('showfaicon');
         $( "#UTID" ).text(UserTypeID);
     };
 
@@ -348,6 +354,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     // edit Document request
     $scope.editDocument = function (reqparams) {
         $('.formBuilderActionBtn').css('display','block');
+        $('#fb-builder .edit-component-field, #fb-builder .delete-component-field, .fb-components-section').css('display','block');
+        //$('#fb-builder .fb-form-object-editable').addClass('dragging');
+        $('#fb-builder').addClass('showfaicon');
+        $('.opration > a:nth-child(3)').addClass('disabled');
     };
 
     var query = $location.path();
@@ -374,7 +384,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     // Duplicate Document statas request
     $scope.duplicateDocument = function(FormDataID,FormType,OrgID){
         serviceBase = 'api/v1/api.php?request=';
-        if(confirm("Are you sure to want to create duplicate document")){
+        if(confirm("Are you sure to want to create duplicate document?")){
             $scope.loading = true;
             $http({
                 method: 'post',
@@ -392,7 +402,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     // delete Document statas request
     $scope.deleteDocument = function(FormDataID){
         serviceBase = 'api/v1/api.php?request=';
-        if(confirm("Are you sure to want to delete this document")){
+        if(confirm("Are you sure to want to delete this document?")){
             $scope.loading = true;
             $http({
                 method: 'post',

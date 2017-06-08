@@ -167,3 +167,35 @@ section {
   top: 0;
   left: 0;
 }
+.dx-toolbar.dx-popup-title {
+  background: hsl(209, 48%, 67%) none repeat scroll 0 0 !important;
+  margin-bottom: 20px;
+}
+.dx-overlay-content {
+  height: 400px !important;
+}
+.dx-popup-bottom .dx-toolbar-after {
+  margin: 0 auto !important;
+  padding: 0 !important;
+  text-align: center;
+  top: -15px !important;
+  width: 100%;
+}
+.dx-closebutton {
+  background: hsla(0, 0%, 0%, 0) none repeat scroll 0 0 !important;
+  border: medium none !important;
+  color: hsl(0, 0%, 100%) !important;
+  float: right;
+  font-size: 22px !important;
+}
+.dx-popup-bottom .dx-toolbar-after .dx-item:last-child {
+  display: none;
+}
+.dx-popup-done .dx-button-content {
+  background: hsl(209, 48%, 67%) none repeat scroll 0 0;
+  border: medium none !important;
+  color: hsl(0, 0%, 100%);
+  font-family: "humnstb";
+  font-size: 17px;
+  text-transform: uppercase;
+}

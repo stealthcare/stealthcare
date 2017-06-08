@@ -344,27 +344,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                            
-                                                <div data-options="dxTemplate: {name: 'tooltip-template'}">
-                                                    <div class='movie-tooltip' ng-init="visitData = getMovieById(showtime.movieId)">
-                                                        <img ng-src="{{visitData.image}}" />
-                                                        <div class='movie-info'>
-                                                            <div class='movie-title'>
-                                                                {{visitData.text + ' (' + visitData.year + ')'}}
-                                                            </div> 
-                                                            <div>
-                                                                {{'Director: ' + visitData.director}}
-                                                            </div>
-                                                            <div>
-                                                                {{'Duration: ' + visitData.duration + ' minutes'}}
-                                                            </div>
-                                                        </div><br />
-                                                        <div dx-button = "{
-                                                            text: 'Edit details',
-                                                            onClick: 'editDetails(showtime)'
-                                                        }"></div>
-                                                    </div>
-                                                </div>
+                                                
                                             </div>
                                         </div>
                                     </div>

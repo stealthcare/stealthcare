@@ -132,11 +132,11 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
         })
         .success(function(results){
             Data.toast(results);
-            //if (results.status_code == "1") {
+            if (results.status_code == "1") {
                 $route.reload(); 
-            //} else if (results.status_code == "2") {
-                //$location.path('organisation');
-            //}
+            } else if (results.status_code == "2") {
+                $location.path('organisation');
+            }
             $scope.loading = false;
         })
         .error(function(results){
@@ -512,6 +512,9 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
     //************************* For form builder module ****************************//
 
     $( "#showModal" ).hide();
+    $scope.removePopover = function () {
+        jQuery('.popover.fade.left.in').remove();
+    };
     // create Document request
     $scope.createDocument = function (index) {
         if(index === 'new') {
@@ -528,6 +531,9 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
         $('#fb-builder').css('border-top','1px dashed');
         $('#fb-builder').css('border-bottom','1px dashed');
         $('.formBuilderActionBtn').css('display','block');
+        $('.fb-components-section').css('display','block');
+        //$('#fb-builder .fb-form-object-editable').addClass('dragging');
+        $('#fb-builder').addClass('showfaicon');
         $( "#UTID" ).text(UserTypeID);
     };
 
@@ -538,6 +544,10 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
     // edit Document request
     $scope.editDocument = function (reqparams) {
         $('.formBuilderActionBtn').css('display','block');
+        $('#fb-builder .edit-component-field, #fb-builder .delete-component-field, .fb-components-section').css('display','block');
+        //$('#fb-builder .fb-form-object-editable').addClass('dragging');
+        $('#fb-builder').addClass('showfaicon');
+        $('.opration > a:nth-child(3)').addClass('disabled');
     };
 
     var query = $location.path();
@@ -546,7 +556,7 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
 
     // Duplicate Document statas request
     $scope.duplicateDocument = function(FormID){
-        if(confirm("Are you sure to want to create duplicate document")){
+        if(confirm("Are you sure to want to create duplicate document?")){
             $scope.loading = true;
             var FormDataJson = angular.element('#isShowScope').text();
             var FormDataJsonValue = angular.element('#isShowValueScope').text();
@@ -565,7 +575,7 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
 
     // delete Document statas request
     $scope.deleteDocument = function(index){
-        if(confirm("Are you sure to want to delete this document")){
+        if(confirm("Are you sure to want to delete this document?")){
             $scope.loading = true;
             $http({
                 method: 'post',
@@ -576,7 +586,7 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
             .success(function(results){
                 Data.toast(results);
                 if (results.status_code == "1") {
-                    $location.path('form-builder');
+                    $window.location.href = 'form-builder';
                 }
                 $scope.loading = false;
             });

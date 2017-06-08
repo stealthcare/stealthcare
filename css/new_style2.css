@@ -372,6 +372,9 @@ a:hover#menu-icon {
   text-align: center;
   width: 100%;*/
 }
+.page-header {
+  font-size: 22px;
+}
 .bg_color1 {
     background-color: #84AED3 !important;
     width: 100%;

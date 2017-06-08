@@ -4,7 +4,7 @@
         cursorcolor: '#82ACD3'}">
 				<ul class="sidebar-menu">
 		            <li ng-class="activeClass == 'dashboard' ? 'active' : ''"> 
-		            	<a class="" href="{{baseUrl}}">
+		            	<a class="" href="{{baseUrl}}" ng-click="removePopover()">
 					    	<span>Dashboard</span>
 					  	</a>
 		            </li>
@@ -14,32 +14,32 @@
 					  	</a>
 		            </li-->
 		            <li ng-class="activeClass == 'care_orga' ? 'active' : ''"> 
-		            	<a class="" href="careOrgs">
+		            	<a class="" href="careOrgs" ng-click="removePopover()">
 		            		<span>Care Organisers</span>
 		            	</a>
 		            </li>
-		            <li ng-class="activeClass == 'create_care_orga' ? 'active' : ''"> 
-		            	<a class="" href="careOrg/create">
+		            <li ng-class="activeClass == 'create_care_orga' ? 'active' : ''">
+		            	<a class="" href="careOrg/create" ng-click="removePopover()">
 		            		<span>Create Care Organiser</span>
 		            	</a>
 		            </li>
 		            <li ng-class="activeClass == 'licenses' ? 'active' : ''"> 
-		            	<a class="" href="licenses">
+		            	<a class="" href="licenses" ng-click="removePopover()">
 		            		<span>Licenses</span>
 		            	</a>
 		            </li>
 		            <li ng-class="activeClass == 'create_license' ? 'active' : ''"> 
-		            	<a class="" href="license/create">
+		            	<a class="" href="license/create" ng-click="removePopover()">
 		            		<span>Create License</span>
 		            	</a>
 		            </li>
 		            <li ng-class="activeClass == 'license_plans' ? 'active' : ''"> 
-		            	<a class="" href="license/plans">
+		            	<a class="" href="license/plans" ng-click="removePopover()">
 		            		<span>License Plans</span>
 		            	</a>
 		            </li>
 		            <li ng-class="activeClass == 'create_license_plan' ? 'active' : ''"> 
-		            	<a class="" href="license/plan/create">
+		            	<a class="" href="license/plan/create" ng-click="removePopover()">
 		            		<span>Create License Plan</span>
 		            	</a>
 		            </li>
@@ -57,12 +57,12 @@
 						</ul-->
 		            </li>
 					<li ng-class="activeClass == 'qualification' ? 'active' : ''"> 
-		            	<a class="" href="qualification">
+		            	<a class="" href="qualification" ng-click="removePopover()">
 		            		<span>Qualification</span>
 		            	</a>
 		            </li>
 					<li ng-class="activeClass == 'create_qualification' ? 'active' : ''"> 
-		            	<a class="" href="qualification/create">
+		            	<a class="" href="qualification/create" ng-click="removePopover()">
 		            		<span>Create Qualification</span>
 		            	</a>
 		            </li>

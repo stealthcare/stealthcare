@@ -804,6 +804,7 @@
           object: object
         };
         $element.addClass('fb-draggable');
+        $element.addClass('dragging');
         $element.on('mousedown', function(e) {
           e.preventDefault();
           if ($element.hasClass('dragging')) {

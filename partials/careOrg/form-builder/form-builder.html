@@ -70,18 +70,23 @@
                             </form>
                             <div id="isShowValueScope" style="height: 0px; width: 0px; line-height: 0; visibility: hidden;">{{input}}</div>
                           </div>
+                          <div class="form-group formBuilderActionBtn" style="display:none;">
+                              <button class="btn button2" type="button" ng-click="saveForm(OrgID)">SAVE FORM</button>
+                              <button class="btn button2" type="submit" ng-click="viewForm(OrgID)">VIEW FORM</button>
+                              <button class="btn button2" type="reset" ng-click="cancelForm(OrgID)">CANCEL</button>
+                          </div>  
                       </div>
                       <div class="col-md-3 position-fixed">
                       </div>
                   </div>
 
-                  <div class="row">
+                  <!--div class="row">
                     <div class="form-group formBuilderActionBtn" style="display:none;">
                         <button class="btn button2" type="button" ng-click="saveForm(OrgID)">SAVE FORM</button>
                         <button class="btn button2" type="submit" ng-click="viewForm(OrgID)">VIEW FORM</button>
                         <button class="btn button2" type="reset" ng-click="cancelForm(OrgID)">CANCEL</button>
                     </div>  
-                  </div>
+                  </div-->
                   <!--contaent are start-->
                 </div>
                 <div class="col-md-3 col-lg-3 fb-components-sidebar" ng-nicescroll nice-option="{cursorcolor: '#82ACD3'}"> 
@@ -93,7 +98,7 @@
                           <a ng-click="deleteDocument()" class="disabled">Delete Document</a>
                         </div>
                     </div>
-                    <div class="fb-components-section"> 
+                    <div class="fb-components-section" style="display:none;"> 
                       <h4 class="field-title text-center">ADD FIELD</h4>
                       <div fb-components></div>
                     </div>
