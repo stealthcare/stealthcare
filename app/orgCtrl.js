@@ -17,7 +17,6 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         $scope.filter = pr; 
     }
     $scope.employee='0';
-
     $scope.calcDays = DOBService.getDays(); 
     $scope.calcMonths = DOBService.getMonths();
     $scope.calcYears = DOBService.getYears();
@@ -75,7 +74,6 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.signup.gender = 'Male';
     $scope.signup.support = 'Personal Care';
     $scope.signup.makeenq = 'self';
-    
     $scope.sendRequest = function (request,pathlink) {
 		$(".submit_btn").prop("disabled",true);
         request = angular.toJson(request);
@@ -306,6 +304,20 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         })
         .success(function(results){ 
             $scope.allCountry = results.responseData;
+        });
+    };
+	
+	// Load All Qualification
+    $scope.loadAllQualification = function () {
+        var request = '{"serviceRequestID":"25"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            $scope.allQualification = results.responseData;
         });
     };
     
@@ -628,7 +640,7 @@ app.run([
 
 
 //text trim
-angular.module('ng').filter('cut', function () {
+app.filter('cut', function () {
         return function (value, wordwise, max, tail) {
             if (!value) return '';
 

@@ -53,6 +53,9 @@
                                     </tr>
                                 </thead>
                                 <tbody>
+								    <tr ng-show="showAlert">
+									  <td colspan="3" ng-bind="responsemsg" class="text-center"></td>
+									</tr>
                                     <tr dir-paginate="Q in Qualification|orderBy:sortKey:reverse|filter:search|itemsPerPage:pageSize">
                                         <td>{{ Q.Qualification }}</td>
                                         <td>{{ Q.Status }}</td>

@@ -1504,23 +1504,31 @@ class API extends REST {
 
         if ($success) {
             // LOGIN
-            $sql = mysql_query("SELECT * FROM SCP_Qualification", $this->db);            
-
-            while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
-                $row['QualificationID'] = $rlt['QualificationID'];
-                $row['Qualification'] = $rlt['Qualification'];
-				$row['StatusID'] = $rlt['StatusID'];
-
-                if($rlt['StatusID'] == 1) {
-                    $row['Status'] = 'Active';
-                } else {
-                    $row['Status'] = 'Deactive';
-                }
-                $arr[] = $row;
-            }
-            //print_r($arr);
-            $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Qualification Get Successfully", 'response_code' => "200", 'response_data' => $arr);
-            $this->response($this->json($successdata), 200);            
+            $sql = mysql_query("SELECT * FROM SCP_Qualification", $this->db);
+			$chk=mysql_num_rows($sql);
+			$arr='';
+			if($chk>0){
+				while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+					$row['QualificationID'] = $rlt['QualificationID'];
+					$row['Qualification'] = $rlt['Qualification'];
+					$row['StatusID'] = $rlt['StatusID'];
+	
+					if($rlt['StatusID'] == 1) {
+						$row['Status'] = 'Active';
+					} else {
+						$row['Status'] = 'Deactive';
+					}
+					$arr[] = $row;
+				}
+				
+			 $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Qualification Get Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($successdata), 200); 	
+				
+			}else{
+			   $error = array('status_code' => "0", 'status' => "error", 'message' => "No Qualification Found", 'response_code' => "200", 'response_data' => '');
+               $this->response($this->json($error), 200);
+			}            
+            //print_r($arr);           
         } else {
             $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);

@@ -517,7 +517,7 @@ function in_array_r($needle, $haystack, $strict = false) {
 */
 function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-
+    $QualificationID = $post['QualificationID'];
     $role = $post['role'];
     $Title = $post['title'];
     $FirstName = $post['FirstName'];
@@ -611,7 +611,7 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
     $StatusID=!empty($post['statusid'])?$post['statusid']:'1';
 	
 	if(!empty($LicenseID)){
-    $result = mysql_query("call createStaff('".$EmailID."','".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
+    $result = mysql_query("call createStaff('".$QualificationID."','".$EmailID."','".$OrgID."','".$Title."','".$FirstName."','".$Surname."','".$MiddleName."','".$DateOfBirth."','".$Gender."','".$Ethnicity."','".$HouseNumber."','".$Address1."','".$Address2."','".$City."','".$Country."','".$PostCode."','".$Mobile."','".$ProfilePhoto."','".$NOKName."','".$NOKMobile."','".$NOKEmail."','".$UserName."','".$Password."','".$RightsID."','".$AccessLevelID."','".$UserTypeID."','".$CreatedDateTime."','".$ModifyDateTime."','".$StatusID."','".$LicenseID."')")or die(mysql_error());
 	}else{
 	$result = '';
 	}
@@ -944,7 +944,7 @@ where st.StaffID='".$post['StaffID']."'";
 *   Return Value: User Details se morfi json
 */
 function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
-
+    $QualificationID = $post['QualificationID'];
     $Title = $post['Title'];
     $Name = $post['Name'];
     $Surname = $post['Surname'];
@@ -1019,7 +1019,7 @@ function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
 	$UserID  = $post['UserID'];
 
 	
-	$sql2="UPDATE `SCP_Staff` SET `Title` = '".$Title."',`Name` = '".$Name."',`Surname` = '".$Surname."',`MiddleName` = '".$MiddleName."',`DateOfBirth` = '".$DateOfBirth."',`Gender` = '".$Gender."',`Ethnicity` = '".$Ethnicity."',`HouseNumber` = '".$HouseNumber."',`Address1` = '".$Address1."',`Address2` = '".$Address2."',`City` = '".$City."',`Country` = '".$Country."',`PostCode` = '".$PostCode."',`Mobile` = '".$Mobile."',`NOKName` = '".$NOKName."',`NOKMobile` = '".$NOKMobile."',`NOKEmail` = '".$NOKEmail."',`ModifyDateTime` = '".$ModifyDateTime."',`ArchiveUser` = '".$ArchiveUser."' WHERE `StaffID` = '".$StaffID."'";	 
+	$sql2="UPDATE `SCP_Staff` SET `QualificationID` = '".$QualificationID."',`Title` = '".$Title."',`Name` = '".$Name."',`Surname` = '".$Surname."',`MiddleName` = '".$MiddleName."',`DateOfBirth` = '".$DateOfBirth."',`Gender` = '".$Gender."',`Ethnicity` = '".$Ethnicity."',`HouseNumber` = '".$HouseNumber."',`Address1` = '".$Address1."',`Address2` = '".$Address2."',`City` = '".$City."',`Country` = '".$Country."',`PostCode` = '".$PostCode."',`Mobile` = '".$Mobile."',`NOKName` = '".$NOKName."',`NOKMobile` = '".$NOKMobile."',`NOKEmail` = '".$NOKEmail."',`ModifyDateTime` = '".$ModifyDateTime."',`ArchiveUser` = '".$ArchiveUser."' WHERE `StaffID` = '".$StaffID."'";	 
     $result = mysql_query($sql2) or die(mysql_error());
   
     if($result) {
@@ -1036,7 +1036,39 @@ function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
-
+/******************************************************************************************************************/
+/* 
+*   ID=25
+*   A function used as a response to ID=25
+*   It is used to loadAllQualification
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadAllQualification($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    $result = mysql_query("call loadAllQualification();");
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['responseMessage'] = "All Qualification get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['responseMessage'] = "Request error";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
 
 
 function is_require($a, $i) {
@@ -1089,7 +1121,9 @@ switch($ID) {
 	case 23: editStaffload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
 	     break; 
 	case 24: updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
-	     break;   	                  	       	  	             
+	     break;  
+    case 25: loadAllQualification($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	    break;   	                  	       	  	             
     default: myError(); 
 }
 

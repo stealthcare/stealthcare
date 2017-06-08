@@ -128,6 +128,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/client/clients.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/equipments', {
+                title: 'Equipments',
+                templateUrl: 'partials/careOrg/equipment.html',
+                controller: 'orgCtrl'
+            })
 
             // FOR ADMIN PORTAL SATFF MEMBERS
             .when('/organisation/carers', {
@@ -227,8 +232,14 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 } else if (nextUrl == '/qualification') {
                     Data.get('Qualification').then(function (results) {
                         //Data.toast(results);
-                        $rootScope.Qualification = results.response_data;
-                        $rootScope.loading = false;
+						$rootScope.loading = false;	
+						if(results.status_code==0){
+						   $rootScope.responsemsg = results.message;
+                           $rootScope.showAlert = true;	
+						}else{
+						   $rootScope.showAlert = false;	
+                           $rootScope.Qualification = results.response_data;						
+						} 
                     });
                 }else {
                     $rootScope.loading = false;
