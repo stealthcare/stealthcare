@@ -411,231 +411,52 @@ function ngNicescroll($rootScope) {
     }
 }
 
-app.controller('ClientSchedulerControllers', function ClientSchedulerControllers($scope) {
-    var resourcesData = [
-        {
-            text: "John",
-            id: 1,
-            color: "#cb6bb2"
-        },{
-            text: "John Smith",
-            id: 2,
-            color: "#cb6bb2"
-        }
-    ];
-
-    var clientData = [
-        {
-            text: "Martin",
-            id: 1,
-            color: "#1e90ff"
-        }, {
-            text: "Martin",
-            id: 2,
-            color: "#ff9747"
-        }, {
-            text: "Martin",
-            id: 3,
-            color: "#ff9747"
-        }, {
-            text: "Martin",
-            id: 4,
-            color: "#ff9747"
-        }, {
-            text: "Martin",
-            id: 5,
-            color: "#ff9747"
-        }
-    ];
-
-    var data = [{
-        "text": "Google AdWords Strategy",
-        "ownerId": [2],
-        "startDate": new Date(2016, 1, 1, 9, 0),
-        "endDate": new Date(2016, 1, 1, 12, 30),
-        "priority": 5
-    }];
-
-    $scope.schedulerOptions = {
-        dataSource: data,
-        allDayExpr: "Test",
-        //views: ["timelineDay", "timelineWeek", "timelineWorkWeek", "timelineMonth"],
-        currentView: "timelineDay",
-        currentDate: new Date(2016, 1, 1),
-        firstDayOfWeek: 0,
-        startDayHour: 7,
-        endDayHour: 31,
-        cellDuration: 60,
-        editing: { 
-            allowAdding: true
-        },
-        groups: ["priority"],
-        resources: [{
-            fieldExpr: "ownerId",
-            allowMultiple: false,
-            dataSource: resourcesData,
-            label: "Care Worker",
-            useColorAsDefault: true
-        }, { 
-            fieldExpr: "priority",
-            allowMultiple: false,
-            dataSource: clientData
-        }],
-        width: "100%",
-        height: 280
-    };
-});
-
-
-app.controller('CareWorkerSchedulerController', function CareWorkerSchedulerController($scope) {
-    
-    var resourcesData = [
-        {
-            text: "Martin",
-            id: 1,
-            color: "#cb6bb2"
-        }
-    ];
-
-    var careworkerData = [
-        {
-            text: "John",
-            id: 1,
-            color: "#1e90ff"
-        }, {
-            text: "John Smith",
-            id: 2,
-            color: "#ff9747"
-        }, {
-            text: "John Smith New",
-            id: 3,
-            color: "#ff9747"
-        }
-    ];
-
-    var data = [{
-        "text": "Google AdWords Strategy",
-        "ownerId": [1],
-        "startDate": new Date(2016, 1, 1, 9, 0),
-        "endDate": new Date(2016, 1, 1, 10, 30),
-        "priority": 1
-    }];
-
-    $scope.schedulerOptions = {
-        dataSource: data,
-        //views: ["timelineDay", "timelineWeek", "timelineWorkWeek", "timelineMonth"],
-        currentView: "timelineDay",
-        currentDate: new Date(2016, 1, 1),
-        firstDayOfWeek: 0,
-        startDayHour: 7,
-        endDayHour: 31,
-        cellDuration: 60,
-        groups: ["priority"],
-        resources: [{
-            fieldExpr: "ownerId",
-            allowMultiple: false,
-            dataSource: resourcesData,
-            label: "Client",
-            useColorAsDefault: true
-        }, { 
-            fieldExpr: "priority",
-            allowMultiple: false,
-            dataSource: careworkerData
-        }],
-        width: "100%",
-        height: 280
-    };
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+// scheduler system for client section
 app.controller('ClientSchedulerController', function ClientSchedulerController($scope) {
     var visitData = [{
         id: 1,
         text: "Test 1",
-        director: "Howard Hawks",
-        year: "1940",
-        image: "images/movies/HisGirlFriday.jpg",
-        duration: 92,
-        color: "#cb6bb2"
+        task: ["Howard Hawks","Howard Hawks"],
+        outcomesachived: "yes",
+        status: "complete",
+        client: "Martin",
+        careworker: "Jhon Smith",
+        color: "#80BCA2"
     }, {
         id: 2,
         text: "Test 2",
-        director: "Stanley Donen",
-        year: "1951",
-        image: "images/movies/RoyalWedding.jpg",
-        duration: 93,
-        color: "#56ca85"
+        task: ["Howard Hawks","Howard Hawks"],
+        outcomesachived: "no",
+        status: "missed",
+        client: "Martin",
+        careworker: "Jhon",
+        color: "#EAB624"
     }, {
         id: 3,
         text: "Test 3",
-        director: "William A. Wellman",
-        year: "1937",
-        image: "images/movies/AStartIsBorn.jpg",
-        duration: 111,
-        color: "#1e90ff"
-    }, {
-        id: 4,
-        text: "Test 4",
-        director: "Alex Nicol",
-        year: "1958",
-        image: "images/movies/ScreamingSkull.jpg",
-        duration: 68,
-        color: "#ff9747"
-    }, {
-        id: 5,
-        text: "Test 5",
-        director: "Frank Capra",
-        year: "1946",
-        image: "images/movies/ItsAWonderfulLife.jpg",
-        duration: 130,
-        color: "#f05797"
-    }, {
-        id: 6,
-        text: "Test 6",
-        director: "Charlie Chaplin",
-        year: "1931",
-        image: "images/movies/CityLights.jpg",
-        duration: 87,
-        color: "#2a9010"
+        task: ["Howard Hawks","Howard Hawks"],
+        outcomesachived: "no",
+        status: "incomplete",
+        client: "Martin",
+        careworker: "Jhon",
+        color: "#DA4F4E"
     }];
 
     var clientData = [{
             text: "Martin 1",
-            id: 0
-        }, {
-            text: "Martin 2",
             id: 1
         }, {
-            text: "Martin 3",
+            text: "Martin 2",
             id: 2
         }, {
-            text: "Martin 4",
+            text: "Martin 3",
             id: 3
         }, {
-            text: "Martin 5",
+            text: "Martin 4",
             id: 4
+        }, {
+            text: "Martin 5",
+            id: 5
         }
     ];
 
@@ -656,17 +477,23 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
     ];
 
     var visitTimeData = [{
-            theatreId: 0,
-            movieId: 3,
-            price: 10,
+            ClientId: 1,
+            VisitID: 1,
+            CareWorkerID: 2,
             startDate: new Date(2015, 4, 24, 9, 10),
             endDate: new Date(2015, 4, 24, 11, 1)
         }, {
-            theatreId: 0,
-            movieId: 1,
-            price: 5,
+            ClientId: 2,
+            VisitID: 2,
+            CareWorkerID: 1,
             startDate: new Date(2015, 4, 24, 11, 30),
             endDate: new Date(2015, 4, 24, 13, 2)
+        }, {
+            ClientId: 3,
+            VisitID: 3,
+            CareWorkerID: 1,
+            startDate: new Date(2015, 4, 24, 12, 30),
+            endDate: new Date(2015, 4, 24, 13, 1)
         }
     ];
 
@@ -681,33 +508,33 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         width: "100%",
         height: 250,
         onAppointmentAdded: function(e) {
-            alert('sadasdasd');
+            alert('insert');
         },
         onAppointmentUpdated: function(e) {
-            showToast("Updated", e.appointmentData.text, "info");
+            alert('update');
         },
         onAppointmentDeleted: function(e) {
-            showToast("Deleted", e.appointmentData.text, "warning");
+            alert('delete');
         },
-        groups: ["theatreId"],
+        groups: ["ClientId"],
         crossScrollingEnabled: true,
         cellDuration: 60,
         editing: { 
             allowAdding: true
         },
         resources: [{ 
-            fieldExpr: "movieId",
+            fieldExpr: "VisitID",
             dataSource: visitData,
             useColorAsDefault: true
         }, { 
-            fieldExpr: "theatreId", 
+            fieldExpr: "ClientId", 
             dataSource: clientData
         }],
-        //appointmentTooltipTemplate: "tooltip-template",
+        appointmentTooltipTemplate: "tooltip-template",
         appointmentTemplate: "appointment-template",
         onAppointmentFormCreated: function(data) {
             var form = data.form,
-                movieInfo = getMovieById(data.appointmentData.movieId) || {},
+                visitInfo = getMovieById(data.appointmentData.VisitID) || {},
                 startDate = data.appointmentData.startDate;
     
                 form.option("items", [{
@@ -715,23 +542,23 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
                         text: "Title"
                     },
                     name: "visitname",
-                    editorType: "dxTextBox"
+                    editorType: "dxTextBox",
+                    editorOptions: {
+                        value: visitInfo.text,
+                        readOnly: false
+                    }
                 }, {
                     label: {
                         text: "Care Worker"
                     },
                     editorType: "dxSelectBox",
+                    dataField: "CareWorkerID",
                     editorOptions: {
                         items: careworkerData,
                         displayExpr: "text",
                         valueExpr: "id",
                         onValueChanged: function(args) {
-                            movieInfo = getMovieById(args.value);
-                            form.getEditor("director")
-                                .option("value", movieInfo.director);
-                            form.getEditor("endDate")
-                                .option("value", new Date (startDate.getTime() +
-                                    60 * 1000 * movieInfo.duration));
+                            visitInfo = getMovieById(args.value);
                         }
                     }
                 }, {
@@ -743,7 +570,208 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
                             startDate = args.value;
                             form.getEditor("endDate")
                                 .option("value", new Date (startDate.getTime() +
-                                    60 * 1000 * movieInfo.duration));
+                                    60 * 1000 * visitInfo.duration));
+                        }
+                    }
+                }, {
+                    name: "endDate",
+                    dataField: "endDate",
+                    editorType: "dxDateBox",
+                    editorOptions: {
+                        type: "datetime",
+                        readOnly: true
+                    }
+                }
+            ]);
+        }
+    };
+    
+    $scope.getMovieById = getMovieById; 
+    $scope.editDetails = function (showtime) {
+        $('#scheduler').dxScheduler('instance').showAppointmentPopup(getDataObj(showtime), false);
+    };
+    
+    function getDataObj(objData) {
+        var result;
+        for(var i = 0; i < visitTimeData.length; i++) {
+            if(visitTimeData[i].startDate.getTime() === objData.startDate.getTime() && visitTimeData[i].ClientId === objData.ClientId) {
+                result = visitTimeData[i];
+                break;
+            }
+        }
+        return result;
+    }
+    
+    function getMovieById(id) {
+        return DevExpress.data.query(visitData)
+                .filter("id", id)
+                .toArray()[0];
+    }
+
+    //var r = $('.dx-scheduler-all-day-title').text();
+    //alert(r);
+});
+
+// scheduler system for care worker section
+/*app.controller('CareWorkerSchedulerController', function CareWorkerSchedulerController($scope) {
+    var visitData = [{
+        id: 1,
+        text: "Test 1",
+        task: ["Howard Hawks","Howard Hawks"],
+        outcomesachived: "yes",
+        status: "complete",
+        client: "Martin",
+        careworker: "Jhon Smith",
+        color: "#80BCA2"
+    }, {
+        id: 2,
+        text: "Test 2",
+        task: ["Howard Hawks","Howard Hawks"],
+        outcomesachived: "no",
+        status: "missed",
+        client: "Martin",
+        careworker: "Jhon",
+        color: "#EAB624"
+    }, {
+        id: 3,
+        text: "Test 3",
+        task: ["Howard Hawks","Howard Hawks"],
+        outcomesachived: "no",
+        status: "incomplete",
+        client: "Martin",
+        careworker: "Jhon",
+        color: "#DA4F4E"
+    }];
+
+    var clientData = [{
+            text: "Martin 1",
+            id: 1
+        }, {
+            text: "Martin 2",
+            id: 2
+        }, {
+            text: "Martin 3",
+            id: 3
+        }, {
+            text: "Martin 4",
+            id: 4
+        }, {
+            text: "Martin 5",
+            id: 5
+        }
+    ];
+
+    var careworkerData = [
+        {
+            text: "John",
+            id: 1,
+            color: "#1e90ff"
+        }, {
+            text: "John Smith",
+            id: 2,
+            color: "#ff9747"
+        }, {
+            text: "John Smith New",
+            id: 3,
+            color: "#ff9747"
+        }
+    ];
+
+    var visitTimeData = [{
+            ClientId: 1,
+            VisitID: 1,
+            CareWorkerID: 2,
+            startDate: new Date(2015, 4, 24, 9, 10),
+            endDate: new Date(2015, 4, 24, 11, 1)
+        }, {
+            ClientId: 2,
+            VisitID: 2,
+            CareWorkerID: 1,
+            startDate: new Date(2015, 4, 24, 11, 30),
+            endDate: new Date(2015, 4, 24, 13, 2)
+        }, {
+            ClientId: 3,
+            VisitID: 3,
+            CareWorkerID: 1,
+            startDate: new Date(2015, 4, 24, 12, 30),
+            endDate: new Date(2015, 4, 24, 13, 1)
+        }
+    ];
+
+    $scope.options = {
+        dataSource: visitTimeData,
+        currentView: "timelineDay",
+        currentDate: new Date(2015, 4, 24),
+        firstDayOfWeek: 0,
+        startDayHour: 7,
+        endDayHour: 31,
+        showAllDayPanel: false,
+        width: "100%",
+        height: 250,
+        onAppointmentAdded: function(e) {
+            alert('insert');
+        },
+        onAppointmentUpdated: function(e) {
+            alert('update');
+        },
+        onAppointmentDeleted: function(e) {
+            alert('delete');
+        },
+        groups: ["ClientId"],
+        crossScrollingEnabled: true,
+        cellDuration: 60,
+        editing: { 
+            allowAdding: true
+        },
+        resources: [{ 
+            fieldExpr: "VisitID",
+            dataSource: visitData,
+            useColorAsDefault: true
+        }, { 
+            fieldExpr: "ClientId", 
+            dataSource: clientData
+        }],
+        //appointmentTooltipTemplate: "tooltip-template",
+        appointmentTemplate: "appointment-template",
+        onAppointmentFormCreated: function(data) {
+            var form = data.form,
+                visitInfo = getMovieById(data.appointmentData.VisitID) || {},
+                startDate = data.appointmentData.startDate;
+    
+                form.option("items", [{
+                    label: {
+                        text: "Title"
+                    },
+                    name: "visitname",
+                    editorType: "dxTextBox",
+                    editorOptions: {
+                        value: visitInfo.text,
+                        readOnly: true
+                    }
+                }, {
+                    label: {
+                        text: "Care Worker"
+                    },
+                    editorType: "dxSelectBox",
+                    dataField: "CareWorkerID",
+                    editorOptions: {
+                        items: careworkerData,
+                        displayExpr: "text",
+                        valueExpr: "id",
+                        onValueChanged: function(args) {
+                            visitInfo = getMovieById(args.value);
+                        }
+                    }
+                }, {
+                    dataField: "startDate",
+                    editorType: "dxDateBox",
+                    editorOptions: {
+                        type: "datetime",
+                        onValueChanged: function(args) {
+                            startDate = args.value;
+                            form.getEditor("endDate")
+                                .option("value", new Date (startDate.getTime() +
+                                    60 * 1000 * visitInfo.duration));
                         }
                     }
                 }, {
@@ -767,7 +795,7 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
     function getDataObj(objData) {
         var result;
         for(var i = 0; i < data.length; i++) {
-            if(data[i].startDate.getTime() === objData.startDate.getTime() && data[i].theatreId === objData.theatreId) {
+            if(data[i].startDate.getTime() === objData.startDate.getTime() && data[i].ClientId === objData.ClientId) {
                 result = data[i];
                 break;
             }
@@ -781,3 +809,4 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
                 .toArray()[0];
     }
 });
+*/
