@@ -1,7 +1,7 @@
 <!-- container section start -->
 <section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
     <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Equipments')"></div>
+    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Settings')"></div>
     <div ng-include="'partials/careOrg/includes/header.html'"></div>
     <!------------ End Header ---------------->
     <!--sidebar start-->
@@ -29,10 +29,10 @@
                             <!--contaent are start-->
                             <div class="row">
                                 <div class="col-md-6 col-lg-6">
-                                    <h3 class="page-header">Equipments</h3>
+                                    <h3 class="page-header">Settings</h3>
                                 </div>
 								<div class="col-md-6 col-lg-6">
-								<a href="organisation/equipments/create" class="btn add_equipments"> Add Equipment <i class="fa icon" aria-hidden="true"> <img src="img/Plus_icon.png"> </i> </a>
+								
 								</div>
                             </div>
                             <div class="row margin-bottom20">
@@ -40,6 +40,7 @@
                                     <div id="button_float" style="float: left;">
                                        <!-- <label for="search">Items per page:</label>
                                         <input type="number" min="1" max="500" class="form-control" ng-model="pageSize">-->
+										<div class="setting_label">Equipments Settings</div>
                                     </div>
                                 </div>
                                 <div class="col-md-6 col-lg-6"> 
@@ -50,16 +51,16 @@
                                                 <input type="text" ng-model="search" class="form-control" placeholder="Search...">
                                             </div>
                                         </form>-->
-										
+										<a href="organisation/settings/assign_equipments" class="btn add_equipments"> Assign Equipments <i class="fa icon" aria-hidden="true"> <img src="img/Plus_icon.png"> </i> </a>
                                     </div>
                                 </div>
                             </div>
                             <!--contaent are start-->
-                            <table class="table table-bordered table-advance table-hover file_upload_table table_radius" data-ng-init="loadAllEquipments()">
+                            <table class="table table-bordered table-advance table-hover file_upload_table table_radius" data-ng-init="loadAllEquipmentsSetting()">
                                 <thead>
                                     <tr >
-                                      <th class="background_color_blue_left">Equipments</th>
-									  <th class="background_color_blue">Description</th>
+                                      <th class="background_color_blue_left">Staff Name</th>
+									  <th class="background_color_blue">Equipment</th>
                                       <th class="background_color_blue">Status</th>
                                       <th class="background_color_blue_right"> Action</th>
                                     </tr>
@@ -69,14 +70,14 @@
 									  <td colspan="4" ng-bind="responsemsg" class="text-center"></td>
 									</tr>
                                     <tr ng-repeat="E in allEquipments">
-                                        <td>{{ E.Equipment }}</td>
-										<td>{{ E.Description }}</td>
+                                        <td>{{ E.Name }}</td>
+										<td>{{ E.Equipment }}</td>
                                         <td>{{ E.Status }}</td>
                                         <td>
                                             <div class="btn-group">
-                                              <a class="btn btn-edit view" href="#/organisation/equipments/edit/{{E.EquipmentID}}" title="Edit Equipment"><i class="fa fa-pencil"></i></a>             
-                                              <a ng-if="E.StatusID === '1'" class="btn btn-success" ng-click="changeStatusEquipment(E.EquipmentID,2)" title="Deactive Equipment"><i class="fa fa-check"></i></a>
-                                              <a ng-if="E.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusEquipment(E.EquipmentID,1)" title="Active Equipment"><i class="fa fa-ban"></i></a>
+                                              <a class="btn btn-edit view" href="" title="Edit Equipment"><i class="fa fa-pencil"></i></a>             
+                                              <a ng-if="E.StatusID === '1'" class="btn btn-success" ng-click="changeStatusEquipmentStaff(E.EquipmentsAssignID,2)" title="Deactive Equipment"><i class="fa fa-check"></i></a>
+                                              <a ng-if="E.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusEquipmentStaff(E.EquipmentsAssignID,1)" title="Active Equipment"><i class="fa fa-ban"></i></a>
                                              
                                               <!--a class="btn btn-danger" ng-click="deleteCareOrg(U.UserID)" title="Delete Organization"><i class="fa fa-trash-o"></i></a-->
                                             </div>

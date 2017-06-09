@@ -242,7 +242,215 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 			setTimeout(function(){ $location.path(pathlink) }, 1000);
         });
     };
-    
+	
+	//load Equipments    
+    $scope.loadAllEquipments = function () {
+        var request = '{"serviceRequestID":"26"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            Data.toast(results);
+            $scope.allEquipments = results.responseData;			
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+              $scope.showPaging = false;
+            }else{
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
+        });
+    };
+	
+	//create Equipments
+	$scope.createEquipment = function (reqparams,pathlink) {
+		$(".button2").prop("disabled",true);
+		 request = angular.toJson(reqparams);
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status == "1") {
+                $location.path(pathlink);
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	
+	
+	//edit Equipments
+	$scope.editEquipmentsload = function () {
+		
+        var EquipmentID = $routeParams.id;
+        var request = '{"serviceRequestID":"28","EquipmentID":"'+EquipmentID+'"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+            $rootScope.allEquipments = results.responseData;
+        });
+    };
+	
+	
+	//update Equipments 
+	$scope.updateEquipments = function (request,pathlink) {
+		$(".button2").prop("disabled",true);
+		request = angular.toJson(request);
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	  
+            Data.toast(results);
+			$(".button2").prop("disabled",false);		
+			$location.path(pathlink);
+        });
+    };
+	
+	
+	// change Equipments statas request
+    $scope.changeStatusEquipment = function(EquipmentID,StatusID){
+		var request = '{"serviceRequestID":"30","EquipmentID":"'+EquipmentID+'","StatusID":"'+StatusID+'"}';
+        if(confirm("Are you sure to want to change Equipment status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({request: request}),
+                url: serviceBase,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    }; 
+	
+	
+	//load Equipments Setting    
+    $scope.loadAllEquipmentsSetting = function () {
+        var request = '{"serviceRequestID":"31"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            //Data.toast(results);
+            $scope.allEquipments = results.responseData;			
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+              $scope.showPaging = false;
+            }else{
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
+        });
+    };
+	
+	//load all staff org
+	$scope.loadAllStaffOrg = function () {
+        var request = '{"serviceRequestID":"32"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            //Data.toast(results);
+            $scope.allAllStaffOrg = results.responseData;			
+        });
+    };
+	
+	//load all Equipments org    
+    $scope.loadAllEquipmentsOrg = function () {
+        var request = '{"serviceRequestID":"33"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            //Data.toast(results);
+            $scope.allAllEquipmentsOrg = results.responseData;	
+        });
+    };
+	
+	//assignEquipments
+	$scope.assignEquipments = function (reqparams,pathlink) {
+		$(".button2").prop("disabled",true);
+		 request = angular.toJson(reqparams);
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status == "1") {
+                $location.path(pathlink);
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	
+	// change changeStatusEquipmentStaff request
+    $scope.changeStatusEquipmentStaff = function(EquipmentID,StatusID){
+		var request = '{"serviceRequestID":"35","EquipmentID":"'+EquipmentID+'","StatusID":"'+StatusID+'"}';
+        if(confirm("Are you sure to want to change status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({request: request}),
+                url: serviceBase,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    }; 
+
     $scope.toggleShow = function(){
         if($scope.showStartEvent==true){
           $scope.signup.statusid='1';
@@ -320,6 +528,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             $scope.allQualification = results.responseData;
         });
     };
+	
+
+	
+	
     
     // logout request
     $scope.logout = function () {

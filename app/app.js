@@ -133,6 +133,26 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/equipment.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/equipments/create', {
+                title: 'Add Equipments',
+                templateUrl: 'partials/careOrg/add_equipment.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/equipments/edit/:id', {
+                title: 'Edit Equipments',
+                templateUrl: 'partials/careOrg/edit-equipment.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/settings', {
+                title: 'Settings',
+                templateUrl: 'partials/careOrg/settings.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/settings/assign_equipments', {
+                title: 'Assign Equipments',
+                templateUrl: 'partials/careOrg/assign_equipments.html',
+                controller: 'orgCtrl'
+            })
 
             // FOR ADMIN PORTAL SATFF MEMBERS
             .when('/organisation/carers', {

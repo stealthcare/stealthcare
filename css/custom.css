@@ -959,3 +959,20 @@ color: #888;font-size: 26px;margin-top: 168px;min-height: 104px;text-align: cent
 .employee h2 a{
 color:#84aed3;
 }
+.add_equipments {
+    background-color: #ffffff;
+    border-radius: 4px;
+    color: #1a1a1a;
+    float: right;
+    font-family: "humnstb";
+    font-size: 17px;
+    margin-top: 1%;
+}
+.setting_label{
+    border-radius: 4px;
+    color: #1a1a1a;
+    float: right;
+    font-family: "humnstb";
+    font-size: 17px;
+    margin-top: 1%;
+}

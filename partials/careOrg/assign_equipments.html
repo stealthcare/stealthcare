@@ -1,0 +1,98 @@
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
+    <!------------ Start Header ---------------->
+    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Assign Equipments')"></div>
+    <div ng-include="'partials/careOrg/includes/header.html'"></div>
+    <!------------ End Header ---------------->
+    <!--sidebar start-->
+    <!------------ Start Header ---------------->
+    <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
+    <!------------ End Header ---------------->
+    <!--sidebar end-->
+    <!--main content start-->
+
+    <div class="container">
+        <section id="content">
+            <section class="wrapper">
+                <!-- Form validations -->
+                <div class="row">
+
+                    <section class="panel">
+                        <div class="panel-body">
+
+                            <div class="form">
+                               
+                                    <div class="row">
+                                        <div class="col-md-12">
+                    <section class="panel">
+                        <div class="panel-body">
+                            <!--contaent are start-->
+                            <div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <h3 class="page-header">Assign Equipments</h3>
+                                </div>
+                            </div>
+                            <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="assignEquipments(signup,'organisation/settings/')">
+                        <div class="form-group required">
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Staff  </label>
+                            <div class="col-sm-3">
+                                <span class="block input-icon input-icon-right">
+                                   <select name="StaffID" data-ng-init="loadAllStaffOrg()" class="droupdown1" ng-model="signup.StaffID">
+                                                        <option value="{{S.StaffID}}" ng-repeat="S in allAllStaffOrg">
+                                                            {{S.Name}}
+                                                        </option>
+                                                    </select>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.StaffID.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+						<div class="form-group required">
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Equipment description </label>
+                            <div class="col-sm-3">
+                                <span class="block input-icon input-icon-right">
+                                   <select name="EquipmentID" data-ng-init="loadAllEquipmentsOrg()" class="droupdown1" ng-model="signup.EquipmentID">
+                                                        <option value="{{E.EquipmentID}}" ng-repeat="E in allAllEquipmentsOrg">
+                                                            {{E.Equipment}}
+                                                        </option>
+                                                    </select>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.Description.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <span class="lbl col-sm-3"> </span>
+                            <div class="col-sm-3">
+							<input type="hidden" name="id" id="requestID" value="34" ng-model="signup.serviceRequestID"/>
+                                <button type="submit" class="btn button2" ng-click="submitted=true">
+                                    Create
+                                </button>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<a href="#/organisation/settings/" class="btn button2">CANCEL</a>
+                            </div>
+                        </div>
+                    </form>
+                            
+                        </div>
+                    </section>
+                </div>
+                                    </div>
+
+                                    
+                                   
+                                    
+                                
+                            </div>
+                        </div>
+                    </section>
+                </div>
+                <!-- page end-->
+            </section>
+        </section>
+    </div>
+</section>
+
+        
