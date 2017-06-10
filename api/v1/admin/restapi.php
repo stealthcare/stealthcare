@@ -650,7 +650,9 @@ function getRosterClientDataByDate($post,$deviceType,$appVersion,$OSVersion,$bro
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
-        $rows[] = $row;
+        $row1['id'] = $row['CustomerID'];
+        $row1['text'] = $row['CustomerName'];
+        $rows[] = $row1;
     }
     //echo '<pre>'; print_r($rows); die();
     if($rows) {
@@ -681,7 +683,9 @@ function getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
-        $rows[] = $row;
+        $row1['id'] = $row['StaffID'];
+        $row1['text'] = $row['Name'].' '.$row['MiddleName'].' '.$row['Surname'];
+        $rows[] = $row1;
     }
     //echo '<pre>'; print_r($rows); die();
     if($rows) {

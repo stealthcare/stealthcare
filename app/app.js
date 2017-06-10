@@ -189,7 +189,7 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
             })
 
             // FOR ADMIN PORTAL ROSTER START
-            .when('/organisation/roster/:time', {
+            .when('/organisation/roster', {
                 title: 'Roster',
                 templateUrl: 'partials/careOrg/roster/roster.html',
                 controller: 'orgCtrl'
@@ -437,17 +437,10 @@ function ngNicescroll($rootScope) {
 }
 
 // scheduler system for client section
-app.controller('ClientSchedulerController', function ClientSchedulerController($scope, $location) {
-    var query = $location.path();
-    var data = query.split("/");
-    var timestamp = data[3];
-
-    var date = new Date(timestamp*1000);
-    var year = date.getFullYear();
-    var month = date.getMonth();
-    var day = date.getDate();
-    var actionDate = year + '-' + month + '-' + day;
-
+app.controller('ClientSchedulerController', function ClientSchedulerController($http, $scope, $location) {
+    var serviceBase = 'http://localhost/stealthcare/api/v1/admin/restapi.php';
+    var OrgID = 9;
+    //alert(actionDate);
     var visitData = [{
         id: 1,
         visitname: "Test 1",
@@ -477,23 +470,20 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         color: "#DA4F4E"
     }];
 
-    var clientData = [{
-            text: "Martin 1",
-            id: 1
-        }, {
-            text: "Martin 2",
-            id: 2
-        }, {
-            text: "Martin 3",
-            id: 3
-        }, {
-            text: "Martin 4",
-            id: 4
-        }, {
-            text: "Martin 5",
-            id: 5
+    var clientData = new DevExpress.data.DataSource({
+        load: function () {
+            var result = $.Deferred();
+            var request = '{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}';
+            $.ajax({
+                method: 'post',
+                data: {request: request},
+                url: serviceBase
+            }).done(function(response) {
+                result.resolve(response.response_data);
+            });
+            return result.promise();
         }
-    ];
+   });
 
     var careworkerData = [
         {
@@ -512,19 +502,19 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
     ];
 
     var visitTimeData = [{
-            ClientId: 1,
+            ClientId: 8,
             VisitID: 1,
             CareWorkerID: 2,
             startDate: new Date(2015, 4, 24, 9, 10),
             endDate: new Date(2015, 4, 24, 11, 1)
         }, {
-            ClientId: 2,
+            ClientId: 9,
             VisitID: 2,
             CareWorkerID: 1,
             startDate: new Date(2015, 4, 24, 11, 30),
             endDate: new Date(2015, 4, 24, 13, 2)
         }, {
-            ClientId: 3,
+            ClientId: 10,
             VisitID: 3,
             CareWorkerID: 1,
             startDate: new Date(2015, 4, 24, 12, 30),
@@ -539,7 +529,7 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
     $scope.options = {
         dataSource: visitTimeData,
         currentView: "timelineDay",
-        currentDate: actionDate,
+        currentDate: new Date(2015, 4, 24),
         firstDayOfWeek: 0,
         startDayHour: 7,
         endDayHour: 31,
@@ -646,7 +636,7 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
                 .filter("id", id)
                 .toArray()[0];
     }
-
+    $scope.rosterloading = false;
     //var r = $('.dx-scheduler-all-day-title').text();
     //alert(r);
 });

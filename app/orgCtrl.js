@@ -787,7 +787,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     };
 
     // get current date with format
-    $scope.getCurrentDate = function (date) {
+    /*$scope.getCurrentDate = function (date) {
         var format = $scope.getCurrentDayWithFormat(date);
         $('h3.page-header').text(format);
         var timestamp = Math.floor(date / 1000);
@@ -850,7 +850,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
                 $scope.loading = false;
             });
         }
-    };
+    };*/
 
 
 });
