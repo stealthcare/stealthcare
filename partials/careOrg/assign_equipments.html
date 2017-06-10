@@ -38,7 +38,7 @@
                             <div class="col-sm-3">
                                 <span class="block input-icon input-icon-right">
                                    <select name="StaffID" data-ng-init="loadAllStaffOrg()" class="droupdown1" ng-model="signup.StaffID">
-                                                        <option value="{{S.StaffID}}" ng-repeat="S in allAllStaffOrg" ng-selected="{{$index === 0}}">
+                                                        <option value="{{S.StaffID}}" ng-repeat="S in allAllStaffOrg">
                                                             {{ S.Name }} {{ S.MiddleName }} {{ S.Surname }}
                                                         </option>
                                                     </select>
@@ -53,7 +53,7 @@
                             <div class="col-sm-3">
                                 <span class="block input-icon input-icon-right">
                                    <select name="EquipmentID" data-ng-init="loadAllEquipmentsOrg()" class="droupdown1" ng-model="signup.EquipmentID">
-                                                        <option value="{{E.EquipmentID}}" ng-repeat="E in allAllEquipmentsOrg" ng-selected="{{$index === 0}}">
+                                                        <option value="{{E.EquipmentID}}" ng-repeat="E in allAllEquipmentsOrg">
                                                             {{E.Equipment}}
                                                         </option>
                                                     </select>
@@ -65,10 +65,10 @@
                         </div>
                         <div class="form-group">
                             <span class="lbl col-sm-3"> </span>
-                            <div class="col-sm-3">
+                            <div class="col-sm-4">
 							<input type="hidden" name="id" id="requestID" value="34" ng-model="signup.serviceRequestID"/>
                                 <button type="submit" class="btn button2" ng-click="submitted=true">
-                                    Create
+                                    CREATE
                                 </button>
 								&nbsp;&nbsp;&nbsp;&nbsp;
 								<a href="#/organisation/settings/" class="btn button2">CANCEL</a>

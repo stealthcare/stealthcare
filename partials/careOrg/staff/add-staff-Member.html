@@ -21,7 +21,7 @@
                         <div class="panel-body">
 
                             <div class="form">
-                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="sendRequest(signup, 'organisation/carers/create')" enctype="multipart/form-data">
+                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="sendRequest(signup, 'organisation/carers/')" enctype="multipart/form-data">
                                     <div class="row">
                                         <div class="col-md-5">
                                             <h3 class="page-header">Enter Employee Details</h3>
@@ -69,7 +69,7 @@
                                                 <div class="col-md-8 col-lg-8 col-xs-12">
 
                                                     <div class="input-group">
-                                                        <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" min-date="mindate" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" required/>
+                                                        <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY"  name="DateOfBirth" is-open="Opened" max-date="dtmax" ng-click="Opened=true" required/>
                                                         <span class="input-group-btn">
                                                           <button ng-click="Opened=true;$event.stopPropagation();" class="btn calender-btn" type="button"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
                                                         </span>
@@ -211,7 +211,7 @@
 											<div class="form-group required">
                                                 <label for="Email" class="control-label col-md-4">Email </label>
                                                 <div class="col-md-8">
-                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="EmailID" ng-model="signup.EmailID" required/>
+                                                    <input type="email" id="email"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="EmailID" ng-model="signup.EmailID" required/>
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.EmailID.$error.required">
                                                         This field is required.
                                                     </small>
@@ -269,8 +269,7 @@
                                                         This field is required.
                                                     </small>
                                                     <small class="errorMessage" ng-show="addStaffForm.NOKEmail.$error.pattern" class="help-inline">Email is not valid</small> 
-                                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-                                                    <small class="errorMessage" ng-if="addStaffForm.$error.emailExists">Email already exists in our database</small>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -290,7 +289,13 @@
                                             <div class="form-group required">
                                                 <label for="Password" class="control-label col-md-4">Password </label>
                                                 <div class="col-md-8">
-                                                    <input class="form-control" id="Password" ng-model="signup.Password" placeholder="Password" name="Password" required type="password">
+                                                    <input class="form-control" id="Password" ng-model="signup.Password" placeholder="Password" name="Password" required type="password" ng-minlength="8" ng-maxlength="25">
+													<small class="errorMessage" 
+                                                          ng-show="((addStaffForm.Password.$error.minlength ||
+                                                                   addStaffForm.Password.$error.maxlength) && 
+                                                                   addStaffForm.Password.$dirty) ">
+                                                                   Password should be minimum 8 and maximum 25 in length
+                                                    </small>
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.Password.$error.required">
                                                         This field is required.
                                                     </small>

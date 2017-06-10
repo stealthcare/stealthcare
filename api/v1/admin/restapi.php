@@ -917,25 +917,20 @@ where st.StaffID='".$post['StaffID']."'";
 		@$row['postcode1'] = $postcode[0];
 		@$row['postcode2'] = $postcode[1]; 
 		@$row['serviceRequestID']='24';
-        $rows[] = $row;		
-    }
-	
-	
-	
-	/*$row = mysql_fetch_array($result, MYSQL_ASSOC);
-	$postcode = explode(' ', $row['PostCode']);
-	@$row['postcode1'] = $postcode[0];
-	@$row['postcode2'] = $postcode[1]; 
-	$rows = $row;*/		
+        $rows[] = $row;	
+		$arr=$row;	
+    }	
 	
     if($rows) {
         $data['responseData'] = $rows;
+		$data['responseData2'] = $arr;
         $data['message'] = "Staff get successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
 		$data['StatusID']=$StatusID;
     } else {
         $data['responseData'] = '';
+		$data['responseData2'] = '';
         $data['message'] = "No Staff Found";
         $data['responseCode'] = "201";
         $data['status'] = "0";
@@ -1026,13 +1021,34 @@ function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     }
     $StaffID = $post['StaffID'];
 	$UserID  = $post['UserID'];
-
 	
-	$sql2="UPDATE `SCP_Staff` SET `QualificationID` = '".$QualificationID."',`Title` = '".$Title."',`Name` = '".$Name."',`Surname` = '".$Surname."',`MiddleName` = '".$MiddleName."',`DateOfBirth` = '".$DateOfBirth."',`Gender` = '".$Gender."',`Ethnicity` = '".$Ethnicity."',`HouseNumber` = '".$HouseNumber."',`Address1` = '".$Address1."',`Address2` = '".$Address2."',`City` = '".$City."',`Country` = '".$Country."',`PostCode` = '".$PostCode."',`Mobile` = '".$Mobile."',`NOKName` = '".$NOKName."',`NOKMobile` = '".$NOKMobile."',`NOKEmail` = '".$NOKEmail."',`ModifyDateTime` = '".$ModifyDateTime."',`ArchiveUser` = '".$ArchiveUser."' WHERE `StaffID` = '".$StaffID."'";	 
+	if($ArchiveUser=='0'){
+	  $StatusID = '1';
+	}elseif($ArchiveUser=='1'){
+	  $StatusID = '2';
+	}
+	
+	
+		
+	$sql2="UPDATE `SCP_Staff` SET `StatusID`='".$StatusID."',`QualificationID` = '".$QualificationID."',`Title` = '".$Title."',`Name` = '".$Name."',`Surname` = '".$Surname."',`MiddleName` = '".$MiddleName."',`DateOfBirth` = '".$DateOfBirth."',`Gender` = '".$Gender."',`Ethnicity` = '".$Ethnicity."',`HouseNumber` = '".$HouseNumber."',`Address1` = '".$Address1."',`Address2` = '".$Address2."',`City` = '".$City."',`Country` = '".$Country."',`PostCode` = '".$PostCode."',`Mobile` = '".$Mobile."',`NOKName` = '".$NOKName."',`NOKMobile` = '".$NOKMobile."',`NOKEmail` = '".$NOKEmail."',`ModifyDateTime` = '".$ModifyDateTime."',`ArchiveUser` = '".$ArchiveUser."' WHERE `StaffID` = '".$StaffID."'";	 
     $result = mysql_query($sql2) or die(mysql_error());
+	
+	$sql3="UPDATE `SCP_UserLogin` SET `StatusID`='".$StatusID."' WHERE `UserID` = '".$UserID."'";	 
+    $result = mysql_query($sql3) or die(mysql_error());
+	
+	
+	if(!empty($ProfilePhoto)){
+	  $sql="UPDATE `SCP_UserLogin` SET `ProfilePhoto`='".$ProfilePhoto."' WHERE `UserID` = '".$UserID."'";	 
+      $result = mysql_query($sql) or die(mysql_error());
+	  $sql="UPDATE `SCP_Staff` SET `ProfilePhoto`='".$ProfilePhoto."' WHERE `StaffID` = '".$StaffID."'";	 
+      $result = mysql_query($sql) or die(mysql_error()); 
+	}
+	
+	$result=true;
+	
   
     if($result) {
-        $data['responseData'] = '';
+        $data['responseData'] = "";
         $data['message'] = "Updated successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";

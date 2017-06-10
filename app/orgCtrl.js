@@ -72,6 +72,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     }else{
       $scope.signup = {serviceRequestID:requestID};     
     }
+	$scope.dtmax = new Date();
     $scope.signup.title = 'Mr';
     $scope.signup.role = '3';
     $scope.signup.gender = 'Male';
@@ -79,6 +80,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.signup.makeenq = 'self';
     $scope.sendRequest = function (request,pathlink) {
 		$(".submit_btn").prop("disabled",true);
+		$scope.loading = true;
         request = angular.toJson(request);
         $http({
             method: 'post',
@@ -87,11 +89,15 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){ 
+			$scope.loading = false;			  
 			$(".submit_btn").prop("disabled",false);				  
             Data.toast(results);
-            $route.reload();
-            if (results.status == "1") {  
-                $route.reload();
+            if (results.status == "1") { 
+			    if(pathlink!=''){
+				  $location.path(pathlink);
+				}else{
+				   $route.reload();	
+				}  
             }
         });
     };
@@ -112,6 +118,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     
     //alphabetic filteration staff    
     $scope.sendReqAlpha = function (name) {
+		$scope.loading = true;
         var ArchiveUser=$('#employee :selected').val();
         var request = '{"serviceRequestID":"18","name":"'+name+'","ArchiveUser":"'+ArchiveUser+'"}';
         $http({
@@ -121,6 +128,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){ 
+			$scope.loading = false;			  
             Data.toast(results);
             $scope.allStaff = results.responseData;
             if(results.status==0){
@@ -136,6 +144,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     
     //search staff by parameters    
     $scope.searchUniversalParam = function (param) {
+		$scope.loading = true;
         var request = '{"serviceRequestID":"19","param":"'+param+'"}';
         $http({
             method: 'post',
@@ -143,7 +152,8 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){ 
+        .success(function(results){
+			$scope.loading = false;			  
             Data.toast(results);
             $scope.allStaff = results.responseData;
             if(results.status==0){
@@ -165,6 +175,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     
     //search staff by txt   
     $scope.searchStaff = function (param) {
+		$scope.loading = true;
         var searchTxt=angular.element('#searchTxt').val();
         var request = '{"serviceRequestID":"20","param":"'+param+'","searchTxt":"'+searchTxt+'"}';
         $http({
@@ -174,6 +185,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){ 
+			$scope.loading = false;			  
             Data.toast(results);
             $scope.allStaff = results.responseData;
             if(results.status==0){
@@ -189,6 +201,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     
     //load staff    
     $scope.loadAllStaff = function () {
+		$scope.loading = true;
         var ArchiveUser=$('#employee :selected').val();
         var request = '{"serviceRequestID":"17","ArchiveUser":"'+ArchiveUser+'"}';
         $http({
@@ -198,7 +211,8 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){ 
-            Data.toast(results);
+            //Data.toast(results);
+			$scope.loading = false;
             $scope.allStaff = results.responseData;
             if(results.status==0){
               $scope.responsemsg = results.message;
@@ -213,7 +227,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	
 	//edit staff
 	$scope.editStaffload = function () {
-		
+		$scope.loading = true;
         var StaffID = $routeParams.id;
         var request = '{"serviceRequestID":"23","StaffID":"'+StaffID+'"}';
         $http({
@@ -223,8 +237,10 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);			
-            $rootScope.allStaff = results.responseData;
+            //Data.toast(results);			
+            //$rootScope.allStaff = results.responseData;
+			$scope.loading = false;
+			$scope.signup = results.responseData2;
         });
     };
 	
@@ -232,6 +248,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	//update staff 
 	$scope.updateStaff = function (request,pathlink) {
 		$(".submit_btn").prop("disabled",true);
+		$scope.loading = true;
 		request = angular.toJson(request);
         //var request = '{"serviceRequestID":"24"}';
         $http({
@@ -240,9 +257,11 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             url: serviceBase,
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
-        .success(function(results){	  
+        .success(function(results){	
+			$scope.loading = false;			  
             Data.toast(results);
-			$(".submit_btn").prop("disabled",false);		
+			$(".submit_btn").prop("disabled",false);
+			//$location.path(pathlink);
 			setTimeout(function(){ $location.path(pathlink) }, 1000);
         });
     };

@@ -537,7 +537,7 @@ class API extends REST {
         }
         $status = false;
         if(@$_POST['username']) {
-            $UserName = $_POST['username'];
+            $UserName = trim($_POST['username']);
             $CareOrg = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE UserName='$UserName'", $this->db);
             $CareOrg = mysql_fetch_array($CareOrg, MYSQL_ASSOC);
             if($CareOrg) {
@@ -547,7 +547,7 @@ class API extends REST {
                 }
             }
         } else {
-            $EmailID = $_POST['email'];
+            $EmailID = trim($_POST['email']);
             $CareOrg = mysql_query("SELECT * FROM `SCP_UserLogin` WHERE EmailID='$EmailID'", $this->db);
             $CareOrg = mysql_fetch_array($CareOrg, MYSQL_ASSOC);
             if($CareOrg) {

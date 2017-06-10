@@ -23,8 +23,8 @@
                     <section class="panel" data-ng-init="editStaffload()">
                         <div class="panel-body">
 
-                            <div class="form" ng-repeat="signup in allStaff">
-                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate ng-submit="updateStaff(signup,'organisation/carers')" enctype="multipart/form-data" >
+                            <div class="form" >
+                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="updateStaff(signup,'organisation/carers')" enctype="multipart/form-data" >
                                     <div class="row">
                                         <div class="col-md-5">
                                             <h3 class="page-header">Enter Employee Details</h3>
@@ -72,7 +72,7 @@
                                                 <div class="col-md-8 col-lg-8 col-xs-12">
 
                                                     <div class="input-group">
-                                                        <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" min-date="mindate" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" required/>
+                                                        <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" max-date="dtmax" required/>
                                                         <span class="input-group-btn">
                                                           <button ng-click="Opened=true;$event.stopPropagation();" class="btn calender-btn" type="button"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
                                                         </span>
@@ -214,13 +214,8 @@
 											<div class="form-group required">
                                                 <label for="Email" class="control-label col-md-4">Email </label>
                                                 <div class="col-md-8">
-                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" email-available name="EmailID" ng-model="signup.EmailID" required readonly=""/>
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.EmailID.$error.required">
-                                                        This field is required.
-                                                    </small>
-                                                    <small class="errorMessage" ng-show="addStaffForm.EmailID.$error.pattern" class="help-inline">Email is not valid</small> 
-                                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-                                                    <small class="errorMessage" ng-if="addStaffForm.$error.emailExists">Email already exists in our database</small>
+                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" name="EmailID" ng-model="signup.EmailID" required readonly=""/>
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -272,8 +267,8 @@
                                                         This field is required.
                                                     </small>
                                                     <small class="errorMessage" ng-show="addStaffForm.NOKEmail.$error.pattern" class="help-inline">Email is not valid</small> 
-                                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-                                                    <small class="errorMessage" ng-if="addStaffForm.$error.emailExists">Email already exists in our database</small>
+                                                   
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -282,12 +277,8 @@
                                             <div class="form-group required">
                                                 <label for="UserName" class="control-label col-md-4">User Name </label>
                                                 <div class="col-md-8">
-                                                    <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName" username-availableorg  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }" readonly=""/>
-                                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-                                                    <small class="errorMessage" ng-if="addStaffForm.$error.usernameExists">Username already exists in our database</small>
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.UserName.$error.required">
-                                                        This field is required.
-                                                    </small>
+                                                    <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName"  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }" readonly=""/>
+
                                                 </div>
                                             </div>
                                             <div class="form-group">
