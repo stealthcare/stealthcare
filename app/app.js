@@ -184,7 +184,7 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
             })
 
             // FOR ADMIN PORTAL ROSTER START
-            .when('/organisation/roster', {
+            .when('/organisation/roster/:time', {
                 title: 'Roster',
                 templateUrl: 'partials/careOrg/roster/roster.html',
                 controller: 'orgCtrl'
@@ -432,11 +432,21 @@ function ngNicescroll($rootScope) {
 }
 
 // scheduler system for client section
-app.controller('ClientSchedulerController', function ClientSchedulerController($scope) {
+app.controller('ClientSchedulerController', function ClientSchedulerController($scope, $location) {
+    var query = $location.path();
+    var data = query.split("/");
+    var timestamp = data[3];
+
+    var date = new Date(timestamp*1000);
+    var year = date.getFullYear();
+    var month = date.getMonth();
+    var day = date.getDate();
+    var actionDate = year + '-' + month + '-' + day;
+
     var visitData = [{
         id: 1,
-        text: "Test 1",
-        task: ["Howard Hawks","Howard Hawks"],
+        visitname: "Test 1",
+        task: {"0":"Howard Hawks","1":"Howard Hawks"},
         outcomesachived: "yes",
         status: "complete",
         client: "Martin",
@@ -444,8 +454,8 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         color: "#80BCA2"
     }, {
         id: 2,
-        text: "Test 2",
-        task: ["Howard Hawks","Howard Hawks"],
+        visitname: "Test 2",
+        task: {"0":"Howard Hawks","1":"Howard Hawks"},
         outcomesachived: "no",
         status: "missed",
         client: "Martin",
@@ -453,8 +463,8 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         color: "#EAB624"
     }, {
         id: 3,
-        text: "Test 3",
-        task: ["Howard Hawks","Howard Hawks"],
+        visitname: "Test 3",
+        task: {"0":"Howard Hawks","1":"Howard Hawks"},
         outcomesachived: "no",
         status: "incomplete",
         client: "Martin",
@@ -517,10 +527,14 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         }
     ];
 
+    function showToast(event, value, type) {
+        DevExpress.ui.notify(event +" \"" + value + "\"" + " task", type, 800);
+    }
+
     $scope.options = {
         dataSource: visitTimeData,
         currentView: "timelineDay",
-        currentDate: new Date(2015, 4, 24),
+        currentDate: actionDate,
         firstDayOfWeek: 0,
         startDayHour: 7,
         endDayHour: 31,
@@ -528,7 +542,7 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
         width: "100%",
         height: 250,
         onAppointmentAdded: function(e) {
-            alert('insert');
+            showToast("Added", e.appointmentData.visitname, "success");
         },
         onAppointmentUpdated: function(e) {
             alert('update');
@@ -564,7 +578,7 @@ app.controller('ClientSchedulerController', function ClientSchedulerController($
                     name: "visitname",
                     editorType: "dxTextBox",
                     editorOptions: {
-                        value: visitInfo.text,
+                        value: visitInfo.visitname,
                         readOnly: false
                     }
                 }, {

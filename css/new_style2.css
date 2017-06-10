@@ -1692,7 +1692,7 @@ ul.gray_dot ul li {
 }
 .background-color-green {
     background-color: #80BCA2;
-    color: #FFFFFF;
+    color: #FFFFFF !important;
     padding: 0px 12px;
 }
 .text-color-dark {

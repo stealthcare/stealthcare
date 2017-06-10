@@ -199,7 +199,17 @@ section {
   font-size: 17px;
   text-transform: uppercase;
 }
+.tootip1 {
+  text-align: left;
+}
+.tootip1::after, .tootip1::before {
+  border: medium none !important;
+}
 .dx-tooltip-wrapper .dx-overlay-content .dx-popup-content {
   padding: 0 !important;
   width: 330px;
+}
+.dx-button.dx-button-normal {
+  float: right;
+  margin-right: 10px;
 }

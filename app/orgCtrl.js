@@ -8,6 +8,9 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     $scope.loadCurrntOrgPageTitle = function (orgPageTitle) {
         $rootScope.orgPageTitle = orgPageTitle;
     };
+
+    // for roster system page
+    $scope.actionTimestamp = Math.floor(new Date() / 1000);
 	
     $scope.BaseUrl = 'uploads/'; 
     $scope.pageSize='10';
