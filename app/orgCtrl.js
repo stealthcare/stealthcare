@@ -223,10 +223,11 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);
+            Data.toast(results);			
             $rootScope.allStaff = results.responseData;
         });
     };
+	
 	
 	//update staff 
 	$scope.updateStaff = function (request,pathlink) {
@@ -418,7 +419,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             headers: {'Content-Type': 'application/x-www-form-urlencoded'}
         })
         .success(function(results){
-            Data.toast(results);
+            //Data.toast(results);
 			$(".button2").prop("disabled",false);
             if (results.status == "1") {
                 $location.path(pathlink);
@@ -431,8 +432,8 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	
 	
 	// change changeStatusEquipmentStaff request
-    $scope.changeStatusEquipmentStaff = function(EquipmentID,StatusID){
-		var request = '{"serviceRequestID":"35","EquipmentID":"'+EquipmentID+'","StatusID":"'+StatusID+'"}';
+    $scope.changeStatusEquipmentStaff = function(EquipmentsAssignID,StatusID){
+		var request = '{"serviceRequestID":"35","EquipmentsAssignID":"'+EquipmentsAssignID+'","StatusID":"'+StatusID+'"}';
         if(confirm("Are you sure to want to change status")){
             $scope.loading = true;
             $http({
@@ -453,6 +454,42 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             });
         }
     }; 
+	
+    //edit Equipments Setting
+	$scope.editEquipmentsSettingload = function () {
+		
+        var EquipmentsAssignID = $routeParams.id;
+        var request = '{"serviceRequestID":"36","EquipmentsAssignID":"'+EquipmentsAssignID+'"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            //Data.toast(results);
+            $rootScope.allEquipmentsSettingload = results.responseData;
+        });
+    };
+	
+	//update Equipments 
+	$scope.updateAssignEquipments = function (request,pathlink) {
+		$(".button2").prop("disabled",true);
+		request = angular.toJson(request);
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){	  
+            //Data.toast(results);
+			$(".button2").prop("disabled",false);		
+			$location.path(pathlink);
+        });
+    };
+	
+	
 
     $scope.toggleShow = function(){
         if($scope.showStartEvent==true){
@@ -462,6 +499,22 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         }
        $scope.showStartEvent = !$scope.showStartEvent;
     }
+	$scope.IsVisible = false;
+	$scope.changeStatus = function(id){	
+		if(id==1){
+		  $scope.deactivebtn=$scope.deactivebtn;	
+		  $scope.activebtn=!$scope.activebtn;		
+		}else if(id==2){
+		  $scope.deactivebtn=$scope.deactivebtn;	
+		  $scope.activebtn=!$scope.activebtn;				
+		}
+	}
+	
+	 $scope.ShowHide = function () {
+        $scope.IsVisible = $scope.IsVisible ? false : true;
+     }
+	
+	
 
     // Profile Photo
     $scope.fileReaderSupported = window.FileReader != null;

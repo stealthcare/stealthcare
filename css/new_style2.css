@@ -472,8 +472,8 @@ a:hover#menu-icon {
 .employee h2 {
     color: #84AED3;
     font-family: 'humnstxb';
-    padding: 0px 5px;
-    line-height: 0px;
+    padding: 9px 5px 0;
+    /*line-height: 0px;*/
     font-size: 22px;
 }
 .employee p {
@@ -481,7 +481,7 @@ a:hover#menu-icon {
     padding: 0px 5px;
     font-family: 'humnstl';
     margin-bottom: 4px !important;
-    line-height: 18px;
+    line-height: normal;
     letter-spacing: 0.3px;
     color: #333333;
 }

@@ -322,9 +322,25 @@
                                                     <!--<button type="button" class="btn btn-danger button_float" id="modalCreateBtn" ng-hide="myVar" ng-click="addSegments()">Deactivate</button>-->
 													
 													
-													<button ng-click="toggleShow(); StartEvent()" ng-show="showStartEvent" type="button" class="btn btn-danger button_float">Deactivate</button>
+													
+													<button ng-if="signup.StatusID === '2'" type="button" class="btn btn-danger button_float" ng-click="changeStatus(1)" ng-show="!deactivebtn">
+													  Deactivate
+													</button>
+													<button ng-if="signup.StatusID === '1'" type="button" class="btn btn-success button_float active_staff" ng-click="changeStatus(2)" ng-show="!activebtn">
+													  Activate
+													</button>
+													<!--<button ng-if="signup.StatusID === '2'" type="button" class="btn btn-danger button_float" ng-click="changeStatus(1)" ng-show="!deactivebtn">
+													  Deactivate
+													</button>
+													<button ng-if="signup.StatusID === '1'" type="button" class="btn btn-success button_float active_staff" ng-click="changeStatus(2)" ng-show="!activebtn">
+													  Activate
+													</button>-->
+													
+													
+													
+													<!--<button ng-click="toggleShow(); StartEvent()" ng-show="showStartEvent" type="button" class="btn btn-danger button_float">Deactivate</button>
 
-<button ng-click="toggleShow(); StopEvent()" ng-show="!showStartEvent" type="button" class="btn btn-success button_float">Activate</button>
+<button ng-click="toggleShow(); StopEvent()" ng-show="!showStartEvent" type="button" class="btn btn-success button_float active_staff">Activate</button>-->
 													
 													
                                                 </div>

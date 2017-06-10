@@ -70,14 +70,14 @@
 									  <td colspan="4" ng-bind="responsemsg" class="text-center"></td>
 									</tr>
                                     <tr ng-repeat="E in allEquipments">
-                                        <td>{{ E.Name }}</td>
+                                        <td>{{ E.Name }} {{ E.MiddleName }} {{ E.Surname }}</td>
 										<td>{{ E.Equipment }}</td>
                                         <td>{{ E.Status }}</td>
                                         <td>
                                             <div class="btn-group">
-                                              <a class="btn btn-edit view" href="" title="Edit Equipment"><i class="fa fa-pencil"></i></a>             
-                                              <a ng-if="E.StatusID === '1'" class="btn btn-success" ng-click="changeStatusEquipmentStaff(E.EquipmentsAssignID,2)" title="Deactive Equipment"><i class="fa fa-check"></i></a>
-                                              <a ng-if="E.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusEquipmentStaff(E.EquipmentsAssignID,1)" title="Active Equipment"><i class="fa fa-ban"></i></a>
+                                              <a class="btn btn-edit view" href="#/organisation/equipmentSetting/edit/{{E.EquipmentsAssignID}}" title="Edit Equipment Setting"><i class="fa fa-pencil"></i></a>             
+                                              <a ng-if="E.StatusID === '1'" class="btn btn-success" ng-click="changeStatusEquipmentStaff(E.EquipmentsAssignID,2)" title="Deactive Equipment Setting"><i class="fa fa-check"></i></a>
+                                              <a ng-if="E.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusEquipmentStaff(E.EquipmentsAssignID,1)" title="Active Equipment Setting"><i class="fa fa-ban"></i></a>
                                              
                                               <!--a class="btn btn-danger" ng-click="deleteCareOrg(U.UserID)" title="Delete Organization"><i class="fa fa-trash-o"></i></a-->
                                             </div>

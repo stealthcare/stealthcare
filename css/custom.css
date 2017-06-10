@@ -976,3 +976,10 @@ color:#84aed3;
     font-size: 17px;
     margin-top: 1%;
 }
+.staff_list{
+  margin-top:12px;
+}
+.active_staff{
+ background-color:#35b1b4 !important;
+ border:0px !important;
+}

@@ -153,6 +153,11 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/assign_equipments.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/equipmentSetting/edit/:id', {
+                title: 'Edit Assign Equipments',
+                templateUrl: 'partials/careOrg/edit-assign_equipments.html',
+                controller: 'orgCtrl'
+            })
 
             // FOR ADMIN PORTAL SATFF MEMBERS
             .when('/organisation/carers', {

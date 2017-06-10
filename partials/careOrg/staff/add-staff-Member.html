@@ -114,7 +114,7 @@
                                                    
 													
 													<select name="Qualification" data-ng-init="loadAllQualification()" class="droupdown1" ng-model="signup.QualificationID">
-                                                        <option value="{{Q.QualificationID}}" ng-repeat="Q in allQualification">
+                                                        <option value="{{Q.QualificationID}}" ng-repeat="Q in allQualification" ng-selected="{{$index === 0}}">
                                                             {{Q.Qualification}}
                                                         </option>
                                                     </select>
@@ -158,7 +158,7 @@
                                                 <label for="cname" class="control-label col-md-4">Country </label>
                                                 <div class="col-md-8">
                                                     <select name="Country" data-ng-init="loadAllCountry()" class="droupdown1" ng-model="signup.Country">
-                                                        <option value="{{C.id}}" ng-repeat="C in allCountry">
+                                                        <option value="{{C.id}}" ng-repeat="C in allCountry" ng-selected="{{$index === 0}}">
                                                             {{C.country}}
                                                         </option>
                                                     </select>
@@ -308,7 +308,7 @@
 													
 													<button ng-click="toggleShow(); StartEvent()" ng-show="showStartEvent" type="button" class="btn btn-danger button_float">Deactivate</button>
 
-<button ng-click="toggleShow(); StopEvent()" ng-show="!showStartEvent" type="button" class="btn btn-success button_float">Activate</button>
+<button ng-click="toggleShow(); StopEvent()" ng-show="!showStartEvent" type="button" class="btn btn-success button_float active_staff">Activate</button>
 													
 													
                                                 </div>
