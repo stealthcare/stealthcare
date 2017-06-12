@@ -20,6 +20,21 @@ body {
 ul{
 	list-style: none;
 }
+.dx-scheduler-view-switcher.dx-tabs {
+  display: none;
+  font-size: 14px;
+}
+.dx-button.dx-button-normal {
+  float: left !important;
+  margin-right: 10px;
+}
+.dx-scheduler-header.dx-widget {
+  display: block !important;
+}
+.dx-viewport {
+  height: 315px !important;
+  width: 100%;
+}
 .viewForm i.fa {
   display: none;
 }

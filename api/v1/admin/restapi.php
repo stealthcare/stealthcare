@@ -4,6 +4,13 @@ include 'libXML.php';
 include 'lib.php';
 include '../../config.php';
 
+
+header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Methods: PUT, GET, POST");
+header("Access-Control-Allow-Headers: Origin, X-Requested-With, Content-Type, Accept");
+
+
+
 /* Store the id number sent by the application */
 if(@$_POST['request']) {
     $post = json_decode($_POST['request']);
@@ -704,6 +711,37 @@ function getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
+
+function loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');    
+    $sql="SELECT * FROM SCP_Visits";
+    $result = mysql_query($sql);    
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $row1['ClientId'] = $row['CustomerID'];
+        $row1['VisitID'] = $row['VisitID'];
+        $row1['CareWorkerID'] = $row['CareWorkerID'];
+        $row1['startDate'] = date('Y-m-d H:i:s', strtotime($row['VisitStartDate'].' '.$row['VisitStartTime']));
+        $row1['endDate'] = date('Y-m-d H:i:s', strtotime($row['VisitEndDate'].' '.$row['VisitEndTime']));
+        $rows[] = $row1;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No Staff Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($rows);
+    mysql_close($con);   //close the connection
+} 
 
 
 /******************************************************************************************************************/
@@ -1638,12 +1676,15 @@ switch($ID) {
 	case 33: loadAllEquipmentsOrg($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
  	    break;
 	case 34: assignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;																   	                  	 	    case 35: changeStatusEquipmentStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+ 	    break;																   	
+    case 35: changeStatusEquipmentStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
  	    break; 
     case 36: editEquipmentsSettingload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
  	    break; 
     case 37: updateAssignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;				 	    	
+ 	    break;	
+    case 38: loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+        break;  			 	    	
     default: myError(); 
 }
 

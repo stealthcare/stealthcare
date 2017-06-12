@@ -806,12 +806,12 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     };
 
     // get current date with format
-    /*$scope.getCurrentDate = function (date) {
+    $scope.getCurrentDate = function (date) {
         var format = $scope.getCurrentDayWithFormat(date);
         $('h3.page-header').text(format);
         var timestamp = Math.floor(date / 1000);
         $('#timestamp').val(timestamp);
-        var OrgID = 9;
+        /*var OrgID = 9;
         var request = '{"serviceRequestID":"21","date":"'+timestamp+'","OrgID":"'+OrgID+'"}';
         $scope.loading = true;
         $http({
@@ -833,11 +833,11 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         .success(function(results){
             $rootScope.careWorkerVisits = results.response_data;
             $scope.loading = false;
-        });
+        });*/
     };
 
     // laod all visit by Single date
-    $scope.loadVisitsBySingleDate = function (date) {
+    /*$scope.loadVisitsBySingleDate = function (date) {
         var currentTimestamp = $('#timestamp').val();
         var timestamp = Math.floor(date / 1000);
         //alert(currentTimestamp+'-'+timestamp);
