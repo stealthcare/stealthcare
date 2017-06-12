@@ -194,7 +194,7 @@
     margin-top: 0px;
     padding-top: 10px;
 }
-.searching button {
+.search_btn_emp {
     height: 36px;
     background-color: #789CBC;
     border: 0px;
@@ -467,7 +467,7 @@ a:hover#menu-icon {
     background-color: #ffffff !important;
     display: inline-block;
     margin-bottom: 20px;
-    height: 161px;
+     min-height: 130px;
 }
 .employee h2 {
     color: #84AED3;

@@ -172,6 +172,20 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	$scope.append_data=function (param) {
 	  angular.element('#append_response').html('<input  placeholder="Search" type="text"  id="searchTxt" ng-model="searchKeywordStaff.'+param+'">');
 	};
+	
+	$scope.append_datepicker=function (param){
+	   if(param=='1'){
+		 $('#searchTxt').hide();
+		 $('#searchTxt2').show();
+	   }else{
+		 $('#searchTxt').show();
+		 $('#searchTxt2').hide();	   
+	   }	
+		//$scope.opened = true;
+	};
+	
+
+	
     
     //search staff by txt   
     $scope.searchStaff = function (param) {

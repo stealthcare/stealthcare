@@ -26,21 +26,22 @@
                   <div class="form-group-col_paading0">
                     <div class="gender ">
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="fname" checked   ng-click="changeFilterTo('Name')">
+                      <input type="radio" name="search" value="fname" checked   ng-click="changeFilterTo('Name');append_datepicker('0');">
                       <span> First Name </span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="lname" ng-click="changeFilterTo('Surname');" >
+                      <input type="radio" name="search" value="lname" ng-click="changeFilterTo('Surname');append_datepicker('0');" >
                       <span>Surname</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="dob" ng-click="changeFilterTo('DateOfBirth');" >
+                      <input type="radio" name="search" value="dob" ng-click="changeFilterTo('DateOfBirth');append_datepicker('1');" >
                       <span>D.O.B</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="address" ng-click="changeFilterTo('Address1');" >
+                      <input type="radio" name="search" value="address" ng-click="changeFilterTo('Address1');append_datepicker('0');" >
                       <span>Address</span> </label>
                       <div class="clearfix"></div>
                       <div class="searching">
                         <div class="col-md-7 col-sm-7 col-xs-4 col_paading0" id="append_response">
                           <input  placeholder="Search" type="text"  id="searchTxt" ng-model="search[filter]">
+						  <input  placeholder="Search" type="text"  id="searchTxt2" ng-model="search[filter]" datepicker-popup="dd-MM-yyyy" is-open="Opened" max-date="dtmax" ng-click="Opened=true" style="display:none;">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xs-4 col_paading0">
                           <select name="employee" ng-change="loadAllStaff()" ng-model="employee" id="employee">
@@ -49,7 +50,7 @@
                           </select>
                           </div>
                         <div class="col-md-2 col-lg-2 col-xs-1 col_paading0">
-                          <button ng-click="searchStaff('search');"><img src="img/Search Icon.png"></button>
+                          <button ng-click="searchStaff('search');" class="search_btn_emp"><img src="img/Search Icon.png"></button>
                         </div>
                       </div>
                       <label > </label>
@@ -112,11 +113,12 @@
               <div class="col-md-8 col-xs-8">
                 <!--<p>{{$index+1}}</p>-->
                 <h2><a href="#/organisation/carers/edit/{{S.StaffID}}">{{S.Title}} {{S.Name}} {{S.Surname | cut:true:1:' ...'}}</a></h2>
-                <p>{{S.Address1}}</p>
+                <p>{{S.HouseNumber}} {{S.Address1 | cut:true:21:' ...'}}</p>
                 <p>{{S.Mobile}}</p>
                 <div data-ng-if="S.StatusID !== '2'"> <span class="active_employee">Active</span> </div>
                 <div data-ng-if="S.StatusID !== '1'"> <span class="inactive_employee">Inactive</span> </div>
                 <p class="small1">last logged in {{ S.ModifyDateTime }}</p>
+				<!--<input type="hidden" name="DateOfBirth" value="{{ S.DateOfBirth }}"/>-->
               </div>
             </div>
           </div>

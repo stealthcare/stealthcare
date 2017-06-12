@@ -279,7 +279,7 @@
                                                 <label for="UserName" class="control-label col-md-4">User Name </label>
                                                 <div class="col-md-8">
                                                     <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName" username-availableorg  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }"/>
-                                                    <small class="infoMessage ng-scope" ng-show="checkExists" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+                                                    <small class="infoMessage ng-scope" ng-show="checkExistsStaff" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
                                                     <small class="errorMessage" ng-if="addStaffForm.$error.usernameExists">Username already exists in our database</small>
                                                     <small class="errorMessage" ng-show="submitted && addStaffForm.UserName.$error.required">
                                                         This field is required.

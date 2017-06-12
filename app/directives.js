@@ -273,7 +273,7 @@ app.directive('usernameAvailableorg', function($http, $timeout, $q, $rootScope) 
             elm.bind("change", function() {  
                 var username = angular.element('#UserName').val(); 				
                 var UserID = angular.element('#UserID').val(); 
-                $rootScope.checkExists = true;
+                $rootScope.checkExistsStaff = true;
                 $http({
                     method: 'post',
                     data: $.param({username: username,UserID: UserID}),
@@ -281,7 +281,7 @@ app.directive('usernameAvailableorg', function($http, $timeout, $q, $rootScope) 
                     headers: {'Content-Type': 'application/x-www-form-urlencoded'}
                 })
                 .success(function(results){
-                    $rootScope.checkExists = false;
+                    $rootScope.checkExistsStaff = false;
                     if (results.status_code == "1") {
                         control.$setValidity('usernameExists', false); 
                     } else {

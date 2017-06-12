@@ -986,6 +986,7 @@ where st.StaffID='".$post['StaffID']."'";
 *   Return Value: User Details se morfi json
 */
 function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+    $role = $post['UserTypeID'];
     $QualificationID = $post['QualificationID'];
     $Title = $post['Title'];
     $Name = $post['Name'];
@@ -1061,10 +1062,26 @@ function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
 	$UserID  = $post['UserID'];
 	
 	if($ArchiveUser=='0'){
-	  $StatusID = '1';
+	  $StatusID = $post['StatusID'];
 	}elseif($ArchiveUser=='1'){
 	  $StatusID = '2';
 	}
+	
+	
+	if($role=='3'){
+      $RightsID='2';
+      $AccessLevelID='2';
+      $UserTypeID=$role;
+    }elseif($role=='4'){
+      $RightsID='3';
+      $AccessLevelID='3';
+      $UserTypeID=$role;    
+    }elseif($role=='5'){
+      $RightsID='4';
+      $AccessLevelID='4';
+      $UserTypeID=$role;    
+    }
+	
 	
 	
 		
@@ -1073,6 +1090,10 @@ function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
 	
 	$sql3="UPDATE `SCP_UserLogin` SET `StatusID`='".$StatusID."' WHERE `UserID` = '".$UserID."'";	 
     $result = mysql_query($sql3) or die(mysql_error());
+	
+	
+	$sql4="UPDATE `SCP_UserAccess` SET `RightsID`='".$RightsID."',`AccessLevelID`='".$AccessLevelID."',`UserTypeID`='".$UserTypeID."',`ModifyDateTime`='".$ModifyDateTime."',`StatusID`='".$StatusID."' WHERE `UserID` = '".$UserID."'";	
+	$result = mysql_query($sql4) or die(mysql_error());
 	
 	
 	if(!empty($ProfilePhoto)){

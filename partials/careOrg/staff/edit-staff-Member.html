@@ -31,7 +31,7 @@
                                             <div class="form-group required">
                                                 <label for="cname" class="control-label col-md-4">Staff Role </label>
                                                 <div class="col-md-8">
-                                                    <select name="UserTypeID" class="droupdown1" ng-model="signup.UserTypeID" disabled="disabled">
+                                                    <select name="UserTypeID" class="droupdown1" ng-model="signup.UserTypeID" >
                                                         <option value="3" ng-selected="{{signup.UserTypeID === 3 }}">Frontend User</option>
                                                         <option value="4" ng-selected="{{signup.UserTypeID === 4 }}">Supervisor</option>
                                                         <option value="5" ng-selected="{{signup.UserTypeID === 5 }}">Care Worker</option>
@@ -303,15 +303,40 @@
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="form-group ">
+											<div class="form-group">
+                                                <label for="Password" class="control-label col-md-4">Status </label>
+                                                <div class="col-md-8">
+                                                    <div class="ArchiveUser ">
+
+                                                        <div class="maxl">
+                                                            <label class="radio3 inline3">
+                                                                <input type="radio" name="signup.StatusID" value="1" ng-model="signup.StatusID" ng-checked="{{'1' === signup.StatusID}}">
+                                                                <span>Activate </span>
+                                                            </label>
+                                                            <label class="radio3 inline3">
+                                                                &nbsp;    
+                                                            <input type="radio" name="signup.StatusID" value="2" ng-model="signup.StatusID" ng-checked="{{'2' === signup.StatusID}}">
+                                                                <span>Deactivate </span>
+                                                            </label>
+                                                        </div>
+
+
+
+                                                    </div>
+                                                </div>
+                                            </div>
+											
+											
+											
+											
+                                            <!--<div class="form-group ">
                                                 <label for="cname" class="control-label col-md-4  col-xs-12">Status</label>
                                                 <div class="col-md-2 col-xs-5">
                                                     <button type="button" class="btn btn-danger-deactive">Offline</button>
                                                 </div>
 
                                                 <div class="col-md-6 col-xs-7">
-                                                    <!--<button type="button" class="btn btn-danger button_float" id="modalCreateBtn" ng-hide="myVar" ng-click="addSegments()">Deactivate</button>-->
-													
+                                                   
 													
 													
 													<button ng-if="signup.StatusID === '2'" type="button" class="btn btn-danger button_float" ng-click="changeStatus(1)" ng-show="!deactivebtn">
@@ -320,23 +345,12 @@
 													<button ng-if="signup.StatusID === '1'" type="button" class="btn btn-success button_float active_staff" ng-click="changeStatus(2)" ng-show="!activebtn">
 													  Activate
 													</button>
-													<!--<button ng-if="signup.StatusID === '2'" type="button" class="btn btn-danger button_float" ng-click="changeStatus(1)" ng-show="!deactivebtn">
-													  Deactivate
-													</button>
-													<button ng-if="signup.StatusID === '1'" type="button" class="btn btn-success button_float active_staff" ng-click="changeStatus(2)" ng-show="!activebtn">
-													  Activate
-													</button>-->
 													
-													
-													
-													<!--<button ng-click="toggleShow(); StartEvent()" ng-show="showStartEvent" type="button" class="btn btn-danger button_float">Deactivate</button>
-
-<button ng-click="toggleShow(); StopEvent()" ng-show="!showStartEvent" type="button" class="btn btn-success button_float active_staff">Activate</button>-->
 													
 													
                                                 </div>
 
-                                            </div>
+                                            </div>-->
                                         </div>
                                     </div>
                                     <input type="hidden" name="StaffID" id="StaffID" ng-model="signup.StaffID" value="{{signup.StaffID}}"/>
