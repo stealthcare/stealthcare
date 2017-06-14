@@ -193,6 +193,12 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/edit_group.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/carers/group/:id', {
+                title: 'Assign Group',
+                templateUrl: 'partials/careOrg/staff/assign_group.html',
+                controller: 'orgCtrl'
+            })
+			
 
             // FOR ADMIN PORTAL SATFF MEMBERS
             .when('/organisation/carers', {

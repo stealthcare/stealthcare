@@ -413,14 +413,14 @@ a:hover#menu-icon {
     padding-left: 0px;
 }
 .active_employee {
-    background-color: #35B1B4;
-    color: #FFFFFF;
-    border-radius: 4px;
-    padding: 0px 16px;
-    font-size: 18px;
-    line-height: 22px;
-    margin-left: 5px;
-    box-shadow: 0px 0px 1px 1px #fff;
+    background-color: #35B1B4;    
+	color: #FFFFFF;   
+	 border-radius: 4px;    
+	 padding: 0px 16px;    
+	 font-size: 14px;    
+	 line-height: 22px;    
+	 margin-left: 5px;    
+	 box-shadow: 0px 0px 1px 1px #fff;
 }
 .archieved {
     background-color: #E3B91D;
@@ -462,42 +462,42 @@ a:hover#menu-icon {
     box-shadow: 0px 0px 1px 1px #fff;
 }
 .employee {
-    width: 100%;
-    box-shadow: 5px 5px 5px #e6e6e6;
-    background-color: #ffffff !important;
-    display: inline-block;
-    margin-bottom: 20px;
-     min-height: 163px;
+    width: 100%;    
+	box-shadow: 5px 5px 5px #e6e6e6;    
+	background-color: #ffffff !important;    
+	display: inline-block;    
+	margin-bottom: 20px;    
+	min-height: 110px;
 }
 .employee h2 {
-    color: #84AED3;
-    font-family: 'humnstxb';
-    padding: 9px 5px 0;
-    /*line-height: 0px;*/
-    font-size: 22px;
+    color: #84AED3;    
+	font-family: 'humnstxb';    
+	padding: 9px 5px 0;    
+	font-size: 18px;
 }
 .employee p {
-    font-size: 14px;
-    padding: 0px 5px;
-    font-family: 'humnstl';
-    margin-bottom: 4px !important;
-    line-height: normal;
-    letter-spacing: 0.3px;
-    color: #333333;
+    font-size: 12px;    
+	padding: 0px 5px;    
+	font-family: 'humnstl';    
+	margin-bottom: 4px !important;    
+	line-height: normal;    
+	letter-spacing: 0.3px;    
+	color: #333333;
 }
 .employee .small1 {
-    font-size: 12px !important;
-    padding: 0px 5px;
-    font-weight: bold;
-    color: #666666;
-    letter-spacing: 0.6px;
-    padding-top: 5px !important;
+    font-size: 9px !important;    
+	padding: 0px 5px;    
+	font-weight: bold;    
+	color: #666666;    
+	letter-spacing: 0.6px;    
+	padding-top: 5px !important;
 }
 .employee .emimage {
-    background-color: #2C404F;
-    padding: 15px 5px;
-    display: inline-block;
-    margin-left: 0px;
+    / background-color: #2C404F; /    
+	padding: 15px 5px;    
+	display: inline-block;    
+	margin-left: 0px;    
+	text-align: center;
 }
 .emimage img {
     border-radius: 5px;

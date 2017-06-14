@@ -2,7 +2,7 @@
 <section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
   <!------------ Start Header ---------------->
   
-  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Equipments');loadCurrntSidebarPageTitle('equipments');"></div>
+  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Groups');loadCurrntSidebarPageTitle('groups');"></div>
   <div ng-include="'partials/careOrg/includes/header.html'"></div>
   <!------------ End Header ---------------->
   <!--sidebar start-->
@@ -18,16 +18,16 @@
         <section class="panel">
           <div class="panel-body">
             <div class="form">
-			<h3 class="page-header">Equipments</h3>
-              <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="assignEquipmentsStaff(signup,'organisation/settings/')">
+			<h3 class="page-header">Groups</h3>
+              <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="assignGroupStaff(signup,'organisation/settings/')">
                         <div class="form-group required">
-                            <label class="col-sm-3 control-label no-padding-right" for="name">Staff Equipments </label>
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Staff Groups </label>
                             <div class="col-sm-4">
-                                <span class="block input-icon input-icon-right" data-ng-init="loadEquipmentsStaff();" >
-								<div ng-repeat="E in EquipmentsStaff">
-								<input type="checkbox" name="EquipmentID[]" value="{{E.EquipmentID}}"  ng-checked="{{E.sel}}" />&nbsp;&nbsp;{{E.Equipment}}
+                                <span class="block input-icon input-icon-right" data-ng-init="loadGroupsStaff();" >
+								<div ng-repeat="G in GroupsStaff">
+								<input type="checkbox" name="GroupID[]" value="{{G.GroupID}}"  ng-checked="{{G.sel}}" />&nbsp;&nbsp;{{G.GroupName}}
 								</div>
-                                   <small class="errorMessage" ng-show="showValidation"> Please select at least one equipment. </small>
+                                   <small class="errorMessage" ng-show="showValidation"> Please select at least one group. </small>
                                 </span>
                             </div>
                         </div>

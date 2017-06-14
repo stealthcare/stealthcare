@@ -127,6 +127,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     
     //alphabetic filteration staff    
     $scope.sendReqAlpha = function (name) {
+		//$('#alpha'+name).addClass("active");
 		$scope.loading = true;
         var ArchiveUser=$('#employee :selected').val();
         var request = '{"serviceRequestID":"18","name":"'+name+'","ArchiveUser":"'+ArchiveUser+'"}';
@@ -774,6 +775,61 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
             });
         }
     }; 
+	
+	
+   // load Groups by staff id
+   $scope.loadGroupsStaff = function () {
+		$scope.loading = true;
+		$(".button2").prop("disabled",true);
+		var StaffID = $routeParams.id;
+        var request = '{"serviceRequestID":"56","StaffID":"'+StaffID+'"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            //Data.toast(results);
+			$scope.loading = false;
+			$(".button2").prop("disabled",false);
+            $scope.GroupsStaff  = results.responseData;
+        });
+    };
+	
+	// update Checks by staff id
+	$scope.assignGroupStaff= function (post) {	
+		$scope.loading = true;
+		$(".button2").prop("disabled",true);
+		var StaffID = $routeParams.id;
+		var values = new Array();
+		$.each($("input[name='GroupID[]']:checked"), function() {
+		  values.push($(this).val());
+		
+		});
+		
+		if(values==''){
+			$scope.showValidation = true;
+			$scope.loading = false;
+		    $(".button2").prop("disabled",false);
+		}else{
+			$scope.showValidation = false;
+			$scope.loading = true;
+		    $(".button2").prop("disabled",true);
+			var request = '{"serviceRequestID":"57","StaffID":"'+StaffID+'","GroupID":"'+values+'"}';
+			$http({
+				method: 'post',
+				data: $.param({request: request}),
+				url: serviceBase,
+				headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+			})
+			.success(function(results){
+				Data.toast(results);
+				$scope.loading = false;
+				$(".button2").prop("disabled",false);
+			}); 
+		}
+    };
 	
 	
 	

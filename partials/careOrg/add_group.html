@@ -26,12 +26,12 @@
                             <label class="col-sm-3 control-label no-padding-right" for="name">Name </label>
                             <div class="col-sm-3">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="Name" name="GroupName" ng-model="signup.GroupName" required id="GroupName" group-available/>
+                                    <input type="text" class="form-control" placeholder="Name" name="GroupName" ng-model="signup.GroupName" required id="GroupName"/>
                                     <small class="errorMessage" ng-show="submitted && signupForm.GroupName.$error.required">
                                         This field is required.
                                     </small>
-									<small class="infoMessage ng-scope" ng-show="checkExistsGrup" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
-									<small class="errorMessage" ng-if="signupForm.$error.grupExists">Group already exists in our database</small>
+									<!--<small class="infoMessage ng-scope" ng-show="checkExistsGrup" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+									<small class="errorMessage" ng-if="signupForm.$error.grupExists">Group already exists in our database</small>-->
                                 </span>
                             </div>
                         </div>

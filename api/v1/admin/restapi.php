@@ -772,6 +772,7 @@ function loadStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+	    @$row['full_name']=$row['Title']." ".$row['Name']." ".$row['Surname'];
 	    @$row['full_address']=$row['HouseNumber']." ".$row['Address1']." ".$row['Address2'];
         $rows[] = $row;
     }
@@ -814,6 +815,7 @@ function loadStaffAlpha($post,$deviceType,$appVersion,$OSVersion,$browserVersion
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+	    @$row['full_name']=$row['Title']." ".$row['Name']." ".$row['Surname'];
 	    @$row['full_address']=$row['HouseNumber']." ".$row['Address1']." ".$row['Address2'];
         $rows[] = $row;
     }
@@ -871,6 +873,7 @@ function searchUniversalParam($post,$deviceType,$appVersion,$OSVersion,$browserV
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+	    @$row['full_name']=$row['Title']." ".$row['Name']." ".$row['Surname'];    
 	    @$row['full_address']=$row['HouseNumber']." ".$row['Address1']." ".$row['Address2'];
         $rows[] = $row;
     }
@@ -2143,11 +2146,11 @@ function changeStatusGroup($post,$deviceType,$appVersion,$OSVersion,$browserVers
 	$GroupID=$post['GroupID'];
 	
 	
-	    //$errorMsg="Error in updation";
-		//$result2 = mysql_query("SELECT * FROM SCP_Checks_Staff WHERE ChecksID='".$ChecksID."'")or die(mysql_error());
-		//$num_rows = mysql_num_rows($result2);
+	    $errorMsg="Error in updation";
+		$result2 = mysql_query("SELECT * FROM SCP_Groups_Staff WHERE GroupID='".$GroupID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
 		
-		$num_rows=0;
+
 		if($num_rows>0){
 		  $result = '';
 		  $errorMsg = 'Sorry, you do not deactivate this Check, it is already assigned to some staff.';
@@ -2165,6 +2168,104 @@ function changeStatusGroup($post,$deviceType,$appVersion,$OSVersion,$browserVers
         $data['responseData'] = '';
         $data['message'] = $errorMsg;
         $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=56
+*   A function used as a response to ID=56
+*   It is used to loadGroupsStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadGroupsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	
+	$result = mysql_query("SELECT * FROM SCP_Groups WHERE StatusID='1' and OrgID='".$OrgID."'");
+	
+	
+	if(!empty($result)){
+	   while($row = mysql_fetch_assoc($result)) {
+	        $GroupID=$row['GroupID'];	
+			
+			$result2 = mysql_query("SELECT * FROM SCP_Groups_Staff WHERE StaffID='".$StaffID."' and GroupID='".$GroupID."'");
+			$res = mysql_fetch_assoc($result2);
+			if(!empty($res['GroupID'])){
+			  $row['sel']="true";
+			}else{
+			  $row['sel']="false";
+			}
+			$rows[] = $row;
+       }
+	}
+
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All Groups get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No Groups Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=57
+*   A function used as a response to ID=57
+*   It is used to assignGroupStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function assignGroupStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	$GroupID=$post['GroupID'];
+	$StatusID='1';
+	$CreatedDateTime = date('Y-m-d H:i:s');
+	$ModifyDateTime = date('Y-m-d H:i:s');
+	
+	$GroupIDArr=explode(",",$GroupID);
+	
+     $result = mysql_query("DELETE FROM `SCP_Groups_Staff` WHERE StaffID='".$StaffID."'") or die(mysql_error());
+	
+	
+	for($i=0;$i<count($GroupIDArr);$i++){
+     $ins=$GroupIDArr[$i];
+	 $result = mysql_query("INSERT INTO `SCP_Groups_Staff` (`StaffID`, `GroupID`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$StaffID', '$ins', '$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");	
+
+	  
+	}
+	
+     
+     if (!$result) die('Invalid query: ' . mysql_error());
+
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Groups assign sucessfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Insert";
+        $data['responseCode'] = "201";
         $data['status'] = "0";
     }
     print json_encode($data);
@@ -2270,7 +2371,11 @@ switch($ID) {
 	case 54: updateGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
 		break;	
 	case 55: changeStatusGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
-		break;									
+		break;
+	case 56: loadGroupsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;	
+	case 57: assignGroupStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);	
+		break;												
     default: myError(); 
 }
 
