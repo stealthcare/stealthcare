@@ -6169,7 +6169,7 @@
   line-height: 15px;
 }
 .dx-popup-content {
-  padding: 20px;
+  padding: 0 0 0 15px;
 }
 .dx-popup-content > .dx-button {
   margin: 0 10px;
