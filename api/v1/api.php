@@ -1675,17 +1675,28 @@ class API extends REST {
             $QualificationID = $_POST['QualificationID'];
             $StatusID = $_POST['StatusID'];
         }
+		
+		$errorMsg="validation error";
+		$result2 = mysql_query("SELECT * FROM SCP_Qualification_Staff WHERE QualificationID='".$QualificationID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
+		if($num_rows>0){
+		  $success = false;
+		  $errorMsg = 'Sorry, you do not deactivate this qualification, it is already assigned to some staff.';
+		}else{
+		  $success = true;
+		  mysql_query("UPDATE `SCP_Qualification` SET `StatusID`='$StatusID' WHERE `QualificationID` = '$QualificationID'", $this->db);
+		}
 
-        mysql_query("UPDATE `SCP_Qualification` SET `StatusID`='$StatusID' WHERE `QualificationID` = '$QualificationID'", $this->db);
+        
 
 
-        $success = true;
+        
 
         if ($success) {
             $error = array('status_code' => "1", 'status' => "success", 'message' => "Changed Qualification Status Successfully", 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);
         } else {
-            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $error = array('status_code' => "0", 'status' => "error", 'message' => $errorMsg, 'response_code' => "200", 'response_data' => $arr);
             $this->response($this->json($error), 200);
         }
     }
@@ -1708,6 +1719,64 @@ class API extends REST {
 	  }
 	  return $text;
 	}
+	
+	private function checkQualification(){
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $status = false;
+        if(@$_POST['Qualification']) {
+            $Qualification = trim($_POST['Qualification']);
+            $Qual = mysql_query("SELECT * FROM `SCP_Qualification` WHERE Qualification='$Qualification'", $this->db);
+            $num_rows = mysql_num_rows($Qual);
+            if($num_rows>0) {
+              $status = true;
+            }else{
+	          $status = false;		
+			}
+        } 
+        
+        if($status) {
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Qualification Get Successfully", 'response_code' => "200");
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200");
+            $this->response($this->json($error), 200);
+        }
+    }
+
+	private function checkGroup(){
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        if (!isset($_SESSION)) {
+            session_start();
+        }
+        $status = false;
+        if(@$_POST['GroupName']) {
+            $GroupName = trim($_POST['GroupName']);
+            $Group = mysql_query("SELECT * FROM `SCP_Groups` WHERE GroupName='$GroupName'", $this->db);
+            $num_rows = mysql_num_rows($Group);
+            if($num_rows>0) {
+              $status = true;
+            }else{
+	          $status = false;		
+			}
+        } 
+        
+        if($status) {
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Groups Get Successfully", 'response_code' => "200");
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200");
+            $this->response($this->json($error), 200);
+        }
+    }	
 
     private function in_array_r($needle, $haystack, $strict = false) {
         foreach ($haystack as $item) {

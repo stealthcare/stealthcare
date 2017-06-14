@@ -1,0 +1,24 @@
+<aside data-ng-init="editSettingload()">
+        <div id="sidebar"  class="nav-collapse ">
+          <!-- sidebar menu start-->
+		  
+          
+          <div class="clearfix"></div>
+          <ul class="sidebar-menu">
+		  <li>
+		  <div  class="clent-login-detail">
+		  
+		   
+		   
+           <div class="row"> <img ng-if="resultData.ProfilePhoto != ''" src="{{resultData.ProfilePhoto}}"> <img ng-if="resultData.ProfilePhoto == ''" src="{{BaseUrl}}default_user.png"></div>
+            <h2>{{resultData.Name | capitalize}}</h2>
+			<br/>
+          </div>
+		  </li>
+            <li  ng-class="activeClassSidebar == 'EqSetting' ? 'active' : ''"> <a class="" href="organisation/settings" > <span>Equipments Setting</span> </a> </li>
+			<li ng-class="activeClassSidebar == 'ChkSetting' ? 'active' : ''"> <a href="organisation/checksSetting" class=""> <span>Checks Setting</span> </a> </li>
+			<li ng-class="activeClassSidebar == 'GroupSetting' ? 'active' : ''"> <a href="organisation/groupSetting" class=""> <span>Groups Setting</span> </a> </li>
+          </ul>
+          <!-- sidebar menu end-->
+        </div>
+      </aside>

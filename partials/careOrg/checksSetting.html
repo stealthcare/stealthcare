@@ -1,7 +1,7 @@
 <!-- container section start -->
 <section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('orgsettings')">
     <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Settings');loadCurrntSidebarPageTitle('EqSetting');"></div>
+    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Checks Settings');loadCurrntSidebarPageTitle('ChkSetting');"></div>
     <div ng-include="'partials/careOrg/includes/header.html'"></div>
     <!------------ End Header ---------------->
     <!--sidebar start-->
@@ -23,20 +23,20 @@
 			
 			<div class="row">
                                 <div class="col-md-6 col-lg-6">
-                                    <h3 class="page-header">Equipments Settings</h3>
+                                    <h3 class="page-header">Checks Settings</h3>
                                 </div>
 								<div class="col-md-6 col-lg-6">
-								<a href="organisation/equipments/create" class="btn add_equipments"> Add Equipment <i class="fa icon" aria-hidden="true"> <img src="img/Plus_icon.png"> </i> </a>
+								<a href="organisation/checks/create" class="btn add_equipments"> Add Checks <i class="fa icon" aria-hidden="true"> <img src="img/Plus_icon.png"> </i> </a>
 								</div>
                             </div>
 			
 			
 			
 			
-               <table class="table table-bordered table-advance table-hover file_upload_table table_radius" data-ng-init="loadAllEquipments()">
+               <table class="table table-bordered table-advance table-hover file_upload_table table_radius" data-ng-init="loadAllChecksSetting()">
                                 <thead>
                                     <tr >
-                                      <th class="background_color_blue_left">Equipments</th>
+                                      <th class="background_color_blue_left">Checks</th>
 									  <th class="background_color_blue">Description</th>
                                       <th class="background_color_blue">Status</th>
                                       <th class="background_color_blue_right"> Action</th>
@@ -46,17 +46,16 @@
 								    <tr ng-show="showAlert">
 									  <td colspan="4" ng-bind="responsemsg" class="text-center"></td>
 									</tr>
-                                    <tr ng-repeat="E in allEquipments">
-                                        <td>{{ E.Equipment }}</td>
-										<td>{{ E.Description }}</td>
-                                        <td>{{ E.Status }}</td>
+                                    <tr ng-repeat="C in allChecksSetting">
+                                        <td>{{ C.Checks }}</td>
+										<td>{{ C.Description }}</td>
+                                        <td>{{ C.Status }}</td>
                                         <td>
                                             <div class="btn-group">
-                                              <a class="btn btn-edit view" href="#/organisation/equipments/edit/{{E.EquipmentID}}" title="Edit Equipment"><i class="fa fa-pencil"></i></a>             
-                                              <a ng-if="E.StatusID === '1'" class="btn btn-success" ng-click="changeStatusEquipment(E.EquipmentID,2)" title="Deactive Equipment"><i class="fa fa-check"></i></a>
-                                              <a ng-if="E.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusEquipment(E.EquipmentID,1)" title="Active Equipment"><i class="fa fa-ban"></i></a>
+                                              <a class="btn btn-edit view" href="#/organisation/checks/edit/{{C.ChecksID}}" title="Edit Checks"><i class="fa fa-pencil"></i></a>             
+                                              <a ng-if="C.StatusID === '1'" class="btn btn-success" ng-click="changeStatusChecks(C.ChecksID,2)" title="Deactive Checks"><i class="fa fa-check"></i></a>
+                                              <a ng-if="C.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusChecks(C.ChecksID,1)" title="Active Checks"><i class="fa fa-ban"></i></a>
                                              
-                                              <!--a class="btn btn-danger" ng-click="deleteCareOrg(U.UserID)" title="Delete Organization"><i class="fa fa-trash-o"></i></a-->
                                             </div>
                                         </td>
                                     </tr>

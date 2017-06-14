@@ -143,19 +143,54 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/edit-equipment.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/carers/qualfications/:id', {
+                title: 'Edit Qualification',
+                templateUrl: 'partials/careOrg/staff/edit-qualification.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/carers/equipments/:id', {
+                title: 'Edit Equipments',
+                templateUrl: 'partials/careOrg/staff/edit-equipments.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/carers/checks/:id', {
+                title: 'Edit Checks',
+                templateUrl: 'partials/careOrg/staff/edit-checks.html',
+                controller: 'orgCtrl'
+            })
 			.when('/organisation/settings', {
-                title: 'Settings',
+                title: 'Equipments',
                 templateUrl: 'partials/careOrg/settings.html',
                 controller: 'orgCtrl'
             })
-			.when('/organisation/settings/assign_equipments', {
-                title: 'Assign Equipments',
-                templateUrl: 'partials/careOrg/assign_equipments.html',
+			.when('/organisation/checksSetting', {
+                title: 'Checks Setting',
+                templateUrl: 'partials/careOrg/checksSetting.html',
                 controller: 'orgCtrl'
             })
-			.when('/organisation/equipmentSetting/edit/:id', {
-                title: 'Edit Assign Equipments',
-                templateUrl: 'partials/careOrg/edit-assign_equipments.html',
+			.when('/organisation/checks/create', {
+                title: 'Create Checks Setting',
+                templateUrl: 'partials/careOrg/add_checks.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/checks/edit/:id', {
+                title: 'Edit Checks',
+                templateUrl: 'partials/careOrg/edit_checks.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/groupSetting', {
+                title: 'Group Setting',
+                templateUrl: 'partials/careOrg/groupSetting.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/group/create', {
+                title: 'Create Group',
+                templateUrl: 'partials/careOrg/add_group.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/group/edit/:id', {
+                title: 'Edit Group',
+                templateUrl: 'partials/careOrg/edit_group.html',
                 controller: 'orgCtrl'
             })
 

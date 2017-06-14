@@ -524,7 +524,8 @@ function in_array_r($needle, $haystack, $strict = false) {
 */
 function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-    $QualificationID = $post['QualificationID'];
+
+    $QualificationID = '0';
     $role = $post['role'];
     $Title = $post['title'];
     $FirstName = $post['FirstName'];
@@ -771,6 +772,7 @@ function loadStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+	    @$row['full_address']=$row['HouseNumber']." ".$row['Address1']." ".$row['Address2'];
         $rows[] = $row;
     }
     if($rows) {
@@ -812,6 +814,7 @@ function loadStaffAlpha($post,$deviceType,$appVersion,$OSVersion,$browserVersion
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+	    @$row['full_address']=$row['HouseNumber']." ".$row['Address1']." ".$row['Address2'];
         $rows[] = $row;
     }
     if($rows) {
@@ -868,6 +871,7 @@ function searchUniversalParam($post,$deviceType,$appVersion,$OSVersion,$browserV
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+	    @$row['full_address']=$row['HouseNumber']." ".$row['Address1']." ".$row['Address2'];
         $rows[] = $row;
     }
     if($rows) {
@@ -987,7 +991,7 @@ where st.StaffID='".$post['StaffID']."'";
 */
 function updateStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     $role = $post['UserTypeID'];
-    $QualificationID = $post['QualificationID'];
+    $QualificationID = "0";
     $Title = $post['Title'];
     $Name = $post['Name'];
     $Surname = $post['Surname'];
@@ -1136,7 +1140,12 @@ function loadAllQualification($post,$deviceType,$appVersion,$OSVersion,$browserV
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
+	
+	//@$sel_set=mysql_fetch_assoc($result);
+	//@$sel_set=@$sel_set['QualificationID'];
+	
     while($row = mysql_fetch_assoc($result)) {
+	    @$sel_set=$row['QualificationID'];
         $rows[] = $row;
     }
     if($rows) {
@@ -1144,11 +1153,13 @@ function loadAllQualification($post,$deviceType,$appVersion,$OSVersion,$browserV
         $data['responseMessage'] = "All Qualification get successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
+		$data['selectedQual'] = $sel_set;
     } else {
         $data['responseData'] = '';
         $data['responseMessage'] = "Request error";
         $data['responseCode'] = "201";
         $data['status'] = "0";
+		$data['selectedQual'] ="";
     }
     print json_encode($data);
     mysql_close($con);   //close the connection
@@ -1320,14 +1331,21 @@ function changeStatusEquipments($post,$deviceType,$appVersion,$OSVersion,$browse
     mysql_query('SET NAMES UTF8');		
     $StatusID=$post['StatusID'];
 	$EquipmentID=$post['EquipmentID'];
-
-	$sql2="UPDATE `SCP_Equipments` SET `StatusID` = '".$StatusID."' WHERE `EquipmentID` = '".$EquipmentID."'";	 
-    $result = mysql_query($sql2) or die(mysql_error());
 	
 	
-    //CHECK FOR ERROR
-    if (!$result) die('Invalid query: ' . mysql_error());
+	    $errorMsg="Error in updation";
+		$result2 = mysql_query("SELECT * FROM SCP_Equipments_Staff WHERE EquipmentID='".$EquipmentID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
 		
+		
+		if($num_rows>0){
+		  $result = '';
+		  $errorMsg = 'Sorry, you do not deactivate this Equipment, it is already assigned to some staff.';
+		}else{
+		  	$sql2="UPDATE `SCP_Equipments` SET `StatusID` = '".$StatusID."' WHERE `EquipmentID` = '".$EquipmentID."'";	 
+            $result = mysql_query($sql2) or die(mysql_error());
+		}
+			
     if($result) {
         $data['responseData'] = '';
         $data['message'] = "Updated successfully";
@@ -1335,62 +1353,14 @@ function changeStatusEquipments($post,$deviceType,$appVersion,$OSVersion,$browse
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "Error in Updation";
+        $data['message'] = $errorMsg;
         $data['responseCode'] = "200";
         $data['status'] = "0";
     }
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
-/******************************************************************************************************************/
-/* 
-*   ID=31
-*   A function used as a response to ID=31
-*   It is used to loadAllEquipmentsSetting
-*   PARAMETERS: -
-*   Return Value: User Details se morfi json
-*/
-function loadAllEquipmentsSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
-{
-  $con=connectToDB(); //connect to the DB
-    mysql_query('SET NAMES UTF8');
-	 session_start();
-    $OrgID=$_SESSION['OrgID'];
-    //$result = mysql_query("SELECT * FROM SCP_Equipments_Staff WHERE OrgID='".$OrgID."'");
-	
-		 $sql="SELECT st.Name,st.MiddleName,st.Surname,eq.Equipment,se.EquipmentsAssignID,se.StatusID
-FROM SCP_Equipments_Staff as se 
-INNER JOIN SCP_Staff as st ON st.StaffID=se.StaffID 
-INNER JOIN SCP_Equipments as eq ON eq.EquipmentID=se.EquipmentID 
-where se.OrgID='".$OrgID."'";	
-	    $result=mysql_query($sql);
-	
-	
-    //CHECK FOR ERROR
-    if (!$result) die('Invalid query: ' . mysql_error());
-    $rows = array();
-    while($row = mysql_fetch_assoc($result)) {
-		   if($row['StatusID'] == 1) {
-				$row['Status'] = 'Active';
-			} else {
-				$row['Status'] = 'Deactive';
-			}
-			$rows[] = $row;
-    }
-    if($rows) {
-        $data['responseData'] = $rows;
-        $data['message'] = "All Equipments Setting get successfully";
-        $data['responseCode'] = "200";
-        $data['status'] = "1";
-    } else {
-        $data['responseData'] = '';
-        $data['message'] = "No Equipments Setting Found";
-        $data['responseCode'] = "201";
-        $data['status'] = "0";
-    }
-    print json_encode($data);
-    mysql_close($con);   //close the connection
-}
+
 /******************************************************************************************************************/
 /* 
 *   ID=32
@@ -1462,17 +1432,163 @@ function loadAllEquipmentsOrg($post,$deviceType,$appVersion,$OSVersion,$browserV
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
-
 /******************************************************************************************************************/
 /* 
-*   ID=34
-*   A function used as a response to ID=34
-*   It is used to assignEquipments
+*   ID=39
+*   A function used as a response to ID=39
+*   It is used to loadQualificationStaff
 *   PARAMETERS: -
 *   Return Value: User Details se morfi json
 */
-function assignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+function loadQualificationStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	
+	$result = mysql_query("SELECT * FROM SCP_Qualification WHERE StatusID='1'");
+	
+	
+	if(!empty($result)){
+	   while($row = mysql_fetch_assoc($result)) {
+	        $QualificationID=$row['QualificationID'];	
+			
+			$result2 = mysql_query("SELECT * FROM SCP_Qualification_Staff WHERE StaffID='".$StaffID."' and QualificationID='".$QualificationID."'");
+			$res = mysql_fetch_assoc($result2);
+			if(!empty($res['QualificationID'])){
+			  $row['sel']="true";
+			}else{
+			  $row['sel']="false";
+			}
+			$rows[] = $row;
+       }
+	}
+
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All Qualification_Staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No Qualification_Staff Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=40
+*   A function used as a response to ID=40
+*   It is used to assignQualifications
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function assignQualificationsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	$QualificationID=$post['QualificationID'];
+	$StatusID='1';
+	$CreatedDateTime = date('Y-m-d H:i:s');
+	$ModifyDateTime = date('Y-m-d H:i:s');
+	
+	$QualificationIDArr=explode(",",$QualificationID);
+	
+     $result = mysql_query("DELETE FROM `SCP_Qualification_Staff` WHERE StaffID='".$StaffID."'") or die(mysql_error());
+	
+	
+	for($i=0;$i<count($QualificationIDArr);$i++){
+     $ins=$QualificationIDArr[$i];
+	 $result = mysql_query("INSERT INTO `SCP_Qualification_Staff` (`StaffID`, `QualificationID`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$StaffID', '$ins', '$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");	
+
+	  
+	}
+	
+     
+     if (!$result) die('Invalid query: ' . mysql_error());
+
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Qualification assign sucessfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Insert";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=41
+*   A function used as a response to ID=41
+*   It is used to loadQualificationStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadEquipmentsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	
+	$result = mysql_query("SELECT * FROM SCP_Equipments WHERE StatusID='1' and OrgID='".$OrgID."'");
+	
+	
+	if(!empty($result)){
+	   while($row = mysql_fetch_assoc($result)) {
+	        $EquipmentID=$row['EquipmentID'];	
+			
+			$result2 = mysql_query("SELECT * FROM SCP_Equipments_Staff WHERE StaffID='".$StaffID."' and EquipmentID='".$EquipmentID."'");
+			$res = mysql_fetch_assoc($result2);
+			if(!empty($res['EquipmentID'])){
+			  $row['sel']="true";
+			}else{
+			  $row['sel']="false";
+			}
+			$rows[] = $row;
+       }
+	}
+
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All SCP_Equipments_Staff get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No SCP_Equipments_Staff Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=42
+*   A function used as a response to ID=42
+*   It is used to assignEquipmentsStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function assignEquipmentsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
 	session_start();
@@ -1483,23 +1599,17 @@ function assignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersi
 	$CreatedDateTime = date('Y-m-d H:i:s');
 	$ModifyDateTime = date('Y-m-d H:i:s');
 	
+	$EquipmentIDArr=explode(",",$EquipmentID);
 	
-	$result = mysql_query("SELECT * FROM SCP_Equipments_Staff WHERE OrgID='".$OrgID."' and StaffID='".$StaffID."' and EquipmentID='".$EquipmentID."'");
-	$num_rows = mysql_num_rows($result);
-	if($num_rows>0){
-	   while($row = mysql_fetch_assoc($result)) {
-			$EquipmentsAssignID = $row['EquipmentsAssignID'];
-       }
+     $result = mysql_query("DELETE FROM `SCP_Equipments_Staff` WHERE StaffID='".$StaffID."'") or die(mysql_error());
+	
+	
+	for($i=0;$i<count($EquipmentIDArr);$i++){
+     $ins=$EquipmentIDArr[$i];
+	 $result = mysql_query("INSERT INTO `SCP_Equipments_Staff` (`StaffID`, `EquipmentID`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$StaffID', '$ins', '$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");	
+
 	  
-	  $sql2="UPDATE `SCP_Equipments_Staff` SET `StaffID` = '".$StaffID."',`EquipmentID` = '".$EquipmentID."',`ModifyDateTime` = '".$ModifyDateTime."' WHERE `EquipmentsAssignID` = '".$EquipmentsAssignID."'";	 
-      $result = mysql_query($sql2) or die(mysql_error());
-	  
-	  
-	}else{
-	  $result = mysql_query("INSERT INTO `SCP_Equipments_Staff` (`StaffID`, `EquipmentID`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$StaffID', '$EquipmentID', '$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");
 	}
-	
-	
 	
      
      if (!$result) die('Invalid query: ' . mysql_error());
@@ -1518,23 +1628,331 @@ function assignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersi
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
-
 /******************************************************************************************************************/
 /* 
-*   ID=35
-*   A function used as a response to ID=30
+*   ID=43
+*   A function used as a response to ID=43
+*   It is used to loadChecksStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadChecksStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	
+	$result = mysql_query("SELECT * FROM SCP_Checks WHERE StatusID='1' and OrgID='".$OrgID."'");
+	
+	
+	if(!empty($result)){
+	   while($row = mysql_fetch_assoc($result)) {
+	        $ChecksID=$row['ChecksID'];	
+			
+			$result2 = mysql_query("SELECT * FROM SCP_Checks_Staff WHERE StaffID='".$StaffID."' and ChecksID='".$ChecksID."'");
+			$res = mysql_fetch_assoc($result2);
+			if(!empty($res['ChecksID'])){
+			  $row['sel']="true";
+			}else{
+			  $row['sel']="false";
+			}
+			$rows[] = $row;
+       }
+	}
+
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All SCP_Checks get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No SCP_Checks Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=44
+*   A function used as a response to ID=44
+*   It is used to assignEquipmentsStaff
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function assignChecksStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$StaffID=$post['StaffID'];
+	$ChecksID=$post['ChecksID'];
+	$StatusID='1';
+	$CreatedDateTime = date('Y-m-d H:i:s');
+	$ModifyDateTime = date('Y-m-d H:i:s');
+	
+	$ChecksIDArr=explode(",",$ChecksID);
+	
+     $result = mysql_query("DELETE FROM `SCP_Checks_Staff` WHERE StaffID='".$StaffID."'") or die(mysql_error());
+	
+	
+	for($i=0;$i<count($ChecksIDArr);$i++){
+     $ins=$ChecksIDArr[$i];
+	 $result = mysql_query("INSERT INTO `SCP_Checks_Staff` (`StaffID`, `ChecksID`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$StaffID', '$ins', '$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");	
+
+	  
+	}
+	
+     
+     if (!$result) die('Invalid query: ' . mysql_error());
+
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Checks assign sucessfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Insert";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=45
+*   A function used as a response to ID=45
+*   It is used to editSettingload
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function editSettingload($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+    session_start();
+    $OrgID=$_SESSION['OrgID'];		
+	
+	$sql="SELECT sc.*,ulogin.ProfilePhoto
+FROM SCP_CareOrg as sc 
+INNER JOIN SCP_UserLogin as ulogin ON ulogin.UserID=sc.UserID 
+where sc.OrgID='".$OrgID."'";	
+	
+	
+			
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $rows[] = $row;	
+		$arr=$row;	
+    }	
+	
+    if($rows) {
+        $data['responseData'] = $rows;
+		$data['responseData2'] = $arr;
+        $data['message'] = "Setting get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+		$data['responseData2'] = '';
+        $data['message'] = "No Setting Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=46
+*   A function used as a response to ID=46
+*   It is used to loadAllChecksSetting
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadAllChecksSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+    $result = mysql_query("SELECT * FROM SCP_Checks WHERE OrgID='".$OrgID."'");
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+		   if($row['StatusID'] == 1) {
+				$row['Status'] = 'Active';
+			} else {
+				$row['Status'] = 'Deactive';
+			}
+			$rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All Checks get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No Checks Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=47
+*   A function used as a response to ID=47
 *   It is used to editStaffload
 *   PARAMETERS: -
 *   Return Value: User Details se morfi json
 */
-function changeStatusEquipmentStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+function changeStatusChecks($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
 
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');		
     $StatusID=$post['StatusID'];
-	$EquipmentsAssignID=$post['EquipmentsAssignID'];
+	$ChecksID=$post['ChecksID'];
+	
+	
+	    $errorMsg="Error in updation";
+		$result2 = mysql_query("SELECT * FROM SCP_Checks_Staff WHERE ChecksID='".$ChecksID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
+		
+		
+		if($num_rows>0){
+		  $result = '';
+		  $errorMsg = 'Sorry, you do not deactivate this Check, it is already assigned to some staff.';
+		}else{
+		  	$sql2="UPDATE `SCP_Checks` SET `StatusID` = '".$StatusID."' WHERE `ChecksID` = '".$ChecksID."'";	 
+            $result = mysql_query($sql2) or die(mysql_error());
+		}
+			
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Updated successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = $errorMsg;
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=48
+*   A function used as a response to ID=48
+*   It is used to createEquipment
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function createChecks($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$Checks=$post['Checks'];
+	$Description=$post['Description'];
+	$StatusID='1';
+	$CreatedDateTime = date('Y-m-d H:i:s');
+	$ModifyDateTime = date('Y-m-d H:i:s');
+	
+	
+	
+     $result = mysql_query("INSERT INTO `SCP_Checks` (`Checks`, `Description`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$Checks', '$Description', '$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");
+     if (!$result) die('Invalid query: ' . mysql_error());
 
-	$sql2="UPDATE `SCP_Equipments_Staff` SET `StatusID` = '".$StatusID."' WHERE `EquipmentsAssignID` = '".$EquipmentsAssignID."'";	 
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Checks create sucessfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Creation";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=49
+*   A function used as a response to ID=49
+*   It is used to editEquipmentsload
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function editChecksload($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+	$sql="SELECT * FROM SCP_Checks where ChecksID='".$post['ChecksID']."'";				
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+	    @$row['serviceRequestID']='50';
+        $rows[] = $row;	
+		$arr=$row;		
+    }
+		
+    if($rows) {
+        $data['responseData'] = $rows;
+		$data['responseData2'] = $arr;
+        $data['message'] = "Checks get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+		$data['responseData2'] = '';
+        $data['message'] = "No Checks Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=50
+*   A function used as a response to ID=50
+*   It is used to updateEquipments
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function updateChecks($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+    $Checks=$post['Checks'];
+	$Description=$post['Description'];
+	$ModifyDateTime=date('Y-m-d H:i:s');
+	$ChecksID=$post['ChecksID'];
+	$sql2="UPDATE `SCP_Checks` SET `Checks` = '".$Checks."',`Description` = '".$Description."',`ModifyDateTime` = '".$ModifyDateTime."' WHERE `ChecksID` = '".$ChecksID."'";	 
     $result = mysql_query($sql2) or die(mysql_error());
 	
 	
@@ -1557,35 +1975,38 @@ function changeStatusEquipmentStaff($post,$deviceType,$appVersion,$OSVersion,$br
 }
 /******************************************************************************************************************/
 /* 
-*   ID=36
-*   A function used as a response to ID=36
-*   It is used to editEquipmentsSettingload
+*   ID=51
+*   A function used as a response to ID=51
+*   It is used to loadAllGroupSetting
 *   PARAMETERS: -
 *   Return Value: User Details se morfi json
 */
-function editEquipmentsSettingload($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
-
-    $con=connectToDB(); //connect to the DB
-    mysql_query('SET NAMES UTF8');		
-	$sql="SELECT * FROM SCP_Equipments_Staff where EquipmentsAssignID='".$post['EquipmentsAssignID']."'";				
-	$result = mysql_query($sql);
-	
+function loadAllGroupSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+    $result = mysql_query("SELECT * FROM SCP_Groups WHERE OrgID='".$OrgID."'");
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
-	    @$row['serviceRequestID']='37';
-        $rows[] = $row;		
+		   if($row['StatusID'] == 1) {
+				$row['Status'] = 'Active';
+			} else {
+				$row['Status'] = 'Deactive';
+			}
+			$rows[] = $row;
     }
-		
     if($rows) {
         $data['responseData'] = $rows;
-        $data['message'] = "Equipment setting get successfully";
+        $data['message'] = "All Groups get successfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "No Equipment setting Found";
+        $data['message'] = "No Groups Found";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }
@@ -1594,39 +2015,161 @@ function editEquipmentsSettingload($post,$deviceType,$appVersion,$OSVersion,$bro
 }
 /******************************************************************************************************************/
 /* 
-*   ID=37
-*   A function used as a response to ID=37
-*   It is used to updateAssignEquipments
+*   ID=52
+*   A function used as a response to ID=52
+*   It is used to createGroup
 *   PARAMETERS: -
 *   Return Value: User Details se morfi json
 */
-function updateAssignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+function createGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
 	session_start();
     $OrgID=$_SESSION['OrgID'];
-	$StaffID=$post['StaffID'];
-	$EquipmentID=$post['EquipmentID'];
+	$GroupName=$post['GroupName'];
+	$StatusID='1';
+	$CreatedDateTime = date('Y-m-d H:i:s');
 	$ModifyDateTime = date('Y-m-d H:i:s');
 	
-	$sql2="UPDATE `SCP_Equipments_Staff` SET `StaffID` = '".$StaffID."',`EquipmentID` = '".$EquipmentID."',`ModifyDateTime` = '".$ModifyDateTime."' WHERE `EquipmentsAssignID` = '".$EquipmentsAssignID."'";	 
-	$result = mysql_query($sql2) or die(mysql_error());
+	
+	
+     $result = mysql_query("INSERT INTO `SCP_Groups` (`GroupName`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$GroupName','$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");
+     if (!$result) die('Invalid query: ' . mysql_error());
+
     if($result) {
         $data['responseData'] = '';
-        $data['message'] = "Equipments assign sucessfully";
+        $data['message'] = "Group create sucessfully";
         $data['responseCode'] = "200";
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "Error in Insert";
+        $data['message'] = "Error in Creation";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
+/******************************************************************************************************************/
+/* 
+*   ID=53
+*   A function used as a response to ID=53
+*   It is used to editGroupload
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function editGroupload($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
 
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+	$sql="SELECT * FROM SCP_Groups where GroupID='".$post['GroupID']."'";				
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+	    @$row['serviceRequestID']='54';
+        $rows[] = $row;	
+		$arr=$row;		
+    }
+		
+    if($rows) {
+        $data['responseData'] = $rows;
+		$data['responseData2'] = $arr;
+        $data['message'] = "Group get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+		$data['responseData2'] = '';
+        $data['message'] = "No Group Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=54
+*   A function used as a response to ID=54
+*   It is used to updateGroup
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function updateGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+    $GroupName=$post['GroupName'];
+	$ModifyDateTime=date('Y-m-d H:i:s');
+	$GroupID=$post['GroupID'];
+	$sql2="UPDATE `SCP_Groups` SET `GroupName` = '".$GroupName."',`ModifyDateTime` = '".$ModifyDateTime."' WHERE `GroupID` = '".$GroupID."'";	 
+    $result = mysql_query($sql2) or die(mysql_error());
+	
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+		
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Updated successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Updation";
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=55
+*   A function used as a response to ID=55
+*   It is used to changeStatusGroup
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function changeStatusGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+    $StatusID=$post['StatusID'];
+	$GroupID=$post['GroupID'];
+	
+	
+	    //$errorMsg="Error in updation";
+		//$result2 = mysql_query("SELECT * FROM SCP_Checks_Staff WHERE ChecksID='".$ChecksID."'")or die(mysql_error());
+		//$num_rows = mysql_num_rows($result2);
+		
+		$num_rows=0;
+		if($num_rows>0){
+		  $result = '';
+		  $errorMsg = 'Sorry, you do not deactivate this Check, it is already assigned to some staff.';
+		}else{
+		  	$sql2="UPDATE `SCP_Groups` SET `StatusID` = '".$StatusID."' WHERE `GroupID` = '".$GroupID."'";	 
+            $result = mysql_query($sql2) or die(mysql_error());
+		}
+			
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Updated successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = $errorMsg;
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
 function is_require($a, $i) {
     if (!isset($a[$i]) || $a[$i] == '') {
         echo $i.' parameter missing or it should not null';
@@ -1689,23 +2232,45 @@ switch($ID) {
 	case 29: updateEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
  	    break;
 	case 30: changeStatusEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;	
-	case 31: loadAllEquipmentsSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;	
+ 	    break;		
 	case 32: loadAllStaffOrg($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
  	    break;	
 	case 33: loadAllEquipmentsOrg($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;
-	case 34: assignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;																   	
-    case 35: changeStatusEquipmentStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break; 
-    case 36: editEquipmentsSettingload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break; 
-    case 37: updateAssignEquipments($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;	
+ 	    break;														   	
     case 38: loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
-        break;  			 	    	
+        break;  
+	case 39: loadQualificationStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);				        break;
+	case 40: assignQualificationsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;
+	case 41: loadEquipmentsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;	
+	case 42: assignEquipmentsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;	
+	case 43: loadChecksStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;	
+	case 44: assignChecksStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;			
+	case 45: editSettingload($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;	
+	case 46: loadAllChecksSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion); 
+	    break;	
+	case 47: changeStatusChecks($post,$deviceType,$appVersion,$OSVersion,$browserVersion);									    	break;	
+	case 48: createChecks($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	    break;	
+	case 49: editChecksload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;
+	case 50: updateChecks($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;
+	case 51: loadAllGroupSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;
+	case 52: createGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	    break;	
+	case 53: editGroupload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;	
+	case 54: updateGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;	
+	case 55: changeStatusGroup($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;									
     default: myError(); 
 }
 

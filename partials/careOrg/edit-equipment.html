@@ -1,38 +1,27 @@
 <!-- container section start -->
-<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
-    <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Equipments')"></div>
-    <div ng-include="'partials/careOrg/includes/header.html'"></div>
-    <!------------ End Header ---------------->
-    <!--sidebar start-->
-    <!------------ Start Header ---------------->
-    <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
-    <!------------ End Header ---------------->
-    <!--sidebar end-->
-    <!--main content start-->
-
-    <div class="container">
-        <section id="content">
-            <section class="wrapper">
-                <!-- Form validations -->
-                <div class="row">
-
-                    <section class="panel">
-                        <div class="panel-body">
-
-                            <div class="form">
-                               
-                                    <div class="row">
-                                        <div class="col-md-12">
-                    <section class="panel" data-ng-init="editEquipmentsload()">
-                        <div class="panel-body">
-                            <!--contaent are start-->
-                            <div class="row">
-                                <div class="col-md-6 col-lg-6">
-                                    <h3 class="page-header">Edit Equipments</h3>
-                                </div>
-                            </div>
-                            <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="updateEquipments(signup,'organisation/equipments/')" ng-repeat="signup in allEquipments">
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('orgsettings')">
+  <!------------ Start Header ---------------->
+  
+  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Equipment');loadCurrntSidebarPageTitle('EqSetting');"></div>
+  <div ng-include="'partials/careOrg/includes/header.html'"></div>
+  <!------------ End Header ---------------->
+  <!--sidebar start-->
+  <!------------ Start Header ---------------->
+  <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
+  <!------------ End Header ---------------->
+  <div ng-include="'partials/careOrg/includes/sidebar_settings.html'"></div>
+  <!--sidebar end-->
+  <!--main content start-->
+  <div  id="main-content">
+    <section id="content">
+      <section class="wrapper">
+        <!-- Form validations -->
+        <section class="panel" data-ng-init="editEquipmentsload()">
+          <div class="panel-body">
+            <div class="form">
+              <div class="row">
+                <h3 class="page-header">Edit Equipment</h3>
+				<form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="updateEquipments(signup,'organisation/settings/')" ng-repeat="signup in allEquipments">
                         <div class="form-group required">
                             <label class="col-sm-3 control-label no-padding-right" for="name">Equipment name </label>
                             <div class="col-sm-3">
@@ -63,28 +52,16 @@
                                 <button type="submit" class="btn button2" ng-click="submitted=true">
                                     UPDATE
                                 </button>&nbsp;&nbsp;&nbsp;&nbsp;
-								<a href="#/organisation/equipments/" class="btn button2">CANCEL</a>
+								<a href="#/organisation/settings/" class="btn button2">CANCEL</a>
                             </div>
                         </div>
                     </form>
-                            
-                        </div>
-                    </section>
-                </div>
-                                    </div>
-
-                                    
-                                   
-                                    
-                                
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- page end-->
-            </section>
+              </div>
+            </div>
+          </div>
         </section>
-    </div>
+        <!-- page end-->
+      </section>
+    </section>
+  </div>
 </section>
-
-        

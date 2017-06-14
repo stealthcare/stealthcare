@@ -35,7 +35,7 @@
                       <input type="radio" name="search" value="dob" ng-click="changeFilterTo('DateOfBirth');append_datepicker('1');" >
                       <span>D.O.B</span> </label>
                       <label class="radio2 inline2">
-                      <input type="radio" name="search" value="address" ng-click="changeFilterTo('Address1');append_datepicker('0');" >
+                      <input type="radio" name="search" value="address" ng-click="changeFilterTo('full_address');append_datepicker('0');" >
                       <span>Address</span> </label>
                       <div class="clearfix"></div>
                       <div class="searching">
@@ -113,7 +113,7 @@
               <div class="col-md-8 col-xs-8">
                 <!--<p>{{$index+1}}</p>-->
                 <h2><a href="#/organisation/carers/edit/{{S.StaffID}}">{{S.Title}} {{S.Name}} {{S.Surname | cut:true:1:' ...'}}</a></h2>
-                <p>{{S.HouseNumber}} {{S.Address1 | cut:true:21:' ...'}}</p>
+				<p>{{S.full_address | cut:true:21:' ...'}}</p>
                 <p>{{S.Mobile}}</p>
                 <div data-ng-if="S.StatusID !== '2'"> <span class="active_employee">Active</span> </div>
                 <div data-ng-if="S.StatusID !== '1'"> <span class="inactive_employee">Inactive</span> </div>

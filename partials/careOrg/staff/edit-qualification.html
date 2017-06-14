@@ -1,0 +1,58 @@
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
+  <!------------ Start Header ---------------->
+  
+  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Staff');loadCurrntSidebarPageTitle('qualification');"></div>
+  <div ng-include="'partials/careOrg/includes/header.html'"></div>
+  <!------------ End Header ---------------->
+  <!--sidebar start-->
+  <!------------ Start Header ---------------->
+  <div ng-include="'partials/careOrg/includes/sidebar_staff.html'"></div>
+  <!------------ End Header ---------------->
+  <!--sidebar end-->
+  <!--main content start-->
+  <div  id="main-content">
+    <section id="content">
+      <section class="wrapper">
+        <!-- Form validations -->
+        <section class="panel">
+          <div class="panel-body">
+            <div class="form">
+			<h3 class="page-header">Qualifications</h3>
+              <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="assignQualifications(signup,'organisation/settings/')">
+                        <div class="form-group required">
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Staff Qualifications </label>
+                            <div class="col-sm-4">
+                                <span class="block input-icon input-icon-right" data-ng-init="loadQualificationStaff();" >
+								<div ng-repeat="Q in QualificationStaff">
+								<input type="checkbox" name="QualificationID[]" value="{{Q.QualificationID}}"  ng-checked="{{Q.sel}}" />&nbsp;&nbsp;{{Q.Qualification}}
+								</div>
+                                   <small class="errorMessage" ng-show="showValidation"> Please select at least one qualification. </small>
+								   
+								  
+								   
+								   
+                                </span>
+                            </div>
+                        </div>
+						
+                        <div class="form-group">
+                            <span class="lbl col-sm-3"> </span>
+                            <div class="col-sm-4">
+							
+                                <button type="submit" class="btn button2" ng-click="submitted=true">
+                                    ASSIGN
+                                </button>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<a href="#/organisation/carers/" class="btn button2">CANCEL</a>
+                            </div>
+                        </div>
+                    </form>
+            </div>
+          </div>
+        </section>
+        <!-- page end-->
+      </section>
+    </section>
+  </div>
+</section>

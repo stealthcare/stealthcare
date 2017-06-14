@@ -29,10 +29,12 @@
                             <label class="col-sm-5 control-label no-padding-right" for="name">Qualification </label>
                             <div class="col-sm-7">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="Name" name="Qualification" ng-model="signup.Qualification" required/>
+                                    <input type="text" class="form-control" placeholder="Name" name="Qualification" ng-model="signup.Qualification" required id="Qualification" qualification-available/>
                                     <small class="errorMessage" ng-show="submitted && signupForm.Qualification.$error.required">
                                         This field is required.
                                     </small>
+									 <small class="infoMessage ng-scope" ng-show="checkExistsQual" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+									<small class="errorMessage" ng-if="signupForm.$error.qualExists">Qualification already exists in our database</small>
                                 </span>
                             </div>
                         </div>

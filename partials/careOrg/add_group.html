@@ -2,7 +2,7 @@
 <section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('orgsettings')">
   <!------------ Start Header ---------------->
   
-  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Create Equipment');loadCurrntSidebarPageTitle('EqSetting');"></div>
+  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Add Group');loadCurrntSidebarPageTitle('GroupSetting');"></div>
   <div ng-include="'partials/careOrg/includes/header.html'"></div>
   <!------------ End Header ---------------->
   <!--sidebar start-->
@@ -20,39 +20,30 @@
           <div class="panel-body">
             <div class="form">
               <div class="row">
-                <h3 class="page-header">Create Equipment</h3>
-				<form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="createEquipment(signup,'organisation/settings/')">
+                <h3 class="page-header">Create Group</h3>
+				<form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="commonCreate(signup,'organisation/groupSetting/')">
                         <div class="form-group required">
-                            <label class="col-sm-3 control-label no-padding-right" for="name">Equipment name </label>
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Name </label>
                             <div class="col-sm-3">
                                 <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="Name" name="Equipment" ng-model="signup.Equipment" required/>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.Equipment.$error.required">
+                                    <input type="text" class="form-control" placeholder="Name" name="GroupName" ng-model="signup.GroupName" required id="GroupName" group-available/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.GroupName.$error.required">
                                         This field is required.
                                     </small>
-                                </span>
-                            </div>
-                        </div>
-						<div class="form-group required">
-                            <label class="col-sm-3 control-label no-padding-right" for="name">Equipment description </label>
-                            <div class="col-sm-3">
-                                <span class="block input-icon input-icon-right">
-                                    <input type="text" class="form-control" placeholder="Description" name="Description" ng-model="signup.Description" required/>
-                                    <small class="errorMessage" ng-show="submitted && signupForm.Description.$error.required">
-                                        This field is required.
-                                    </small>
+									<small class="infoMessage ng-scope" ng-show="checkExistsGrup" style="display: inline-block; width: 100%; font-size: 12px;">checking....</small>
+									<small class="errorMessage" ng-if="signupForm.$error.grupExists">Group already exists in our database</small>
                                 </span>
                             </div>
                         </div>
                         <div class="form-group">
                             <span class="lbl col-sm-3"> </span>
                             <div class="col-sm-4">
-							<input type="hidden" name="id" id="requestID" value="27" ng-model="signup.serviceRequestID"/>
+							<input type="hidden" name="id" id="requestID" value="52" ng-model="signup.serviceRequestID"/>
                                 <button type="submit" class="btn button2" ng-click="submitted=true">
                                     CREATE
                                 </button>
 								&nbsp;&nbsp;&nbsp;&nbsp;
-								<a href="#/organisation/settings/" class="btn button2">CANCEL</a>
+								<a href="#/organisation/groupSetting" class="btn button2">CANCEL</a>
                             </div>
                         </div>
                     </form>

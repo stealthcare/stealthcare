@@ -1,388 +1,260 @@
 <!-- container section start -->
 <section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('carers')">
-    <!------------ Start Header ---------------->
-    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Staff')"></div>
-    <div ng-include="'partials/careOrg/includes/header.html'"></div>
-    <!------------ End Header ---------------->
-    <!--sidebar start-->
-    <!------------ Start Header ---------------->
-    <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
-    <!------------ End Header ---------------->
-    <!--sidebar end-->
-    <!--main content start-->
-
-    <div class="container">
-        <section id="content">
-            <section class="wrapper">
-                <!-- Form validations -->
-                <div class="row">
-				
-
-				
-
-                    <section class="panel" data-ng-init="editStaffload()">
-                        <div class="panel-body">
-
-                            <div class="form" >
-                                <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="updateStaff(signup,'organisation/carers')" enctype="multipart/form-data" >
-                                    <div class="row">
-                                        <div class="col-md-5">
-                                            <h3 class="page-header">Enter Employee Details</h3>
-                                            <div class="form-group required">
-                                                <label for="cname" class="control-label col-md-4">Staff Role </label>
-                                                <div class="col-md-8">
-                                                    <select name="UserTypeID" class="droupdown1" ng-model="signup.UserTypeID" >
-                                                        <option value="3" ng-selected="{{signup.UserTypeID === 3 }}">Frontend User</option>
-                                                        <option value="4" ng-selected="{{signup.UserTypeID === 4 }}">Supervisor</option>
-                                                        <option value="5" ng-selected="{{signup.UserTypeID === 5 }}">Care Worker</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="cname" class="control-label col-md-4">Title </label>
-                                                <div class="col-md-8">
-                                                    <select name="Title" class="droupdown1" ng-model="signup.Title">
-                                                        <option value="Mr" ng-selected="{{signup.Title === 'Mr' }}">Mr.</option>
-                                                        <option value="Mrs" ng-selected="{{signup.Title === 'Mrs' }}">Mrs.</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="FirstName" class="control-label col-md-4">First Name </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="FirstName" name="Name" required placeholder="First Name" ng-model="signup.Name" type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.Name.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="Surname" class="control-label col-md-4">Surname </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="Surname" name="Surname" placeholder="Surname" ng-model="signup.Surname" required type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.Surname.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <label for="MiddleName" class="control-label col-md-4">Middle Name </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="MiddleName" ng-model="signup.MiddleName" name="MiddleName" placeholder="Middle Name" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="cemail" class="control-label col-md-4 col-lg-4 col-xs-2">D.O.B. </label>
-                                                <div class="col-md-8 col-lg-8 col-xs-12">
-
-                                                    <div class="input-group">
-                                                        <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" max-date="dtmax" required/>
-                                                        <span class="input-group-btn">
-                                                          <button ng-click="Opened=true;$event.stopPropagation();" class="btn calender-btn" type="button"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
-                                                        </span>
-                                                    </div>
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.DateOfBirth.$error.required"> This field is required. </small>
-                                                </div>
-
-
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="cname" class="control-label col-md-4">Gender </label>
-                                                <div class="col-md-8">
-                                                    <div class="gender ">
-
-                                                        <div class="maxl">
-                                                            <label class="radio3 inline3">
-                                                                <input type="radio" name="Gender" value="Male" ng-model="signup.Gender" ng-checked="{{'Male' === signup.Gender}}">
-                                                                <span>Male </span>
-                                                            </label>
-                                                            <label class="radio3 inline3">
-                                                                &nbsp;    &nbsp; 
-                                                            <input type="radio" name="Gender" value="Female" ng-model="signup.Gender" ng-checked="{{'Female' === signup.Gender}}">
-                                                                <span>Female </span>
-                                                            </label>
-                                                        </div>
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="Ethnicity" class="control-label col-md-4">Ethnicity </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="Ethnicity" name="Ethnicity" placeholder="Ethnicity" ng-model="signup.Ethnicity" required type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.Ethnicity.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-											<div class="form-group required">
-                                                <label for="Qualification" class="control-label col-md-4">Qualification </label>
-                                                <div class="col-md-8">
-                                                   
-													
-													<select name="Qualification" data-ng-init="loadAllQualification()" class="droupdown1" ng-model="signup.QualificationID">
-                                                        <option value="{{Q.QualificationID}}" ng-repeat="Q in allQualification" ng-selected="{{Q.QualificationID === signup.QualificationID}}">
-                                                            {{Q.Qualification}}
-                                                        </option>
-                                                    </select>
-													
-													
-													
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.QualificationID.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <h3 class="page-header">Enter Employee Contact Details</h3>
-                                            <div class="form-group required">
-                                                <label for="HouseNumber" class="control-label col-md-4">House Number </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="HouseNumber" ng-model="signup.HouseNumber" placeholder="House Number" required name="HouseNumber" type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.HouseNumber.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="Address1" class="control-label col-md-4">Address 1 </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="Address1" placeholder="Address 1" ng-model="signup.Address1" required name="Address1" type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.Address1.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group ">
-                                                <label for="Address2" class="control-label col-md-4">Address 2 </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="Address2" placeholder="Address 2" name="Address2" ng-model="signup.Address2" type="text">
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="City" class="control-label col-md-4">City </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="City" name="City" placeholder="City" ng-model="signup.City" required type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.City.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="cname" class="control-label col-md-4">Country </label>
-                                                <div class="col-md-8">
-                                                    <select name="Country" data-ng-init="loadAllCountry()" class="droupdown1" ng-model="signup.Country">
-                                                        <option value="{{C.id}}" ng-repeat="C in allCountry" ng-selected="{{C.id === signup.Country}}">
-                                                            {{C.country}}
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="cname" class="control-label col-md-4 col-xs-4">Post Code </label>
-
-                                                <div class="col-sm-7">
-                                                    <div class="row">
-                                                        <div class="col-sm-6">
-                                                            <span class="block input-icon input-icon-right">
-                                                                <input type="text" style="text-transform:uppercase" validate-postcode move-focus tabindex="1" maxlength="4" id="postcode1" class="form-control postcode" name="postcode1" ng-model="signup.postcode1" required/>
-                                                            </span>
-                                                        </div>
-                                                        <div class="col-sm-6">
-                                                            <span class="block input-icon input-icon-right">
-                                                                <input type="text" style="text-transform:uppercase" validate-postcode move-focus tabindex="2" maxlength="4" id="postcode2" class="form-control postcode" name="postcode2" ng-model="signup.postcode2" required/>
-                                                            </span>
-                                                        </div> 
-                                                        <!--div class="col-sm-4">
-                                                            <span class="exampleMessage" style="display: inline-block; width: 100%; font-size: 12px; line-height: 2.8;">
-                                                                ex: AA9A 9AA
-                                                            </span>
-                                                        </div-->
-                                                    </div>                                
-                                                    <small class="errorMessage" ng-show="(submitted && addStaffForm.postcode1.$error.required) || (submitted && addStaffForm.postcode2.$error.required)">
-                                                        This field is required.
-                                                    </small>
-                                                    <!--small class="errorMessage" data-ng-show="(signupForm.postcode1.$dirty && signupForm.postcode1.$error.postcode && !signupForm.postcode1.$error.required) && (signupForm.postcode2.$dirty && signupForm.postcode2.$error.postcode && !signupForm.postcode2.$error.required)">
-                                                        <!--small class="errorMessage" ng-show="signupForm.PostCode.$error.postcode"--->
-                                                        
-                                                    </small-->
-                                                </div>
-
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="Mobile" class="control-label col-md-4">Mobile No.</label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control " id="Mobile" type="text" placeholder="Mobile No." ng-model="signup.Mobile" ng-minlength="8" ng-maxlength="16" numbers-only required name="Mobile" />
-                                                    <small class="errorMessage" 
+  <!------------ Start Header ---------------->
+  
+  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Edit Staff');loadCurrntSidebarPageTitle('EditStaff');"></div>
+  <div ng-include="'partials/careOrg/includes/header.html'"></div>
+  <!------------ End Header ---------------->
+  <!--sidebar start-->
+  <!------------ Start Header ---------------->
+  <div ng-include="'partials/careOrg/includes/sidebar_staff.html'"></div>
+  <!------------ End Header ---------------->
+  <!--sidebar end-->
+  <!--main content start-->
+  <div  id="main-content">
+    <section id="content">
+      <section class="wrapper">
+        <!-- Form validations -->
+        <section class="panel">
+          <div class="panel-body">
+            <div class="form">
+              <form class="form-validate form-horizontal" id="addStaffForm" method="post" name="addStaffForm" novalidate data-custom-submit="updateStaff(signup,'organisation/carers')" enctype="multipart/form-data" >
+  <div class="row">
+    <div class="col-md-5">
+      <h3 class="page-header">Enter Employee Details</h3>
+      <div class="form-group required">
+        <label for="cname" class="control-label col-md-4">Staff Role </label>
+        <div class="col-md-8">
+          <select name="UserTypeID" class="droupdown1" ng-model="signup.UserTypeID" >
+            <option value="3" ng-selected="{{signup.UserTypeID === 3 }}">Frontend User</option>
+            <option value="4" ng-selected="{{signup.UserTypeID === 4 }}">Supervisor</option>
+            <!---->
+            <option value="5" ng-selected="{{signup.UserTypeID === 5 }}">Care Worker</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="cname" class="control-label col-md-4">Title </label>
+        <div class="col-md-8">
+          <select name="Title" class="droupdown1" ng-model="signup.Title">
+            <option value="Mr" ng-selected="{{signup.Title === 'Mr' }}">Mr.</option>
+            <option value="Mrs" ng-selected="{{signup.Title === 'Mrs' }}">Mrs.</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="FirstName" class="control-label col-md-4">First Name </label>
+        <div class="col-md-8">
+          <input class="form-control" id="FirstName" name="Name" required placeholder="First Name" ng-model="signup.Name" type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.Name.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="Surname" class="control-label col-md-4">Surname </label>
+        <div class="col-md-8">
+          <input class="form-control" id="Surname" name="Surname" placeholder="Surname" ng-model="signup.Surname" required type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.Surname.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group ">
+        <label for="MiddleName" class="control-label col-md-4">Middle Name </label>
+        <div class="col-md-8">
+          <input class="form-control" id="MiddleName" ng-model="signup.MiddleName" name="MiddleName" placeholder="Middle Name" type="text">
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="cemail" class="control-label col-md-4 col-lg-4 col-xs-2">D.O.B. </label>
+        <div class="col-md-8 col-lg-8 col-xs-12">
+          <div class="input-group">
+            <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" max-date="dtmax" required/>
+            <span class="input-group-btn">
+            <button ng-click="Opened=true;$event.stopPropagation();" class="btn calender-btn" type="button"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
+            </span> </div>
+          <small class="errorMessage" ng-show="submitted && addStaffForm.DateOfBirth.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="cname" class="control-label col-md-4">Gender </label>
+        <div class="col-md-8">
+          <div class="gender ">
+            <div class="maxl">
+              <label class="radio3 inline3">
+              <input type="radio" name="Gender" value="Male" ng-model="signup.Gender" ng-checked="{{'Male' === signup.Gender}}">
+              <span>Male </span> </label>
+              <label class="radio3 inline3"> &nbsp;    &nbsp;
+              <input type="radio" name="Gender" value="Female" ng-model="signup.Gender" ng-checked="{{'Female' === signup.Gender}}">
+              <span>Female </span> </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="Ethnicity" class="control-label col-md-4">Ethnicity </label>
+        <div class="col-md-8">
+          <input class="form-control" id="Ethnicity" name="Ethnicity" placeholder="Ethnicity" ng-model="signup.Ethnicity" required type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.Ethnicity.$error.required"> This field is required. </small> </div>
+      </div>
+      
+    </div>
+    <div class="col-md-5">
+      <h3 class="page-header">Enter Employee Contact Details</h3>
+      <div class="form-group required">
+        <label for="HouseNumber" class="control-label col-md-4">House No. </label>
+        <div class="col-md-8">
+          <input class="form-control" id="HouseNumber" ng-model="signup.HouseNumber" placeholder="House Number" required name="HouseNumber" type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.HouseNumber.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="Address1" class="control-label col-md-4">Address 1 </label>
+        <div class="col-md-8">
+          <input class="form-control" id="Address1" placeholder="Address 1" ng-model="signup.Address1" required name="Address1" type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.Address1.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group ">
+        <label for="Address2" class="control-label col-md-4">Address 2 </label>
+        <div class="col-md-8">
+          <input class="form-control" id="Address2" placeholder="Address 2" name="Address2" ng-model="signup.Address2" type="text">
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="City" class="control-label col-md-4">City </label>
+        <div class="col-md-8">
+          <input class="form-control" id="City" name="City" placeholder="City" ng-model="signup.City" required type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.City.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="cname" class="control-label col-md-4">Country </label>
+        <div class="col-md-8">
+          <select name="Country" data-ng-init="loadAllCountry()" class="droupdown1" ng-model="signup.Country">
+            <option value="{{C.id}}" ng-repeat="C in allCountry" ng-selected="{{C.id === signup.Country}}"> {{C.country}} </option>
+          </select>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="cname" class="control-label col-md-4 col-xs-4">Post Code </label>
+        <div class="col-sm-7">
+          <div class="row">
+            <div class="col-sm-6"> <span class="block input-icon input-icon-right">
+              <input type="text" style="text-transform:uppercase" validate-postcode move-focus tabindex="1" maxlength="4" id="postcode1" class="form-control postcode" name="postcode1" ng-model="signup.postcode1" required/>
+              </span> </div>
+            <div class="col-sm-6"> <span class="block input-icon input-icon-right">
+              <input type="text" style="text-transform:uppercase" validate-postcode move-focus tabindex="2" maxlength="4" id="postcode2" class="form-control postcode" name="postcode2" ng-model="signup.postcode2" required/>
+              </span> </div>
+          </div>
+          <small class="errorMessage" ng-show="(submitted && addStaffForm.postcode1.$error.required) || (submitted && addStaffForm.postcode2.$error.required)"> This field is required. </small>
+        </div>
+      </div>
+      <div class="form-group required">
+        <label for="Mobile" class="control-label col-md-4">Mobile No.</label>
+        <div class="col-md-8">
+          <input class="form-control " id="Mobile" type="text" placeholder="Mobile No." ng-model="signup.Mobile" ng-minlength="8" ng-maxlength="16" numbers-only required name="Mobile" />
+          <small class="errorMessage" 
                                                           ng-show="((addStaffForm.Mobile.$error.minlength ||
                                                                    addStaffForm.Mobile.$error.maxlength) && 
-                                                                   addStaffForm.Mobile.$dirty) ">
-                                                                   Number should be enter between 8 to 16 digits
-                                                    </small>
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.Mobile.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-											<div class="form-group required">
-                                                <label for="Email" class="control-label col-md-4">Email </label>
-                                                <div class="col-md-8">
-                                                    <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" name="EmailID" ng-model="signup.EmailID" required readonly=""/>
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-2 col-lg-2 col-sm-3 col-xs-8">
-                                            <div class="input-group margin-top50">
-                                                <div class="photo_preview"> 
-                                                    <img ng-src="{{signup.ProfilePhoto}}" id='img-upload'>
-                                                </div>
-                                                <div class="user_upload">
-                                                    <a href="javascript:;">
-                                                        Upload Image
-                                                        <img src="img/Upload_Icon.png"> 
-                                                        <input type="file" accept=".png, .jpg, .jpeg" onchange="angular.element(this).scope().profilePhotoChanged(this.files)" ng-model="signup.ProfilePhoto" name="ProfilePhoto" id="imgInp">
-                                                    </a>
-                                                </div>
-                                            </div>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="row margin-top20">
-                                        <div class="col-md-5">
-                                            <h3 class="page-header">Enter Employee Emergency Contact Details</h3>
-                                            <div class="form-group required">
-                                                <label for="NOKName" class="control-label col-md-4">NOK Name </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control" id="NOKName" placeholder="NOK Name" ng-model="signup.NOKName" name="NOKName" required type="text">
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.NOKName.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="NOKMobile" class="control-label col-md-4">NOK Mobile </label>
-                                                <div class="col-md-8">
-                                                    <input class="form-control " id="NOKMobile" ng-model="signup.NOKMobile" placeholder="NOK Mobile" ng-minlength="8" ng-maxlength="16" numbers-only required name="NOKMobile" type="text">
-                                                    <small class="errorMessage" 
+                                                                   addStaffForm.Mobile.$dirty) "> Number should be enter between 8 to 16 digits </small> <small class="errorMessage" ng-show="submitted && addStaffForm.Mobile.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="Email" class="control-label col-md-4">Email </label>
+        <div class="col-md-8">
+          <input type="email" id="EmailID"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="Email" name="EmailID" ng-model="signup.EmailID" required readonly=""/>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-2 col-lg-2 col-sm-3 col-xs-8">
+      <div class="input-group margin-top50">
+        <div class="photo_preview"> <img ng-src="{{signup.ProfilePhoto}}" id='img-upload'> </div>
+        <div class="user_upload"> <a href="javascript:;"> Upload Image <img src="img/Upload_Icon.png">
+          <input type="file" accept=".png, .jpg, .jpeg" onChange="angular.element(this).scope().profilePhotoChanged(this.files)" ng-model="signup.ProfilePhoto" name="ProfilePhoto" id="imgInp">
+          </a> </div>
+      </div>
+    </div>
+  </div>
+  <div class="row margin-top20">
+    <div class="col-md-5">
+      <h3 class="page-header">Enter Employee Emergency Contact Details</h3>
+      <div class="form-group required">
+        <label for="NOKName" class="control-label col-md-4">NOK Name </label>
+        <div class="col-md-8">
+          <input class="form-control" id="NOKName" placeholder="NOK Name" ng-model="signup.NOKName" name="NOKName" required type="text">
+          <small class="errorMessage" ng-show="submitted && addStaffForm.NOKName.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="NOKMobile" class="control-label col-md-4">NOK Mobile </label>
+        <div class="col-md-8">
+          <input class="form-control " id="NOKMobile" ng-model="signup.NOKMobile" placeholder="NOK Mobile" ng-minlength="8" ng-maxlength="16" numbers-only required name="NOKMobile" type="text">
+          <small class="errorMessage" 
                                                           ng-show="((addStaffForm.NOKMobile.$error.minlength ||
                                                                    addStaffForm.NOKMobile.$error.maxlength) && 
-                                                                   addStaffForm.NOKMobile.$dirty) ">
-                                                                   Number should be enter between 8 to 16 digits
-                                                    </small>
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.NOKMobile.$error.required"> This field is required. </small>
-                                                </div>
-                                            </div>
-                                            <div class="form-group required">
-                                                <label for="NOKEmail" class="control-label col-md-4">NOK Email </label>
-                                                <div class="col-md-8">
-                                                    <input type="email" id="NOKEmail"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="NOK Email"  name="NOKEmail" ng-model="signup.NOKEmail" required/>
-                                                    <small class="errorMessage" ng-show="submitted && addStaffForm.NOKEmail.$error.required">
-                                                        This field is required.
-                                                    </small>
-                                                    <small class="errorMessage" ng-show="addStaffForm.NOKEmail.$error.pattern" class="help-inline">Email is not valid</small> 
-                                                   
-                                                   
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-5">
-                                            <h3 class="page-header">Login Details</h3>
-                                            <div class="form-group required">
-                                                <label for="UserName" class="control-label col-md-4">User Name </label>
-                                                <div class="col-md-8">
-                                                    <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName"  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }" readonly=""/>
-
-                                                </div>
-                                            </div>
-                                            <div class="form-group">
-                                                <label for="Password" class="control-label col-md-4">Archive User </label>
-                                                <div class="col-md-8">
-                                                    <div class="ArchiveUser ">
-
-                                                        <div class="maxl">
-                                                            <label class="radio3 inline3">
-                                                                <input type="radio" name="ArchiveUser" value="1" ng-model="signup.ArchiveUser" ng-checked="{{'1' === signup.ArchiveUser}}">
-                                                                <span>Yes </span>
-                                                            </label>
-                                                            <label class="radio3 inline3">
-                                                                &nbsp;    &nbsp; 
-                                                            <input type="radio" name="ArchiveUser" value="0" ng-model="signup.ArchiveUser" ng-checked="{{'0' === signup.ArchiveUser}}">
-                                                                <span>No </span>
-                                                            </label>
-                                                        </div>
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-											<div class="form-group">
-                                                <label for="Password" class="control-label col-md-4">Status </label>
-                                                <div class="col-md-8">
-                                                    <div class="ArchiveUser ">
-
-                                                        <div class="maxl">
-                                                            <label class="radio3 inline3">
-                                                                <input type="radio" name="signup.StatusID" value="1" ng-model="signup.StatusID" ng-checked="{{'1' === signup.StatusID}}">
-                                                                <span>Activate </span>
-                                                            </label>
-                                                            <label class="radio3 inline3">
-                                                                &nbsp;    
-                                                            <input type="radio" name="signup.StatusID" value="2" ng-model="signup.StatusID" ng-checked="{{'2' === signup.StatusID}}">
-                                                                <span>Deactivate </span>
-                                                            </label>
-                                                        </div>
-
-
-
-                                                    </div>
-                                                </div>
-                                            </div>
-											
-											
-											
-											
-                                            <!--<div class="form-group ">
-                                                <label for="cname" class="control-label col-md-4  col-xs-12">Status</label>
-                                                <div class="col-md-2 col-xs-5">
-                                                    <button type="button" class="btn btn-danger-deactive">Offline</button>
-                                                </div>
-
-                                                <div class="col-md-6 col-xs-7">
-                                                   
-													
-													
-													<button ng-if="signup.StatusID === '2'" type="button" class="btn btn-danger button_float" ng-click="changeStatus(1)" ng-show="!deactivebtn">
-													  Deactivate
-													</button>
-													<button ng-if="signup.StatusID === '1'" type="button" class="btn btn-success button_float active_staff" ng-click="changeStatus(2)" ng-show="!activebtn">
-													  Activate
-													</button>
-													
-													
-													
-                                                </div>
-
-                                            </div>-->
-                                        </div>
-                                    </div>
-                                    <input type="hidden" name="StaffID" id="StaffID" ng-model="signup.StaffID" value="{{signup.StaffID}}"/>
-									<input type="hidden" name="UserID" id="UserID" ng-model="signup.UserID" value="{{signup.UserID}}"/>
-									 <input type="hidden" name="serviceRequestID" id="serviceRequestID" ng-model="signup.serviceRequestID" value="{{signup.serviceRequestID}}"/>
-									
-                                    <div class="row margin-top30">
-                                        <div class="col-md-4 col-md-offset-7">
-                                            <div id="button_float">
-                                                <div class="form-group">
-                                                    <div class="row">
-                                                        <div class="col-md-6 col-lg-6 col-xs-6">
-                                                            <button ng-click="submitted=true" class="btn button2 submit_btn" type="submit">SAVE</button>
-                                                        </div>
-                                                        <div class="col-md-6 col-lg-6 col-xs-6">
-                                                            
-															<a href="#/organisation/carers/" class="btn button2">CANCEL</a>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </section>
-                </div>
-                <!-- page end-->
-            </section>
-        </section>
+                                                                   addStaffForm.NOKMobile.$dirty) "> Number should be enter between 8 to 16 digits </small> <small class="errorMessage" ng-show="submitted && addStaffForm.NOKMobile.$error.required"> This field is required. </small> </div>
+      </div>
+      <div class="form-group required">
+        <label for="NOKEmail" class="control-label col-md-4">NOK Email </label>
+        <div class="col-md-8">
+          <input type="email" id="NOKEmail"  ng-pattern="/^[a-z]+[a-z0-9._]+@[a-z]+\.[a-z.]{2,5}$/" class="form-control" placeholder="NOK Email"  name="NOKEmail" ng-model="signup.NOKEmail" required/>
+          <small class="errorMessage" ng-show="submitted && addStaffForm.NOKEmail.$error.required"> This field is required. </small> <small class="errorMessage" ng-show="addStaffForm.NOKEmail.$error.pattern" class="help-inline">Email is not valid</small> </div>
+      </div>
     </div>
-</section>
+    <div class="col-md-5">
+      <h3 class="page-header">Login Details</h3>
+      <div class="form-group required">
+        <label for="UserName" class="control-label col-md-4">User Name </label>
+        <div class="col-md-8">
+          <input type="text" class="form-control" placeholder="User Name" id="UserName" name="UserName"  ng-model="signup.UserName" required ng-model-options="{ updateOn: 'blur' }" readonly=""/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Password" class="control-label col-md-4">Archive User </label>
+        <div class="col-md-8">
+          <div class="ArchiveUser ">
+            <div class="maxl">
+              <label class="radio3 inline3">
+              <input type="radio" name="ArchiveUser" value="1" ng-model="signup.ArchiveUser" ng-checked="{{'1' === signup.ArchiveUser}}">
+              <span>Yes </span> </label>
+              <label class="radio3 inline3"> &nbsp;    &nbsp;
+              <input type="radio" name="ArchiveUser" value="0" ng-model="signup.ArchiveUser" ng-checked="{{'0' === signup.ArchiveUser}}">
+              <span>No </span> </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="Password" class="control-label col-md-4">Status </label>
+        <div class="col-md-8">
+          <div class="ArchiveUser ">
+            <div class="maxl">
+              <label class="radio3 inline3">
+              <input type="radio" name="signup.StatusID" value="1" ng-model="signup.StatusID" ng-checked="{{'1' === signup.StatusID}}">
+              <span>Activate </span> </label>
+              <label class="radio3 inline3"> &nbsp;
+              <input type="radio" name="signup.StatusID" value="2" ng-model="signup.StatusID" ng-checked="{{'2' === signup.StatusID}}">
+              <span>Deactivate </span> </label>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <input type="hidden" name="StaffID" id="StaffID" ng-model="signup.StaffID" value="{{signup.StaffID}}"/>
+  <input type="hidden" name="UserID" id="UserID" ng-model="signup.UserID" value="{{signup.UserID}}"/>
+  <input type="hidden" name="serviceRequestID" id="serviceRequestID" ng-model="signup.serviceRequestID" value="{{signup.serviceRequestID}}"/>
+  <div class="row margin-top30">
+    <div class="col-md-4 col-md-offset-7">
+      <div id="button_float">
+        <div class="form-group">
+          <div class="row">
+            <div class="col-md-6 col-lg-6 col-xs-6">
+              <button ng-click="submitted=true" class="btn button2 submit_btn" type="submit">SAVE</button>
+            </div>
+            <div class="col-md-6 col-lg-6 col-xs-6"> <a href="#/organisation/carers/" class="btn button2">CANCEL</a> </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>
 
-        
+            </div>
+          </div>
+        </section>
+        <!-- page end-->
+      </section>
+    </section>
+  </div>
+</section>

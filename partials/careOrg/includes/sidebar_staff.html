@@ -1,0 +1,40 @@
+<aside data-ng-init="editStaffload()">
+        <div id="sidebar"  class="nav-collapse ">
+          <!-- sidebar menu start-->
+		  
+          
+          <div class="clearfix"></div>
+          <ul class="sidebar-menu">
+		  <li>
+		  <div  class="clent-login-detail">
+		  <div  class="row margin-top20 margin-right0">
+           <span class="active_employee pull-right" ng-if="signup.StatusID === '1'">Active</span>
+		   <span class="inactive_employee pull-right" ng-if="signup.StatusID === '2'">Deactive</span>
+		   
+		   
+		   </div>
+		   
+		   
+           <div class="row"> <img ng-if="signup.ProfilePhoto != ''" src="{{signup.ProfilePhoto}}"> <img ng-if="signup.ProfilePhoto == ''" src="{{BaseUrl}}default_user.png"></div>
+            <h2>{{signup.Title}} {{signup.Name | capitalize}}</h2>
+            <p>{{signup.HouseNumber}} {{signup.Address1}}</p>
+            <p>{{signup.Mobile}}</p>
+            <!--<div class="darkpara">
+              <p>Dr Gposter</p>
+              <p>NOK : Lia Smith (Daughter)</p>
+              <p>Live Portal (Y/N) </p>
+            </div>-->
+			<br/>
+          </div>
+		  </li>
+            <li  ng-class="activeClassSidebar == 'EditStaff' ? 'active' : ''"> <a class="" href="organisation/carers/edit/{{signup.StaffID}}" > <span>Edit Details</span> </a> </li>
+			<li ng-class="activeClassSidebar == 'qualification' ? 'active' : ''"> <a href="organisation/carers/qualfications/{{signup.StaffID}}" class=""> <span>Qualifications</span> </a> </li>
+			<li ng-class="activeClassSidebar == 'equipments' ? 'active' : ''"> <a href="organisation/carers/equipments/{{signup.StaffID}}" class=""> <span>Equipments</span> </a> </li>
+			
+			<li ng-class="activeClassSidebar == 'checks' ? 'active' : ''"> <a href="organisation/carers/checks/{{signup.StaffID}}" class=""> <span>Checks</span> </a> </li>
+			
+			<li> <a href="javascript:void(0);" class=""> <span>Groups</span> </a> </li>
+          </ul>
+          <!-- sidebar menu end-->
+        </div>
+      </aside>
