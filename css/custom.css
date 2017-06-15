@@ -28,8 +28,12 @@ ul{
   float: left !important;
   margin-right: 10px;
 }
+.dx-overlay-content.dx-resizable.dx-loadpanel-content {
+  height: auto !important;
+}
 .dx-scheduler-header.dx-widget {
   display: block !important;
+  width: 100% !important;
 }
 .dx-viewport {
   height: 315px !important;

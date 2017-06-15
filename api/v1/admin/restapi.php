@@ -649,12 +649,11 @@ function createStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 */
 function getRosterClientDataByDate($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-    $Date = date('Y-m-d', strtotime($post['date']));
+    $Date = date('Y-m-d');
     $OrgID = $post['OrgID'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
     $result = mysql_query("call getRosterClientDataByDate('".$Date."','".$OrgID."');");
-    //CHECK FOR ERROR    
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
@@ -662,32 +661,17 @@ function getRosterClientDataByDate($post,$deviceType,$appVersion,$OSVersion,$bro
         $row1['text'] = $row['CustomerName'];
         $rows[] = $row1;
     }
-    //echo '<pre>'; print_r($rows); die();
-    if($rows) {
-        $data['response_data'] = $rows;
-        $data['message'] = "Get data successfully";
-        $data['responseCode'] = "200";
-        $data['status'] = "Success";
-        $data['status_code'] = "1";
-    } else {
-        $data['response_data'] = '';
-        $data['message'] = "Request error";
-        $data['response_code'] = "200";
-        $data['status'] = "Fail";
-        $data['status_code'] = "0";
-    }
-    print json_encode($data);
+    print json_encode($rows);
     mysql_close($con);   //close the connection
 }
 
 function getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
 {
-    $Date = $post['date'];
+    $Date = date('Y-m-d');
     $OrgID = $post['OrgID'];
     $con=connectToDB(); //connect to the DB
     mysql_query('SET NAMES UTF8');
-    $result = mysql_query("call getRosterCareWorkerDataByDate('".$Date."','".$OrgID."');");
-    //CHECK FOR ERROR    
+    $result = mysql_query("call getRosterCareWorkerDataByDate('".$Date."','".$OrgID."');"); 
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
@@ -695,33 +679,27 @@ function getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,
         $row1['text'] = $row['Name'].' '.$row['MiddleName'].' '.$row['Surname'];
         $rows[] = $row1;
     }
-    //echo '<pre>'; print_r($rows); die();
-    if($rows) {
-        $data['response_data'] = $rows;
-        $data['message'] = "Get data successfully";
-        $data['responseCode'] = "200";
-        $data['status'] = "Success";
-        $data['status_code'] = "1";
-    } else {
-        $data['response_data'] = '';
-        $data['message'] = "Request error";
-        $data['response_code'] = "200";
-        $data['status'] = "Fail";
-        $data['status_code'] = "0";
-    }
-    print json_encode($data);
+    print json_encode($rows);
     mysql_close($con);   //close the connection
 }
 
 function loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     $con=connectToDB(); //connect to the DB
+    $Date = date('Y-m-d', strtotime($post['date']));
     mysql_query('SET NAMES UTF8');    
-    $sql="SELECT * FROM SCP_Visits";
+    $sql="SELECT * FROM SCP_Visits WHERE VisitStartDate='$Date'";
     $result = mysql_query($sql);    
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());
     $rows = array();
     while($row = mysql_fetch_assoc($result)) {
+        $row1['visitname'] = $row['VisitTitle'];
+        $row1['task'] = $row['TaskIDs'];
+        $row1['outcomesachived'] = 'yes';
+        $row1['status'] = 'complete';
+        $row1['client'] = 'Martin';
+        $row1['careworker'] = 'John';
+        $row1['color'] = '#80BCA2';
         $row1['ClientId'] = $row['CustomerID'];
         $row1['VisitID'] = $row['VisitID'];
         $row1['CareWorkerID'] = $row['CareWorkerID'];
@@ -729,16 +707,33 @@ function loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
         $row1['endDate'] = date('Y-m-d H:i:s', strtotime($row['VisitEndDate'].' '.$row['VisitEndTime']));
         $rows[] = $row1;
     }
-    if($rows) {
-        $data['responseData'] = $rows;
-        $data['message'] = "All staff get successfully";
-        $data['responseCode'] = "200";
-        $data['status'] = "1";
-    } else {
-        $data['responseData'] = '';
-        $data['message'] = "No Staff Found";
-        $data['responseCode'] = "201";
-        $data['status'] = "0";
+    print json_encode($rows);
+    mysql_close($con);   //close the connection
+} 
+
+function loadVisitByID($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+    $con=connectToDB(); //connect to the DB
+    $VisitID = $post['VisitID'];
+    mysql_query('SET NAMES UTF8');    
+    $sql="SELECT * FROM SCP_Visits WHERE VisitID='$VisitID'";
+    $result = mysql_query($sql);    
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+        $row1['visitname'] = $row['VisitTitle'];
+        $row1['task'] = $row['TaskIDs'];
+        $row1['outcomesachived'] = 'yes';
+        $row1['status'] = 'complete';
+        $row1['client'] = 'Martin';
+        $row1['careworker'] = 'John';
+        $row1['color'] = '#80BCA2';
+        $row1['ClientId'] = $row['CustomerID'];
+        $row1['VisitID'] = $row['VisitID'];
+        $row1['CareWorkerID'] = $row['CareWorkerID'];
+        $row1['startDate'] = date('Y-m-d H:i:s', strtotime($row['VisitStartDate'].' '.$row['VisitStartTime']));
+        $row1['endDate'] = date('Y-m-d H:i:s', strtotime($row['VisitEndDate'].' '.$row['VisitEndTime']));
+        $rows[] = $row1;
     }
     print json_encode($rows);
     mysql_close($con);   //close the connection
@@ -2338,7 +2333,9 @@ switch($ID) {
 	case 32: loadAllStaffOrg($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
  	    break;	
 	case 33: loadAllEquipmentsOrg($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
- 	    break;														   	
+ 	    break;	
+    case 37: loadVisitByID($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+        break;  													   	
     case 38: loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
         break;  
 	case 39: loadQualificationStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);				        break;
