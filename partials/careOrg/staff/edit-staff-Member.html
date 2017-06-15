@@ -64,7 +64,7 @@
         <label for="cemail" class="control-label col-md-4 col-lg-4 col-xs-2">D.O.B. </label>
         <div class="col-md-8 col-lg-8 col-xs-12">
           <div class="input-group">
-            <input type="date" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" max-date="dtmax" required/>
+            <input type="text" ng-model="signup.DateOfBirth" readonly datepicker-popup="dd-MM-yyyy" class="form-control" placeholder="DD-MM-YYYY" name="DateOfBirth" is-open="Opened" ng-click="Opened=true" max-date="dtmax" required/>
             <span class="input-group-btn">
             <button ng-click="Opened=true;$event.stopPropagation();" class="btn calender-btn" type="button"> <i class="fa fa-calendar" aria-hidden="true"></i></button>
             </span> </div>

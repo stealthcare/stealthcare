@@ -847,7 +847,8 @@ function searchUniversalParam($post,$deviceType,$appVersion,$OSVersion,$browserV
 	$OrgID=$_SESSION['OrgID'];
 	$con=connectToDB(); //connect to the DB
 	mysql_query('SET NAMES UTF8');
-	
+	$searchTxt=$post['searchTxt'];
+	$ArchiveUser=$post['ArchiveUser'];
 	if($param=='Name'){
 	$sql="SELECT st.*
 	FROM SCP_Staff as st
@@ -860,7 +861,7 @@ function searchUniversalParam($post,$deviceType,$appVersion,$OSVersion,$browserV
 	}elseif($param=='DateOfBirth'){
 		$sql="SELECT st.*
 	FROM SCP_Staff as st
-	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' ORDER BY st.DateOfBirth";
+	INNER JOIN SCP_UserLogin as ulogin ON st.UserID=ulogin.UserID where st.OrgID='".$OrgID."' and  st.DateOfBirth='".$searchTxt."' and st.ArchiveUser='".$ArchiveUser."'";
 	}elseif($param=='address'){
 		$sql="SELECT st.*
 	FROM SCP_Staff as st
@@ -884,7 +885,7 @@ function searchUniversalParam($post,$deviceType,$appVersion,$OSVersion,$browserV
         $data['status'] = "1";
     } else {
         $data['responseData'] = '';
-        $data['message'] = "Request error";
+        $data['message'] = "No Staff Found";
         $data['responseCode'] = "201";
         $data['status'] = "0";
     }

@@ -41,7 +41,7 @@
                       <div class="searching">
                         <div class="col-md-7 col-sm-7 col-xs-4 col_paading0" id="append_response">
                           <input  placeholder="Search" type="text"  id="searchTxt" ng-model="search[filter]">
-						  <input  placeholder="Search" type="text"  id="searchTxt2" ng-model="search[filter]" datepicker-popup="dd-MM-yyyy" is-open="Opened" max-date="dtmax" ng-click="Opened=true" style="display:none;">
+						  <input  placeholder="Search" type="text"  id="searchTxt2" ng-model="searchTxt2" datepicker-popup="dd-MM-yyyy" is-open="Opened" max-date="dtmax" ng-click="Opened=true;" style="display:none;" ng-keypress="searchUniversalParam('DateOfBirth')" ng-change="searchUniversalParam('DateOfBirth')">
                         </div>
                         <div class="col-md-3 col-lg-3 col-xs-4 col_paading0">
                           <select name="employee" ng-change="loadAllStaff()" ng-model="employee" id="employee">
@@ -112,7 +112,7 @@
               </div>
               <div class="col-md-8 col-xs-8">
                 <!--<p>{{$index+1}}</p>-->
-                <h2><a href="#/organisation/carers/edit/{{S.StaffID}}">{{S.full_name | cut:true:20:' ...'}}</a></h2>
+                <h2><a href="#/organisation/carers/edit/{{S.StaffID}}" title="{{S.full_name}}">{{S.full_name | cut:true:20:' ...'}}</a></h2>
 				<p>{{S.full_address | cut:true:29:' ...'}}</p>
                 <p>{{S.Mobile}}</p>
                 <div data-ng-if="S.StatusID !== '2'"> <span class="active_employee">Active</span> </div>
@@ -120,6 +120,7 @@
                 <p class="small1">last logged in {{ S.ModifyDateTime }}</p>
 				<input type="hidden" name="Name" value="{{ S.Name }}"/>
 				<input type="hidden" name="Surname" value="{{ S.Surname }}"/>
+				<input type="hidden" name="DateOfBirth" value="{{ S.DateOfBirth }}"/>
               </div>
             </div>
           </div>

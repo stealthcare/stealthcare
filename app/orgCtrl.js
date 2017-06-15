@@ -127,7 +127,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     
     //alphabetic filteration staff    
     $scope.sendReqAlpha = function (name) {
-		//$('#alpha'+name).addClass("active");
+		//$('#alpha'+name+' a').toggleClass('active');
 		$scope.loading = true;
         var ArchiveUser=$('#employee :selected').val();
         var request = '{"serviceRequestID":"18","name":"'+name+'","ArchiveUser":"'+ArchiveUser+'"}';
@@ -155,7 +155,9 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
     //search staff by parameters    
     $scope.searchUniversalParam = function (param) {
 		$scope.loading = true;
-        var request = '{"serviceRequestID":"19","param":"'+param+'"}';
+		var searchTxt = angular.element('#searchTxt2').val();
+		var ArchiveUser=$('#employee :selected').val();
+        var request = '{"serviceRequestID":"19","param":"'+param+'","searchTxt":"'+searchTxt+'","ArchiveUser":"'+ArchiveUser+'"}';
         $http({
             method: 'post',
             data: $.param({request: request}),
@@ -164,7 +166,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
         })
         .success(function(results){
 			$scope.loading = false;			  
-            Data.toast(results);
+            //Data.toast(results);
             $scope.allStaff = results.responseData;
             if(results.status==0){
               $scope.responsemsg = results.message;
