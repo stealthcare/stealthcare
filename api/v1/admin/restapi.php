@@ -685,9 +685,10 @@ function getRosterCareWorkerDataByDate($post,$deviceType,$appVersion,$OSVersion,
 
 function loadAllVisits($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
     $con=connectToDB(); //connect to the DB
-    $Date = date('Y-m-d', strtotime($post['date']));
+    $sDate = date('Y-m-d', strtotime($post['sdate']));
+    $eDate = date('Y-m-d', strtotime($post['edate']));
     mysql_query('SET NAMES UTF8');    
-    $sql="SELECT * FROM SCP_Visits WHERE VisitStartDate='$Date'";
+    $sql="SELECT * FROM SCP_Visits WHERE VisitStartDate >= '$sDate' AND VisitStartDate <= '$eDate'";
     $result = mysql_query($sql);    
     //CHECK FOR ERROR
     if (!$result) die('Invalid query: ' . mysql_error());

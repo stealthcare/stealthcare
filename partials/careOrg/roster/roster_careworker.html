@@ -22,8 +22,8 @@
                   <div class="row margin-top0 margin-bottom0">
                      <div class="col-md-4">
                         <div id="button_float" style="margin-bottom: 20px; border: 1px solid rgb(131, 173, 210); width: auto; float: left;">
-                           <a href="organisation/roster"><button class=" btn button2 " type="submit" style="border-radius: 0px; width: 150px;">Client<i class=""></i></button></a>
-                           <a href="organisation/roster/careworker"><button class=" btn button2 " type="submit" style="margin-left: -4px; border-radius: 0px ! important; background: rgb(255, 255, 255) none repeat scroll 0% 0%; color: rgb(131, 173, 210); width: 150px;">Care Worker<i class=""></i> </button></a>
+                           <a href="organisation/roster"><button class=" btn button2 " type="submit" style="border-radius: 0px; width: 150px;background: rgb(255, 255, 255) none repeat scroll 0% 0%; color: rgb(131, 173, 210);">Client<i class=""></i></button></a>
+                           <a href="organisation/roster/careworker"><button class=" btn button2 " type="submit" style="margin-left: -4px; border-radius: 0px ! important; width: 150px;">Care Worker<i class=""></i> </button></a>
                         </div>
                         <!--h3 class="page-header" style="float: left; margin-bottom: -5px;" data-ng-init="getCurrentDate(mindate)">---</h3-->
                         <input type="hidden" value="" id="timestamp">
@@ -41,16 +41,17 @@
                   <div class="row">
                      <section class="panel">
                         <div class="panel-body">
+                           
                            <div class="row">
-                              <div class="col-lg-12 col-md-12 margin-left0">
+                              <div class="col-lg-12 col-md-12">
                                  <div class="row">
                                     <div class="col-lg-6">
                                        <div class="row margin-bottom20 margin-right30 padding-right20">
                                           <div class="col-md-12">
                                              <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
-                                                <div class="input-group  ">
-                                                   <input type="text" id="lname" class="form-control search-border" ng-model="searchKeywordClient.CustomerName" placeholder="Search">
-                                                   <span class="input-group-btn ">
+                                                <div class="input-group">
+                                                   <input type="text" class="form-control search-border" ng-model="searchKeywordCare.Name" placeholder="Search">
+                                                   <span class="input-group-btn">
                                                    <button class="btn textfield_button search-border-radius0" type="button"><img src="img/Search Icon.png"  ></button>
                                                    </span> 
                                                 </div>
@@ -60,9 +61,9 @@
                                     </div>
                                     <div class="col-lg-6"></div>
                                  </div>
-                                 <div class="client-table-view">
+                                 <div  class="care-worker-table-view">
                                     <div class="dx-viewport">
-                                       <div class="client-roster-container" ng-controller="ClientSchedulerController">
+                                       <div class="careworker-roster-container" ng-controller="CareWorkerSchedulerController">
                                             <div id="scheduler" dx-scheduler="options" dx-item-alias="showtime">
                                                 <div style="background: {{showtime.color}}" data-options="dxTemplate: {name: 'appointment-template'}">
                                                     <div class='showtime-preview'>
@@ -147,48 +148,6 @@
                                         </div>
                                     </div>
                                  </div>
-                              </div>
-                              <!--div class="col-lg-3 col-md-3 ">
-                                 <div class="inline-calender">
-                                    <div class="well well-sm" ng-model="dt">
-                                       <datepicker ng-click="loadVisitsBySingleDate(dt)" min="minDate" show-weeks="showWeeks"></datepicker>
-                                    </div>
-                                 </div>
-                              </div-->
-                           </div>
-                           <div class="row">
-                              <div class="col-lg-9 col-md-9">
-                                 <!--div class="row">
-                                    <div class="col-lg-6">
-                                       <div class="row margin-top20 margin-bottom20 margin-right30 padding-right20">
-                                          <div class="col-md-12">
-                                             <form class="form-validate form-horizontal" id="feedback_form" method="get" action="">
-                                                <div class="input-group">
-                                                   <input type="text" class="form-control search-border" ng-model="searchKeywordCare.Name" placeholder="Search">
-                                                   <span class="input-group-btn">
-                                                   <button class="btn textfield_button search-border-radius0" type="button"><img src="img/Search Icon.png"  ></button>
-                                                   </span> 
-                                                </div>
-                                             </form>
-                                          </div>
-                                       </div>
-                                    </div>
-                                    <div class="col-lg-6"></div>
-                                 </div-->
-                                 <!--div  class="care-worker-table-view">
-                                    <div class="dx-viewport">
-                                       <div class="client-roster-container" ng-controller="CareWorkerSchedulerController">
-                                            <div id="scheduler" dx-scheduler="options" dx-item-alias="showtime">
-                                                <div data-options="dxTemplate: {name: 'appointment-template'}">
-                                                    <div class='showtime-preview'>
-                                                        <div>{{getMovieById(showtime.VisitID).careworker}}</div>
-                                                    </div>
-                                                </div>
-                                                
-                                            </div>
-                                        </div>
-                                    </div>
-                                 </div-->
                               </div>
                               <div class="col-lg-3 col-md-3 "> </div>
                            </div>

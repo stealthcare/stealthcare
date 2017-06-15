@@ -21,8 +21,10 @@ ul{
 	list-style: none;
 }
 .dx-scheduler-view-switcher.dx-tabs {
-  display: none;
   font-size: 14px;
+}
+.dx-scheduler-header-panel-cell {
+  width: 1800px !important;
 }
 .dx-button.dx-button-normal {
   float: left !important;
@@ -34,9 +36,15 @@ ul{
 .dx-scheduler-header.dx-widget {
   display: block !important;
   width: 100% !important;
+  background: transparent;
+  border: none;
+}
+.dx-scheduler-navigator.dx-widget {
+  margin-top: -5px;
+  padding-left: 0;
 }
 .dx-viewport {
-  height: 315px !important;
+  height: 400px !important;
   width: 100%;
 }
 .viewForm i.fa {
