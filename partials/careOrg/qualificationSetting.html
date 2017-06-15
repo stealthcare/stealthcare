@@ -1,0 +1,76 @@
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('orgsettings')">
+    <!------------ Start Header ---------------->
+    <div class="title" data-ng-init="loadCurrntOrgPageTitle('Qualfications Settings');loadCurrntSidebarPageTitle('QualSetting');"></div>
+    <div ng-include="'partials/careOrg/includes/header.html'"></div>
+    <!------------ End Header ---------------->
+    <!--sidebar start-->
+    <!------------ Start Header ---------------->
+    <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
+    <!------------ End Header ---------------->
+	<div ng-include="'partials/careOrg/includes/sidebar_settings.html'"></div>
+    <!--sidebar end-->
+    <!--main content start-->
+
+    <div  id="main-content">
+    <section id="content">
+      <section class="wrapper">
+        <!-- Form validations -->
+        <section class="panel">
+          <div class="panel-body">
+            <div class="form">
+			
+			
+			<div class="row">
+                                <div class="col-md-6 col-lg-6">
+                                    <h3 class="page-header">Qualfications Settings</h3>
+                                </div>
+								<div class="col-md-6 col-lg-6">
+								<a href="organisation/qualfications/create" class="btn add_equipments"> Add Qualfications <i class="fa icon" aria-hidden="true"> <img src="img/Plus_icon.png"> </i> </a>
+								</div>
+                            </div>
+			
+			
+			
+			
+               <table class="table table-bordered table-advance table-hover file_upload_table table_radius" data-ng-init="loadAllQualificationSetting()">
+                                <thead>
+                                    <tr >
+                                      <th class="background_color_blue_left">Qualification</th>
+                                      <th class="background_color_blue">Status</th>
+                                      <th class="background_color_blue_right"> Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+								    <tr ng-show="showAlert">
+									  <td colspan="3" ng-bind="responsemsg" class="text-center"></td>
+									</tr>
+                                    <tr ng-repeat="Q in allQualificationSetting">
+                                        <td>{{ Q.Qualification }}</td>
+                                        <td>{{ Q.Status }}</td>
+                                        <td>
+                                            <div class="btn-group">
+                                              <a class="btn btn-edit view" href="#/organisation/qualification/edit/{{Q.QualificationID}}" title="Edit Qualification"><i class="fa fa-pencil"></i></a>             
+                                              <a ng-if="Q.StatusID === '1'" class="btn btn-success" ng-click="changeStatusQualification(Q.QualificationID,2)" title="Deactive Qualification"><i class="fa fa-check"></i></a>
+                                              <a ng-if="Q.StatusID === '2'" class="btn btn-danger" ng-click="changeStatusQualification(Q.QualificationID,1)" title="Active Qualification"><i class="fa fa-ban"></i></a>
+                                             
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            <dir-pagination-controls
+                                max-size="10"
+                                direction-links="true"
+                                boundary-links="true" >
+                            </dir-pagination-controls>
+            </div>
+          </div>
+        </section>
+        <!-- page end-->
+      </section>
+    </section>
+  </div>
+</section>
+
+        

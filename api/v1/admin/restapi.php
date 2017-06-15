@@ -1447,7 +1447,9 @@ function loadQualificationStaff($post,$deviceType,$appVersion,$OSVersion,$browse
     $OrgID=$_SESSION['OrgID'];
 	$StaffID=$post['StaffID'];
 	
-	$result = mysql_query("SELECT * FROM SCP_Qualification WHERE StatusID='1'");
+
+	
+	$result = mysql_query("SELECT * FROM SCP_Qualification WHERE StatusID='1' and OrgID='0' or OrgID='".$OrgID."'");
 	
 	
 	if(!empty($result)){
@@ -1545,7 +1547,7 @@ function loadEquipmentsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVe
     $OrgID=$_SESSION['OrgID'];
 	$StaffID=$post['StaffID'];
 	
-	$result = mysql_query("SELECT * FROM SCP_Equipments WHERE StatusID='1' and OrgID='".$OrgID."'");
+	$result = mysql_query("SELECT * FROM SCP_Equipments WHERE StatusID='1' and OrgID='0' or OrgID='".$OrgID."'");
 	
 	
 	if(!empty($result)){
@@ -1643,7 +1645,7 @@ function loadChecksStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersio
     $OrgID=$_SESSION['OrgID'];
 	$StaffID=$post['StaffID'];
 	
-	$result = mysql_query("SELECT * FROM SCP_Checks WHERE StatusID='1' and OrgID='".$OrgID."'");
+	$result = mysql_query("SELECT * FROM SCP_Checks WHERE StatusID='1' and OrgID='0' or OrgID='".$OrgID."'");
 	
 	
 	if(!empty($result)){
@@ -2267,6 +2269,204 @@ function assignGroupStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersi
     print json_encode($data);
     mysql_close($con);   //close the connection
 }
+/******************************************************************************************************************/
+/* 
+*   ID=58
+*   A function used as a response to ID=58
+*   It is used to loadAllQualificationSetting
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function loadAllQualificationSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+  $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	 session_start();
+    $OrgID=$_SESSION['OrgID'];
+    $result = mysql_query("SELECT * FROM SCP_Qualification WHERE OrgID='".$OrgID."'");
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+		   if($row['StatusID'] == 1) {
+				$row['Status'] = 'Active';
+			} else {
+				$row['Status'] = 'Deactive';
+			}
+			$rows[] = $row;
+    }
+    if($rows) {
+        $data['responseData'] = $rows;
+        $data['message'] = "All Qualification get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "No Qualification Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=59
+*   A function used as a response to ID=59
+*   It is used to createGroup
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function createQualfications($post,$deviceType,$appVersion,$OSVersion,$browserVersion)
+{
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');
+	session_start();
+    $OrgID=$_SESSION['OrgID'];
+	$Qualification=$post['Qualification'];
+	$StatusID='1';
+	$Slug='';
+	$CreatedDateTime = date('Y-m-d H:i:s');
+	$ModifyDateTime = date('Y-m-d H:i:s');
+	
+	
+	
+     $result = mysql_query("INSERT INTO `SCP_Qualification` (`Qualification`, `OrgID`, `StatusID`,`CreatedDateTime`, `ModifyDateTime`) VALUES ('$Qualification','$OrgID', '$StatusID','$CreatedDateTime', '$ModifyDateTime')");
+     if (!$result) die('Invalid query: ' . mysql_error());
+
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Qualification create sucessfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Creation";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=60
+*   A function used as a response to ID=60
+*   It is used to changeStatusQualfications
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function changeStatusQualfications($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+    $StatusID=$post['StatusID'];
+	$QualificationID=$post['QualificationID'];
+	
+	
+	    $errorMsg="Error in updation";
+		$result2 = mysql_query("SELECT * FROM SCP_Qualification_Staff WHERE QualificationID='".$QualificationID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
+		
+
+		if($num_rows>0){
+		  $result = '';
+		  $errorMsg = 'Sorry, you do not deactivate this Qualification, it is already assigned to some staff.';
+		}else{
+		  	$sql2="UPDATE `SCP_Qualification` SET `StatusID` = '".$StatusID."' WHERE `QualificationID` = '".$QualificationID."'";	 
+            $result = mysql_query($sql2) or die(mysql_error());
+		}
+			
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Updated successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = $errorMsg;
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=61
+*   A function used as a response to ID=61
+*   It is used to editQualificationload
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function editQualificationload($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+	$sql="SELECT * FROM SCP_Qualification where QualificationID='".$post['QualificationID']."'";				
+	$result = mysql_query($sql);
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+    $rows = array();
+    while($row = mysql_fetch_assoc($result)) {
+	    @$row['serviceRequestID']='62';
+        $rows[] = $row;	
+		$arr=$row;		
+    }
+		
+    if($rows) {
+        $data['responseData'] = $rows;
+		$data['responseData2'] = $arr;
+        $data['message'] = "Qualification get successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+		$data['responseData2'] = '';
+        $data['message'] = "No Qualification Found";
+        $data['responseCode'] = "201";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
+/******************************************************************************************************************/
+/* 
+*   ID=54
+*   A function used as a response to ID=54
+*   It is used to updateGroup
+*   PARAMETERS: -
+*   Return Value: User Details se morfi json
+*/
+function updateQualification($post,$deviceType,$appVersion,$OSVersion,$browserVersion){
+
+    $con=connectToDB(); //connect to the DB
+    mysql_query('SET NAMES UTF8');		
+    $Qualification=$post['Qualification'];
+	$ModifyDateTime=date('Y-m-d H:i:s');
+	$QualificationID=$post['QualificationID'];
+	$sql2="UPDATE `SCP_Qualification` SET `Qualification` = '".$Qualification."',`ModifyDateTime` = '".$ModifyDateTime."' WHERE `QualificationID` = '".$QualificationID."'";	 
+    $result = mysql_query($sql2) or die(mysql_error());
+	
+	
+    //CHECK FOR ERROR
+    if (!$result) die('Invalid query: ' . mysql_error());
+		
+    if($result) {
+        $data['responseData'] = '';
+        $data['message'] = "Updated successfully";
+        $data['responseCode'] = "200";
+        $data['status'] = "1";
+    } else {
+        $data['responseData'] = '';
+        $data['message'] = "Error in Updation";
+        $data['responseCode'] = "200";
+        $data['status'] = "0";
+    }
+    print json_encode($data);
+    mysql_close($con);   //close the connection
+}
 function is_require($a, $i) {
     if (!isset($a[$i]) || $a[$i] == '') {
         echo $i.' parameter missing or it should not null';
@@ -2373,7 +2573,17 @@ switch($ID) {
 	case 56: loadGroupsStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
 		break;	
 	case 57: assignGroupStaff($post,$deviceType,$appVersion,$OSVersion,$browserVersion);	
-		break;												
+		break;	
+	case 58: loadAllQualificationSetting($post,$deviceType,$appVersion,$OSVersion,$browserVersion);		
+	    break;
+	case 59: createQualfications($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	    break;
+	case 60: changeStatusQualfications($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+	    break;	
+	case 61: editQualificationload($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+        break;	
+	case 62: updateQualification($post,$deviceType,$appVersion,$OSVersion,$browserVersion);
+		break;																		
     default: myError(); 
 }
 

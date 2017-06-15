@@ -747,6 +747,179 @@ app.controller('authCtrl', function ($scope, $log, $timeout, $rootScope, $templa
         });
     };
 	
+	
+	// change status of Equipment
+	$scope.changeStatusEquipment = function(EquipmentID,StatusID){
+        if(confirm("Are you sure to want to change Equipment status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({EquipmentID: EquipmentID,StatusID: StatusID}),
+                url: serviceBase+'changeStatusEquipment',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status_code == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    };
+	
+	// Edit Equipment	
+   $scope.editEquipmentload = function () {
+        var EquipmentID = $routeParams.id;
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({EquipmentID: EquipmentID}),
+            url: serviceBase+'getUpdateEquipmentID',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status_code == "1") {
+                $rootScope.resultData = results.response_data;
+                $scope.loading = false;
+            }
+        });
+    };
+	
+	
+	
+	   // Update equipment	
+	$scope.updateEquipment = function (reqparams) {
+		$(".button2").prop("disabled",true);
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'updateEquipment',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status_code == "1") {
+                $location.path('equipments');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	
+	// create Equipments
+    $scope.createEquipments = function (reqparams) {
+		$(".button2").prop("disabled",true);
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'createEquipments',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status_code == "1") {
+                $location.path('equipments');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	// change status of Checks
+	$scope.changeStatusChecks = function(ChecksID,StatusID){
+        if(confirm("Are you sure to want to change Checks status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({ChecksID: ChecksID,StatusID: StatusID}),
+                url: serviceBase+'changeStatusChecks',
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status_code == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    };
+	
+	
+   // Edit Equipment	
+   $scope.editChecksload = function () {
+        var ChecksID = $routeParams.id;
+        $scope.loading = true;
+        $http({
+            method: 'post',
+            data: $.param({ChecksID: ChecksID}),
+            url: serviceBase+'getUpdateChecksID',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            if (results.status_code == "1") {
+                $rootScope.resultData = results.response_data;
+                $scope.loading = false;
+            }
+        });
+    };
+	
+	// Update checks	
+	$scope.updateChecks = function (reqparams) {
+		$(".button2").prop("disabled",true);
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'updateChecks',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status_code == "1") {
+                $location.path('checks');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	
+	// create Checks
+    $scope.createChecks = function (reqparams) {
+		$(".button2").prop("disabled",true);
+        $http({
+            method: 'post',
+            data: $.param({reqparams: reqparams}),
+            url: serviceBase+'createChecks',
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+            Data.toast(results);
+			$(".button2").prop("disabled",false);
+            if (results.status_code == "1") {
+                $location.path('checks');
+            }
+        })
+        .error(function(results){
+
+        });
+    };
+	
+	
 
     // logout request
     $scope.logout = function () {

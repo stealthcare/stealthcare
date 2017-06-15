@@ -100,6 +100,36 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/edit-qualification.html',
                 controller: 'authCtrl'
             })
+			.when('/equipments', {
+                title: 'Equipments',
+                templateUrl: 'partials/equipments.html',
+                controller: 'authCtrl'
+            })
+			.when('/equipments/edit/:id', {
+                title: 'Edit Equipments',
+                templateUrl: 'partials/edit-equipment.html',
+                controller: 'authCtrl'
+            })
+			.when('/equipments/create', {
+                title: 'Create Equipments',
+                templateUrl: 'partials/create_equipments.html',
+                controller: 'authCtrl'
+            })
+			.when('/checks', {
+                title: 'Checks',
+                templateUrl: 'partials/checks.html',
+                controller: 'authCtrl'
+            })
+			.when('/checks/edit/:id', {
+                title: 'Edit Checks',
+                templateUrl: 'partials/edit-checks.html',
+                controller: 'authCtrl'
+            })
+			.when('/checks/create', {
+                title: 'Create Checks',
+                templateUrl: 'partials/create_checks.html',
+                controller: 'authCtrl'
+            })
             /*.when('/', {
                 title: 'blank',
                 templateUrl: 'partials/blank.html',
@@ -163,6 +193,21 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/settings.html',
                 controller: 'orgCtrl'
             })
+			.when('/organisation/qualificationSetting', {
+                title: 'Qualification Setting',
+                templateUrl: 'partials/careOrg/qualificationSetting.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/qualfications/create', {
+                title: 'Create Qualfications Setting',
+                templateUrl: 'partials/careOrg/add_qualfications.html',
+                controller: 'orgCtrl'
+            })
+			.when('/organisation/qualification/edit/:id', {
+                title: 'Edit Qualification',
+                templateUrl: 'partials/careOrg/edit_qualification.html',
+                controller: 'orgCtrl'
+            })
 			.when('/organisation/checksSetting', {
                 title: 'Checks Setting',
                 templateUrl: 'partials/careOrg/checksSetting.html',
@@ -198,6 +243,7 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
                 templateUrl: 'partials/careOrg/staff/assign_group.html',
                 controller: 'orgCtrl'
             })
+			
 			
 
             // FOR ADMIN PORTAL SATFF MEMBERS
@@ -305,6 +351,30 @@ app.config(['$locationProvider','$routeProvider', function($locationProvider, $r
 						}else{
 						   $rootScope.showAlert = false;	
                            $rootScope.Qualification = results.response_data;						
+						} 
+                    });
+                }else if (nextUrl == '/equipments') {
+                    Data.get('Equipments').then(function (results) {
+                        //Data.toast(results);
+						$rootScope.loading = false;	
+						if(results.status_code==0){
+						   $rootScope.responsemsg = results.message;
+                           $rootScope.showAlert = true;	
+						}else{
+						   $rootScope.showAlert = false;	
+                           $rootScope.Equipments = results.response_data;						
+						} 
+                    });
+                }else if (nextUrl == '/checks') {
+                    Data.get('Checks').then(function (results) {
+                        //Data.toast(results);
+						$rootScope.loading = false;	
+						if(results.status_code==0){
+						   $rootScope.responsemsg = results.message;
+                           $rootScope.showAlert = true;	
+						}else{
+						   $rootScope.showAlert = false;	
+                           $rootScope.Checks = results.response_data;						
 						} 
                     });
                 }else {

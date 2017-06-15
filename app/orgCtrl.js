@@ -339,7 +339,7 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 	
 	
 	
-	//edit Equipments
+	//edit Equipments load
 	$scope.editEquipmentsload = function () {
 		
         var EquipmentID = $routeParams.id;
@@ -833,6 +833,71 @@ app.controller('orgCtrl', function ($scope, $timeout, $rootScope, $window, $rout
 		}
     };
 	
+	//load Qualification setting    
+    $scope.loadAllQualificationSetting = function () {
+        var request = '{"serviceRequestID":"58"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){ 
+            Data.toast(results);
+            $scope.allQualificationSetting = results.responseData;			
+            if(results.status==0){
+              $scope.responsemsg = results.message;
+              $scope.showAlert = true;
+              $scope.showPaging = false;
+            }else{
+              $scope.showAlert = false;
+              $scope.showPaging = true;
+            }
+        });
+    };
+	
+	// change Qualification status request
+    $scope.changeStatusQualification = function(QualificationID,StatusID){
+		var request = '{"serviceRequestID":"60","QualificationID":"'+QualificationID+'","StatusID":"'+StatusID+'"}';
+        if(confirm("Are you sure to want to change Qualification status")){
+            $scope.loading = true;
+            $http({
+                method: 'post',
+                data: $.param({request: request}),
+                url: serviceBase,
+                headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+            })
+            .success(function(results){
+                Data.toast(results);
+                if (results.status == "1") {
+                    $route.reload(); 
+                }
+                $scope.loading = false;
+            })
+            .error(function(results){
+
+            });
+        }
+    }; 
+	
+	
+	//edit Qualification Load Setting
+	$scope.editQualificationload = function () {
+		$scope.loading = true;
+        var QualificationID = $routeParams.id;
+        var request = '{"serviceRequestID":"61","QualificationID":"'+QualificationID+'"}';
+        $http({
+            method: 'post',
+            data: $.param({request: request}),
+            url: serviceBase,
+            headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+        })
+        .success(function(results){
+			$scope.loading = false;			  
+            Data.toast(results);
+            $scope.signup = results.responseData2;
+        });
+    };
 	
 	
 

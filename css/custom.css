@@ -1002,6 +1002,7 @@ color:#84aed3;
  background-color:#35b1b4 !important;
  border:0px !important;
 }
+/**Checkbox design css Start**/
 .control-group {
   display: inline-block;
   vertical-align: top;
@@ -1063,7 +1064,11 @@ color:#84aed3;
    border-color:#84aed3 !important;
 }
 .control input:checked ~ .control__indicator:after {
-  display: block;
+    display: block;
+    height: 12px;
+    left: 6px;
+    top: 2px;
+    width: 7px;
 }
 .control--checkbox .control__indicator:after {
   left: 8px;
@@ -1077,3 +1082,4 @@ color:#84aed3;
 .control--checkbox input:disabled ~ .control__indicator:after {
   border-color: #7b7b7b;
 }
+/**Checkbox design css End**/

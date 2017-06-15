@@ -1,0 +1,57 @@
+<!-- container section start -->
+<section id="container" class="" data-ng-init="loadMainMenuCurrntActiveClass('orgsettings')">
+  <!------------ Start Header ---------------->
+  
+  <div class="title" data-ng-init="loadCurrntOrgPageTitle('Create Qualification');loadCurrntSidebarPageTitle('QualSetting');"></div>
+  <div ng-include="'partials/careOrg/includes/header.html'"></div>
+  <!------------ End Header ---------------->
+  <!--sidebar start-->
+  <!------------ Start Header ---------------->
+  <!--div ng-include="'partials/careOrg/includes/sidebar.html'"></div-->
+  <!------------ End Header ---------------->
+  <div ng-include="'partials/careOrg/includes/sidebar_settings.html'"></div>
+  <!--sidebar end-->
+  <!--main content start-->
+  <div  id="main-content">
+    <section id="content">
+      <section class="wrapper">
+        <!-- Form validations -->
+        <section class="panel">
+          <div class="panel-body">
+            <div class="form">
+              <div class="row">
+                <h3 class="page-header">Create Qualification</h3>
+				<form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="commonCreate(signup,'organisation/qualificationSetting/')">
+                        <div class="form-group required">
+                            <label class="col-sm-3 control-label no-padding-right" for="name">Qualification </label>
+                            <div class="col-sm-3">
+                                <span class="block input-icon input-icon-right">
+                                    <input type="text" class="form-control" placeholder="Name" name="Qualification" ng-model="signup.Qualification" required/>
+                                    <small class="errorMessage" ng-show="submitted && signupForm.Qualification.$error.required">
+                                        This field is required.
+                                    </small>
+                                </span>
+                            </div>
+                        </div>
+						
+                        <div class="form-group">
+                            <span class="lbl col-sm-3"> </span>
+                            <div class="col-sm-4">
+							<input type="hidden" name="id" id="requestID" value="59" ng-model="signup.serviceRequestID"/>
+                                <button type="submit" class="btn button2" ng-click="submitted=true">
+                                    CREATE
+                                </button>
+								&nbsp;&nbsp;&nbsp;&nbsp;
+								<a href="#/organisation/qualificationSetting" class="btn button2">CANCEL</a>
+                            </div>
+                        </div>
+                    </form>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- page end-->
+      </section>
+    </section>
+  </div>
+</section>

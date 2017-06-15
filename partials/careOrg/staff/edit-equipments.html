@@ -18,30 +18,29 @@
         <section class="panel">
           <div class="panel-body">
             <div class="form">
-			<h3 class="page-header">Equipments</h3>
+			<h3 class="page-header">{{signup.Name | capitalize}}'s Equipments</h3>
               <form name="signupForm" class="form-horizontal" role="form" novalidate data-custom-submit="assignEquipmentsStaff(signup,'organisation/settings/')">
                         <div class="form-group required">
-                            <label class="col-sm-3 control-label no-padding-right" for="name">Staff Equipments </label>
+                            
                             <div class="col-sm-4">
                                 <span class="block input-icon input-icon-right" data-ng-init="loadEquipmentsStaff();" >
 								<div ng-repeat="E in EquipmentsStaff">
-								<input type="checkbox" name="EquipmentID[]" value="{{E.EquipmentID}}"  ng-checked="{{E.sel}}" />&nbsp;&nbsp;{{E.Equipment}}
+								<label class="control control--checkbox">{{E.Equipment}}<input type="checkbox" name="EquipmentID[]" value="{{E.EquipmentID}}"  ng-checked="{{E.sel}}" /><div class="control__indicator"></div>
+								</label>
 								</div>
                                    <small class="errorMessage" ng-show="showValidation"> Please select at least one equipment. </small>
                                 </span>
                             </div>
-                        </div>
-						
-                        <div class="form-group">
-                            <span class="lbl col-sm-3"> </span>
-                            <div class="col-sm-4">
-                                <button type="submit" class="btn button2" ng-click="submitted=true">
+						</div>
+						<div class="form-group">
+						  <div class="col-sm-4">
+						   <button type="submit" class="btn button2" ng-click="submitted=true">
                                     ASSIGN
-                                </button>
+                            </button>
 								&nbsp;&nbsp;&nbsp;&nbsp;
-								<a href="#/organisation/carers/" class="btn button2">CANCEL</a>
-                            </div>
-                        </div>
+							<a href="#/organisation/carers/" class="btn button2">CANCEL</a>
+						  </div>	
+						</div>
                     </form>
             </div>
           </div>

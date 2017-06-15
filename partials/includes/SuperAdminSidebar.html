@@ -66,6 +66,26 @@
 		            		<span>Create Qualification</span>
 		            	</a>
 		            </li>
+					<li ng-class="activeClass == 'equipments' ? 'active' : ''"> 
+		            	<a class="" href="equipments" ng-click="removePopover()">
+		            		<span>Equipments</span>
+		            	</a>
+		            </li>
+					<li ng-class="activeClass == 'create_equipments' ? 'active' : ''"> 
+		            	<a class="" href="equipments/create" ng-click="removePopover()">
+		            		<span>Create Equipment</span>
+		            	</a>
+		            </li>
+					<li ng-class="activeClass == 'checks' ? 'active' : ''"> 
+		            	<a class="" href="checks" ng-click="removePopover()">
+		            		<span>Checks</span>
+		            	</a>
+		            </li>
+					<li ng-class="activeClass == 'create_checks' ? 'active' : ''"> 
+		            	<a class="" href="checks/create" ng-click="removePopover()">
+		            		<span>Create Checks</span>
+		            	</a>
+		            </li>
 		        </ul>
               	<!-- sidebar menu end-->
           	</div>

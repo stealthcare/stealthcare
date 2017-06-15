@@ -1504,7 +1504,7 @@ class API extends REST {
 
         if ($success) {
             // LOGIN
-            $sql = mysql_query("SELECT * FROM SCP_Qualification", $this->db);
+            $sql = mysql_query("SELECT * FROM SCP_Qualification where OrgID='0'", $this->db);
 			$chk=mysql_num_rows($sql);
 			$arr='';
 			if($chk>0){
@@ -1552,6 +1552,7 @@ class API extends REST {
 			$Slug=$this->create_slug($Qualification);			
 		} 	
 		$StatusID='1';
+		$OrgID='0';
 		$CreatedDateTime = date('Y-m-d H:i:s');
 		$ModifyDateTime = date('Y-m-d H:i:s');
 
@@ -1560,7 +1561,7 @@ class API extends REST {
        
         if ($success) {
             // LOGIN
-            $sql_insert = mysql_query("INSERT INTO `SCP_Qualification` (`Qualification`, `Slug`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$Qualification', '$Slug', '$StatusID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+            $sql_insert = mysql_query("INSERT INTO `SCP_Qualification` (`Qualification`, `Slug`, `StatusID`,`OrgID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$Qualification', '$Slug', '$StatusID','$OrgID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
 
             $last_insert_id = mysql_insert_id();
 
@@ -1656,9 +1657,6 @@ class API extends REST {
             $this->response($this->json($error), 200);
         }
     }
-	
-	
-	
 	
 	private function changeStatusQualification() {
         if ($this->get_request_method() != "POST") {
@@ -1777,7 +1775,421 @@ class API extends REST {
             $this->response($this->json($error), 200);
         }
     }	
+	
+	private function Equipments(){
 
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        
+        $success = true;
+
+        if ($success) {
+            // LOGIN
+            $sql = mysql_query("SELECT * FROM SCP_Equipments where OrgID='0'", $this->db);
+			$chk=mysql_num_rows($sql);
+			$arr='';
+			if($chk>0){
+				while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+					$row['EquipmentID'] = $rlt['EquipmentID'];
+					$row['Equipment'] = $rlt['Equipment'];
+					$row['Description'] = $rlt['Description'];
+					$row['StatusID'] = $rlt['StatusID'];
+	
+					if($rlt['StatusID'] == 1) {
+						$row['Status'] = 'Active';
+					} else {
+						$row['Status'] = 'Deactive';
+					}
+					$arr[] = $row;
+				}
+				
+			 $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Equipment Get Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($successdata), 200); 	
+				
+			}else{
+			   $error = array('status_code' => "0", 'status' => "error", 'message' => "No Equipment Found", 'response_code' => "200", 'response_data' => '');
+               $this->response($this->json($error), 200);
+			}            
+            //print_r($arr);           
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    	
+	}
+	
+	private function changeStatusEquipment() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $EquipmentID = $post['EquipmentID'];
+            $StatusID = $post['StatusID'];
+        } else {
+            $EquipmentID = $_POST['EquipmentID'];
+            $StatusID = $_POST['StatusID'];
+        }
+		
+		$errorMsg="validation error";
+		$result2 = mysql_query("SELECT * FROM SCP_Equipments_Staff WHERE EquipmentID='".$EquipmentID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
+		if($num_rows>0){
+		  $success = false;
+		  $errorMsg = 'Sorry, you do not deactivate this Equipment, it is already assigned to some staff.';
+		}else{
+		  $success = true;
+		  mysql_query("UPDATE `SCP_Equipments` SET `StatusID`='$StatusID' WHERE `EquipmentID` = '$EquipmentID'", $this->db);
+		}
+
+        
+
+
+        
+
+        if ($success) {
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Changed Equipment Status Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => $errorMsg, 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	private function getUpdateEquipmentID() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $EquipmentID = $_POST['EquipmentID'];
+            $sql = mysql_query("SELECT * FROM SCP_Equipments WHERE `EquipmentID` = '$EquipmentID'", $this->db); 
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+			if(!empty($arr)){
+			   $success = true;
+			   $msg = "Get Equipment Successfully";
+			   $status = 'success';
+			}else{
+			   $success = false;
+			   $status = 'error';
+			}
+        } else {
+            $EquipmentID = $_POST['EquipmentID'];
+            $sql = mysql_query("SELECT * FROM SCP_Equipments WHERE `EquipmentID` = '$EquipmentID'", $this->db); 
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+			if(!empty($arr)){
+			   $success = true;
+			   $msg = "Get Equipment Successfully";
+			   $status = 'success';
+			}else{
+			   $success = false;
+			   $status = 'error';
+			}
+        }
+
+        if ($success) {  
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	private function updateEquipment() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $EquipmentID = $post['EquipmentID'];
+			$Equipment = $post['Equipment'];
+			$Description = $post['Description'];
+        } else {
+            $EquipmentID = $_POST['EquipmentID'];
+			$Equipment = $_POST['Equipment'];
+            $Description = $_POST['Description'];
+        }
+		
+			
+            $ModifyDateTime = date('Y-m-d H:i:s');
+
+            mysql_query("UPDATE `SCP_Equipments` SET `Equipment`='$Equipment',`Description`='$Description' WHERE `EquipmentID` = '$EquipmentID'", $this->db);
+
+            $success = true;
+            $msg = "Update Equipment Successfully";
+			$status = 'success';
+
+        if ($success) {
+            
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	private function createEquipments(){
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $Equipment = $post['Equipment'];
+			$Description = $post['Description'];
+        }else{
+            $Equipment = $_POST['Equipment'];	
+			$Description = $_POST['Description'];		
+		} 	
+		$StatusID='1';
+		$OrgID='0';
+		$CreatedDateTime = date('Y-m-d H:i:s');
+		$ModifyDateTime = date('Y-m-d H:i:s');
+
+
+        $success = true;
+       
+        if ($success) {
+            // LOGIN
+            $sql_insert = mysql_query("INSERT INTO `SCP_Equipments` (`Equipment`, `Description`,`OrgID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$Equipment', '$Description','$OrgID', '$StatusID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+
+            $last_insert_id = mysql_insert_id();
+
+           
+            //if no user found
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Equipments Created Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+	}
+	
+	private function Checks(){
+
+        if ($this->get_request_method() != "GET") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        
+        $success = true;
+
+        if ($success) {
+            // LOGIN
+            $sql = mysql_query("SELECT * FROM SCP_Checks where OrgID='0'", $this->db);
+			$chk=mysql_num_rows($sql);
+			$arr='';
+			if($chk>0){
+				while ($rlt = mysql_fetch_array($sql, MYSQL_ASSOC)) {
+					$row['ChecksID'] = $rlt['ChecksID'];
+					$row['Checks'] = $rlt['Checks'];
+					$row['Description'] = $rlt['Description'];
+					$row['StatusID'] = $rlt['StatusID'];
+	
+					if($rlt['StatusID'] == 1) {
+						$row['Status'] = 'Active';
+					} else {
+						$row['Status'] = 'Deactive';
+					}
+					$arr[] = $row;
+				}
+				
+			 $successdata = array('status_code' => "1", 'status' => "success", 'message' => "Checks Get Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($successdata), 200); 	
+				
+			}else{
+			   $error = array('status_code' => "0", 'status' => "error", 'message' => "No Checks Found", 'response_code' => "200", 'response_data' => '');
+               $this->response($this->json($error), 200);
+			}            
+            //print_r($arr);           
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    	
+	}
+	
+	private function changeStatusChecks() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $ChecksID = $post['ChecksID'];
+            $StatusID = $post['StatusID'];
+        } else {
+            $ChecksID = $_POST['ChecksID'];
+            $StatusID = $_POST['StatusID'];
+        }
+		
+		$errorMsg="validation error";
+		$result2 = mysql_query("SELECT * FROM SCP_Checks_Staff WHERE ChecksID='".$ChecksID."'")or die(mysql_error());
+		$num_rows = mysql_num_rows($result2);
+		if($num_rows>0){
+		  $success = false;
+		  $errorMsg = 'Sorry, you do not deactivate this Checks, it is already assigned to some staff.';
+		}else{
+		  $success = true;
+		  mysql_query("UPDATE `SCP_Checks` SET `StatusID`='$StatusID' WHERE `ChecksID` = '$ChecksID'", $this->db);
+		}
+
+        
+
+
+        
+
+        if ($success) {
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Changed Checks Status Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => $errorMsg, 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	private function getUpdateChecksID() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $ChecksID = $_POST['ChecksID'];
+            $sql = mysql_query("SELECT * FROM SCP_Checks WHERE `ChecksID` = '$ChecksID'", $this->db); 
+
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+			if(!empty($arr)){
+			   $success = true;
+			   $msg = "Get Checks Successfully";
+			   $status = 'success';
+			}else{
+			   $success = false;
+			   $status = 'error';
+			}
+        } else {
+            $ChecksID = $_POST['ChecksID'];
+            $sql = mysql_query("SELECT * FROM SCP_Checks WHERE `ChecksID` = '$ChecksID'", $this->db); 
+            $arr = mysql_fetch_array($sql, MYSQL_ASSOC);
+			if(!empty($arr)){
+			   $success = true;
+			   $msg = "Get Checks Successfully";
+			   $status = 'success';
+			}else{
+			   $success = false;
+			   $status = 'error';
+			}
+        }
+
+        if ($success) {  
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+	
+	private function updateChecks() {
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        $success = false;
+
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $ChecksID = $post['ChecksID'];
+			$Checks = $post['Checks'];
+			$Description = $post['Description'];
+        } else {
+            $ChecksID = $_POST['ChecksID'];
+			$Checks = $_POST['Checks'];
+            $Description = $_POST['Description'];
+        }
+		
+			
+            $ModifyDateTime = date('Y-m-d H:i:s');
+
+            mysql_query("UPDATE `SCP_Checks` SET `Checks`='$Checks',`Description`='$Description' WHERE `ChecksID` = '$ChecksID'", $this->db);
+
+            $success = true;
+            $msg = "Update Checks Successfully";
+			$status = 'success';
+
+        if ($success) {
+            
+            $successdata = array('status_code' => "1", 'status' => "success", 'message' => $msg, 'response_code' => "200", 'response_data' => $arr, 'status_data' => $status);
+            $this->response($this->json($successdata), 200);            
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "Server Error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+    }
+    
+	private function createChecks(){
+        if ($this->get_request_method() != "POST") {
+            $error = array('status_code' => "0", 'message' => "wrong method", 'response_code' => "406");
+            $this->response($this->json($error), 406);
+        }
+        
+        $arr = array();
+        if(@$_POST['reqparams']) {
+            $post = $_POST['reqparams'];
+            $Checks = $post['Checks'];
+			$Description = $post['Description'];
+        }else{
+            $Checks = $_POST['Checks'];	
+			$Description = $_POST['Description'];		
+		} 	
+		$StatusID='1';
+		$OrgID='0';
+		$CreatedDateTime = date('Y-m-d H:i:s');
+		$ModifyDateTime = date('Y-m-d H:i:s');
+
+
+        $success = true;
+       
+        if ($success) {
+            // LOGIN
+            $sql_insert = mysql_query("INSERT INTO `SCP_Checks` (`Checks`, `Description`,`OrgID`, `StatusID`, `CreatedDateTime`, `ModifyDateTime`) VALUES ('$Checks', '$Description','$OrgID', '$StatusID', '$CreatedDateTime', '$ModifyDateTime')", $this->db);
+
+            $last_insert_id = mysql_insert_id();
+
+           
+            //if no user found
+            $error = array('status_code' => "1", 'status' => "success", 'message' => "Equipments Created Successfully", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        } else {
+            $error = array('status_code' => "0", 'status' => "error", 'message' => "validation error", 'response_code' => "200", 'response_data' => $arr);
+            $this->response($this->json($error), 200);
+        }
+	}
+	
     private function in_array_r($needle, $haystack, $strict = false) {
         foreach ($haystack as $item) {
             if (($strict ? $item === $needle : $item == $needle) || (is_array($item) && $this->in_array_r($needle, $item, $strict))) {
